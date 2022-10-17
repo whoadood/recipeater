@@ -25,11 +25,9 @@ const secondaryNavigation = [
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
-  { name: "History", href: "/newPage", icon: ClockIcon },
-  { name: "Balances", href: "#", icon: ScaleIcon },
-  { name: "Cards", href: "#", icon: CreditCardIcon },
-  { name: "Recipients", href: "#", icon: UserGroupIcon },
-  { name: "Reports", href: "#", icon: DocumentChartBarIcon },
+  { name: "Browse", href: "/browse", icon: ClockIcon },
+  { name: "Profile", href: "/profile", icon: ScaleIcon },
+  { name: "Create", href: "/recipe/create", icon: CreditCardIcon },
 ];
 
 export default function Nav({

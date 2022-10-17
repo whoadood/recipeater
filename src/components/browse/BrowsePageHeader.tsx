@@ -4,11 +4,7 @@ import React, { useState } from "react";
 // Utils
 import { classNames } from "../../utils/classNames";
 
-const tabs = [
-  { name: "Recent", href: "#" },
-  { name: "Likes", href: "#" },
-  { name: "Comments", href: "#" },
-];
+const tabs = [{ name: "Recent" }, { name: "Likes" }, { name: "Comments" }];
 
 export default function NewPageHeader() {
   const [activeTab, setActiveTab] = useState("Recent");
@@ -29,7 +25,7 @@ export default function NewPageHeader() {
                   : "text-gray-500 hover:text-gray-700",
                 tabIdx === 0 ? "rounded-l-lg" : "",
                 tabIdx === tabs.length - 1 ? "rounded-r-lg" : "",
-                "group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
+                "group relative min-w-0 flex-1 cursor-pointer overflow-hidden bg-white py-4 px-6 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
               )}
               htmlFor={`${tab.name} tab`}
               onClick={() => setActiveTab(tab.name)}
