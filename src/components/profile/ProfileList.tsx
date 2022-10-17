@@ -10,7 +10,7 @@ const projects = [
   {
     name: "Workcation",
     href: "#",
-    siteHref: "#",
+    siteHref: "/recipe/aaaaa111111",
     repoHref: "#",
     repo: "debbielewis/workcation",
     tech: "Laravel",

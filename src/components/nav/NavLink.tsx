@@ -22,7 +22,7 @@ export default function NavLink({
         onClick={() => setCurrentActive && setCurrentActive(item.name)}
         className={classNames(
           item.current
-            ? "bg-cyan-800 text-white"
+            ? "bg-cyan-800 text-white hover:bg-cyan-900"
             : "text-cyan-100 hover:bg-cyan-600 hover:text-white",
           "group flex items-center rounded-md px-2 py-2 text-base font-medium"
         )}

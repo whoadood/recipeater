@@ -4,6 +4,7 @@ import { ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
 
 // Utils
 import { classNames } from "../../utils/classNames";
+import Link from "next/link";
 
 export default function ProfileRecipeCard({
   project,
@@ -87,12 +88,11 @@ export default function ProfileRecipeCard({
         {/* Repo meta info */}
         <div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
           <p className="flex items-center space-x-4">
-            <a
-              href={project.siteHref}
-              className="relative text-sm font-medium text-gray-500 hover:text-gray-900"
-            >
-              Visit site
-            </a>
+            <Link href={project.siteHref}>
+              <a className="relative text-sm font-medium text-gray-500 hover:text-gray-900">
+                View Recipe
+              </a>
+            </Link>
             <button
               type="button"
               className="relative rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

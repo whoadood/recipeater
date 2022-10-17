@@ -33,7 +33,7 @@ export default function ProfileMenu() {
               <>
                 <img
                   className="h-8 w-8 rounded-full"
-                  src={session.user?.image}
+                  src={session.user.image!}
                   alt="user avatar"
                 />
                 <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
