@@ -7,6 +7,7 @@ import { NavItem } from "../../types/globals";
 
 // Utils
 import { classNames } from "../../utils/classNames";
+import { useRouter } from "next/router";
 
 export default function NavLink({
   item,

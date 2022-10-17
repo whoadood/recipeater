@@ -16,6 +16,7 @@ import {
 
 // Utils
 import NavLink from "../nav/NavLink";
+import { useRouter } from "next/router";
 
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
@@ -27,7 +28,7 @@ const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
   { name: "Browse", href: "/browse", icon: ClockIcon },
   { name: "Profile", href: "/profile", icon: ScaleIcon },
-  { name: "Create", href: "/recipe/create", icon: CreditCardIcon },
+  { name: "Create", href: "/create", icon: CreditCardIcon },
 ];
 
 export default function Nav({
@@ -38,8 +39,9 @@ export default function Nav({
     setSidebarOpen: Dispatch<SetStateAction<boolean>>;
   };
 }) {
+  const router = useRouter();
   const { sidebarOpen, setSidebarOpen } = sidebar;
-  const [currentActive, setCurrentActive] = useState("Home");
+  const [currentActive, setCurrentActive] = useState(router.asPath);
 
   return (
     <>
@@ -112,7 +114,7 @@ export default function Nav({
                         key={item.name}
                         item={{
                           ...item,
-                          current: item.name === currentActive,
+                          current: item.href === currentActive,
                         }}
                         setCurrentActive={setCurrentActive}
                       />
@@ -154,7 +156,7 @@ export default function Nav({
               {navigation.map((item) => (
                 <NavLink
                   key={item.name}
-                  item={{ ...item, current: item.name === currentActive }}
+                  item={{ ...item, current: item.href === router.asPath }}
                   setCurrentActive={setCurrentActive}
                 />
               ))}
