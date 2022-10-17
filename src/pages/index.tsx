@@ -4,8 +4,8 @@ import Head from "next/head";
 import { trpc } from "../utils/trpc";
 
 // copmonents
-import Header from "../components/layouts/Header";
 import Hero from "../components/global/Hero";
+import PageHeader from "../components/global/PageHeader";
 
 const Home: NextPage = () => {
   // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
@@ -21,7 +21,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-h-screen">
-        <Hero />
+        <PageHeader>
+          <Hero />
+        </PageHeader>
       </main>
     </>
   );

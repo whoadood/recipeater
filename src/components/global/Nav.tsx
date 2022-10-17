@@ -24,8 +24,8 @@ const secondaryNavigation = [
 ];
 
 const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon },
-  { name: "History", href: "#", icon: ClockIcon },
+  { name: "Home", href: "/", icon: HomeIcon },
+  { name: "History", href: "/newPage", icon: ClockIcon },
   { name: "Balances", href: "#", icon: ScaleIcon },
   { name: "Cards", href: "#", icon: CreditCardIcon },
   { name: "Recipients", href: "#", icon: UserGroupIcon },
