@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgres" // NOTE: sqlite does not work with NextAuth.js
+    url      = env("DATABASE_URL")
+}
+
+model Recipe {
+    id          String       @id @default(cuid())
+    title       String
+    description String
+    yield       String
+    prep_time   String
+    cook_time   String
+    difficulty  String
+    images      Image[]
+    ingredients Ingredient[]
+    directions  Direction[]
+    category_id String
+    category    Category     @relation(fields: [category_id], references: [id])
+    user_id     String
+    user        User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Category {
+    id      String   @id @default(cuid())
+    name    String   @unique
+    recipes Recipe[]
+}
+
+model Direction {
+    id          String @id @default(cuid())
+    step_number Int
+    description String
+    recipe_id   String
+    recipe      Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+}
+
+model Ingredient {
+    id        String @id @default(cuid())
+    name      String
+    quantity  String
+    recipe_id String
+    recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+}
+
+model Image {
+    id        String @id @default(cuid())
+    url       String
+    recipe_id String
+    recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+    id     String  @id @default(cuid())
+    bio    String?
+    userId String  @unique
+    user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Necessary for Next auth
+
+model Account {
+    id                 String  @id @default(cuid())
+    userId             String
+    type               String
+    provider           String
+    providerAccountId  String
+    refresh_token      String?
+    access_token       String?
+    oauth_token        String?
+    oauth_token_secret String?
+    expires_at         Int?
+    token_type         String?
+    scope              String?
+    id_token           String?
+    session_state      String?
+    user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    profile       Profile?
+    recipes       Recipe[]
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
