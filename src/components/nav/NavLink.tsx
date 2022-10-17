@@ -1,5 +1,5 @@
 // Packages
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 // Types
 import { NavItem } from "../../types/globals";
@@ -7,11 +7,18 @@ import { NavItem } from "../../types/globals";
 // Utils
 import { classNames } from "../../utils/classNames";
 
-export default function NavLink({ item }: { item: NavItem }) {
+export default function NavLink({
+  item,
+  setCurrentActive,
+}: {
+  item: NavItem;
+  setCurrentActive?: Dispatch<SetStateAction<string>>;
+}) {
   return (
     <a
       key={item.name}
       href={item.href}
+      onClick={() => setCurrentActive && setCurrentActive(item.name)}
       className={classNames(
         item.current
           ? "bg-cyan-800 text-white"

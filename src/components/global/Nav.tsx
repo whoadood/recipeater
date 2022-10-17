@@ -1,5 +1,5 @@
 // Packages
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   ClockIcon,
@@ -15,22 +15,21 @@ import {
 } from "@heroicons/react/24/outline";
 
 // Utils
-import { classNames } from "../../utils/classNames";
 import NavLink from "../nav/NavLink";
-
-const navigation = [
-  { name: "Home", href: "#", icon: HomeIcon, current: true },
-  { name: "History", href: "#", icon: ClockIcon, current: false },
-  { name: "Balances", href: "#", icon: ScaleIcon, current: false },
-  { name: "Cards", href: "#", icon: CreditCardIcon, current: false },
-  { name: "Recipients", href: "#", icon: UserGroupIcon, current: false },
-  { name: "Reports", href: "#", icon: DocumentChartBarIcon, current: false },
-];
 
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
   { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
   { name: "Privacy", href: "#", icon: ShieldCheckIcon },
+];
+
+const navigation = [
+  { name: "Home", href: "#", icon: HomeIcon },
+  { name: "History", href: "#", icon: ClockIcon },
+  { name: "Balances", href: "#", icon: ScaleIcon },
+  { name: "Cards", href: "#", icon: CreditCardIcon },
+  { name: "Recipients", href: "#", icon: UserGroupIcon },
+  { name: "Reports", href: "#", icon: DocumentChartBarIcon },
 ];
 
 export default function Nav({
@@ -42,6 +41,8 @@ export default function Nav({
   };
 }) {
   const { sidebarOpen, setSidebarOpen } = sidebar;
+  const [currentActive, setCurrentActive] = useState("Home");
+
   return (
     <>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -109,7 +110,14 @@ export default function Nav({
                 >
                   <div className="space-y-1 px-2">
                     {navigation.map((item) => (
-                      <NavLink key={item.name} item={item} />
+                      <NavLink
+                        key={item.name}
+                        item={{
+                          ...item,
+                          current: item.name === currentActive,
+                        }}
+                        setCurrentActive={setCurrentActive}
+                      />
                     ))}
                   </div>
                   <div className="mt-6 pt-6">
@@ -146,7 +154,11 @@ export default function Nav({
           >
             <div className="space-y-1 px-2">
               {navigation.map((item) => (
-                <NavLink key={item.name} item={item} />
+                <NavLink
+                  key={item.name}
+                  item={{ ...item, current: item.name === currentActive }}
+                  setCurrentActive={setCurrentActive}
+                />
               ))}
             </div>
             <div className="mt-6 pt-6">

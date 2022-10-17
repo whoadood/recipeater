@@ -64,10 +64,10 @@ export default function Header({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Main body */}
-          <main className="flex-1 pb-8">
+          <div className="flex-1 pb-8">
             {/* Page */}
             {children}
-          </main>
+          </div>
         </div>
       </div>
     </>
