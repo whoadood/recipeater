@@ -5,6 +5,7 @@ import TwitterProvider from "next-auth/providers/twitter";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
+import { signIn } from "next-auth/react";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -14,6 +15,13 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
       }
       return session;
+    },
+    async redirect({ url }) {
+      if (url.includes("signin")) {
+        return "/";
+      } else {
+        return url;
+      }
     },
   },
   // Configure one or more authentication providers
@@ -25,6 +33,9 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  pages: {
+    signIn: "/signin",
+  },
 };
 
 export default NextAuth(authOptions);

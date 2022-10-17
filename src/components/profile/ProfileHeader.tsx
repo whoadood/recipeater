@@ -1,4 +1,5 @@
 // Packages
+import Link from "next/link";
 import React from "react";
 
 // Utils
@@ -48,12 +49,14 @@ export default function ProfileHeader() {
                 </div>
               </div>
               <div className="mt-5 flex justify-center sm:mt-0">
-                <a
-                  href="#"
-                  className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-                >
-                  View profile
-                </a>
+                <Link href="/recipe/create">
+                  <a
+                    href="#"
+                    className="flex items-center justify-center rounded-md border bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700"
+                  >
+                    Create recipe
+                  </a>
+                </Link>
               </div>
             </div>
           </div>

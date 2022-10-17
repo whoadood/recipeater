@@ -14,6 +14,9 @@ import Nav from "../global/Nav";
 import SearchBar from "../global/SearchBar";
 import ProfileMenu from "../global/ProfileMenu";
 
+// Utils
+import { classNames } from "../../utils/classNames";
+
 const cards = [
   { name: "Account balance", href: "#", icon: ScaleIcon, amount: "$30,659.45" },
   // More items...
@@ -32,10 +35,6 @@ const transactions = [
   },
   // More transactions...
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function Header({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

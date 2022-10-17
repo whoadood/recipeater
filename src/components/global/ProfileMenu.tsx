@@ -2,11 +2,17 @@
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, BellIcon } from "@heroicons/react/24/outline";
+import { useSession, signOut } from "next-auth/react";
 
 // Utils
 import { classNames } from "../../utils/classNames";
+import Link from "next/link";
 
 export default function ProfileMenu() {
+  const { data: session } = useSession();
+
+  console.log("prof menu session", session);
+
   return (
     <div className="ml-4 flex items-center md:ml-6">
       <button
@@ -45,47 +51,66 @@ export default function ProfileMenu() {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Your Profile
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Settings
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                  )}
-                >
-                  Logout
-                </a>
-              )}
-            </Menu.Item>
-          </Menu.Items>
+          {session ? (
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    Your Profile
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    Settings
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <div
+                    onClick={() => signOut()}
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block cursor-pointer px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    Logout
+                  </div>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          ) : (
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <Link href="/signin">
+                    <a
+                      className={classNames(
+                        active ? "bg-gray-100" : "",
+                        "block cursor-pointer px-4 py-2 text-sm text-gray-700"
+                      )}
+                    >
+                      Login
+                    </a>
+                  </Link>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          )}
         </Transition>
       </Menu>
     </div>
