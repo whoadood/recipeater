@@ -17,18 +17,12 @@ import {
 // Utils
 import NavLink from "../nav/NavLink";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
   { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
   { name: "Privacy", href: "#", icon: ShieldCheckIcon },
-];
-
-const navigation = [
-  { name: "Home", href: "/", icon: HomeIcon },
-  { name: "Browse", href: "/recipe", icon: ClockIcon },
-  { name: "Profile", href: "/profile", icon: ScaleIcon },
-  { name: "Create", href: "/recipe/create", icon: CreditCardIcon },
 ];
 
 export default function Nav({
@@ -42,6 +36,23 @@ export default function Nav({
   const router = useRouter();
   const { sidebarOpen, setSidebarOpen } = sidebar;
   const [currentActive, setCurrentActive] = useState(router.asPath);
+  const { data: session } = useSession();
+
+  const navigation = session
+    ? [
+        { name: "Home", href: "/", icon: HomeIcon },
+        { name: "Browse", href: "/recipe", icon: ClockIcon },
+        {
+          name: "Profile",
+          href: `/profile/${session.user?.id}`,
+          icon: ScaleIcon,
+        },
+        { name: "Create", href: "/recipe/create", icon: CreditCardIcon },
+      ]
+    : [
+        { name: "Home", href: "/", icon: HomeIcon },
+        { name: "Browse", href: "/recipe", icon: ClockIcon },
+      ];
 
   return (
     <>

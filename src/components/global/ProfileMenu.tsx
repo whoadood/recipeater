@@ -1,7 +1,11 @@
 // Packages
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon, BellIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  BellIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
 
 // Utils
@@ -10,8 +14,6 @@ import Link from "next/link";
 
 export default function ProfileMenu() {
   const { data: session } = useSession();
-
-  console.log("prof menu session", session);
 
   return (
     <div className="ml-4 flex items-center md:ml-6">
@@ -27,15 +29,27 @@ export default function ProfileMenu() {
       <Menu as="div" className="relative ml-3">
         <div>
           <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
-            <img
-              className="h-8 w-8 rounded-full"
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-            <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
-              <span className="sr-only">Open user menu for </span>
-              Emilia Birch
-            </span>
+            {session && session.user ? (
+              <>
+                <img
+                  className="h-8 w-8 rounded-full"
+                  src={session.user?.image}
+                  alt="user avatar"
+                />
+                <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
+                  <span className="sr-only">Open user menu for </span>
+                  {session?.user?.name}
+                </span>
+              </>
+            ) : (
+              <>
+                {" "}
+                <UserCircleIcon className="h-8 w-8 rounded-full text-gray-400 hover:text-gray-500" />
+                <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
+                  <span className="sr-only">Open user menu for </span>
+                </span>
+              </>
+            )}
             <ChevronDownIcon
               className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
               aria-hidden="true"
@@ -62,7 +76,7 @@ export default function ProfileMenu() {
                       "block px-4 py-2 text-sm text-gray-700"
                     )}
                   >
-                    Your Profile
+                    My Profile
                   </a>
                 )}
               </Menu.Item>
