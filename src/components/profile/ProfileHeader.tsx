@@ -2,9 +2,15 @@
 import { inferProcedureOutput } from "@trpc/server";
 import Link from "next/link";
 import React from "react";
+import useToggle from "../../hooks/useToggle";
 import { AppRouter } from "../../server/trpc/router/_app";
+import { PencilIcon } from "@heroicons/react/24/outline";
+import { Formik, Form, Field } from "formik";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 // Utils
+import { BioSchema } from "../../types/schemas";
+
 const stats = [
   { label: "Vacation days left", value: 12 },
   { label: "Sick days left", value: 4 },
@@ -24,6 +30,8 @@ export default function ProfileHeader({
 }: {
   profile: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
+  const { toggle: editBio, handleToggle: handleEditBio } = useToggle();
+
   return (
     <main>
       {" "}
@@ -49,11 +57,46 @@ export default function ProfileHeader({
                   <p className="text-xl font-bold text-gray-900 sm:text-2xl">
                     {profile ? profile.name : "username"}
                   </p>
-                  <p className="text-sm font-medium text-gray-600">
-                    {profile && profile.profile?.bio
-                      ? profile.profile?.bio
-                      : "bio"}
-                  </p>
+                  {!editBio ? (
+                    <div className="flex gap-2">
+                      <p className="text-sm font-medium text-gray-600">
+                        {profile && profile.profile?.bio
+                          ? profile.profile?.bio
+                          : "bio"}
+                      </p>
+                      <PencilIcon
+                        onClick={handleEditBio}
+                        className="h-4 w-4 cursor-pointer text-gray-600"
+                      />
+                    </div>
+                  ) : (
+                    <Formik
+                      initialValues={{
+                        bio: "",
+                      }}
+                      validationSchema={toFormikValidationSchema(BioSchema)}
+                      onSubmit={(values) => {
+                        console.log("onsubmit", values.bio);
+                        handleEditBio();
+                      }}
+                    >
+                      {({ errors, touched }) => (
+                        <Form>
+                          <Field
+                            name="bio"
+                            autoFocus
+                            className={`${
+                              errors.bio && "border-2 border-red-500"
+                            } resize-none rounded bg-gray-200/50 px-2 outline-none focus:border-2 focus:border-cyan-500`}
+                            rows={3}
+                          />
+                          {errors.bio && touched.bio ? (
+                            <p className="text-red-600">{errors.bio}</p>
+                          ) : null}
+                        </Form>
+                      )}
+                    </Formik>
+                  )}
                 </div>
               </div>
               <div className="mt-5 flex justify-center sm:mt-0">
