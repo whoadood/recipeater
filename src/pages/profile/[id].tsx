@@ -14,6 +14,11 @@ export default function ProfilePage() {
     },
     {
       enabled: !!router.query.id,
+      onError: (errors) => {
+        console.log("prof query errors", errors);
+        // 3 retries showing skeleton profile then ugly flash to 404 page
+        router.push("/404");
+      },
     }
   );
   return (

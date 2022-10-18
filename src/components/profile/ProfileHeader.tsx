@@ -11,6 +11,9 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 // Utils
 import { BioSchema } from "../../types/schemas";
 import { trpc } from "../../utils/trpc";
+import { router } from "../../server/trpc/trpc";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const stats = [
   { label: "Vacation days left", value: 12 },
@@ -31,11 +34,14 @@ export default function ProfileHeader({
 }: {
   profile: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
+  const router = useRouter();
+  const { data: session } = useSession();
   const { toggle: editBio, handleToggle: handleEditBio } = useToggle();
   const tUtils = trpc.useContext();
   const bioMutation = trpc.profile.editBio.useMutation({
     onSuccess: () => {
       tUtils.profile.getProfileById.invalidate();
+      handleEditBio();
     },
   });
 
@@ -71,30 +77,45 @@ export default function ProfileHeader({
                           ? profile.profile?.bio
                           : "bio"}
                       </p>
-                      <PencilIcon
-                        onClick={handleEditBio}
-                        className="h-4 w-4 cursor-pointer text-gray-600"
-                      />
+                      {session && session.user?.id === router.query.id && (
+                        <PencilIcon
+                          onClick={handleEditBio}
+                          className="h-4 w-4 cursor-pointer text-gray-600"
+                        />
+                      )}
                     </div>
                   ) : (
                     <Formik
                       initialValues={{
-                        bio: "",
+                        bio: profile?.profile?.bio || "",
                       }}
                       validationSchema={toFormikValidationSchema(BioSchema)}
                       onSubmit={(values) => {
                         console.log("onsubmit", values.bio);
                         bioMutation.mutate({ bio: values.bio });
-                        handleEditBio();
                       }}
                     >
-                      {({ errors, touched }) => (
+                      {({ handleSubmit, errors, touched }) => (
                         <Form>
                           <Field
+                            as="textarea"
                             name="bio"
                             autoFocus
+                            onKeyDown={(
+                              e: React.KeyboardEvent<HTMLInputElement>
+                            ) => {
+                              console.log("e.code", e);
+                              if (e.code === "Escape") {
+                                handleEditBio();
+                              }
+                              if (e.code === "Enter") {
+                                handleSubmit();
+                              }
+                            }}
                             className={`${
-                              errors.bio && "border-2 border-red-500"
+                              errors.bio &&
+                              touched.bio &&
+                              "border-2 border-red-500"
                             } resize-none rounded bg-gray-200/50 px-2 outline-none focus:border-2 focus:border-cyan-500`}
                             rows={3}
                           />
