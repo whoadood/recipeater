@@ -16,17 +16,26 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 const stats = [
-  { label: "Vacation days left", value: 12 },
-  { label: "Sick days left", value: 4 },
-  { label: "Personal days left", value: 2 },
+  { label: "Total recipes", value: 12 },
+  { label: "most used category", value: 4 },
+  { label: "most liked recipe", value: 2 },
 ];
+
+const defaultUser = (
+  <svg
+    className="h-full w-full text-gray-300"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+  </svg>
+);
 
 const user = {
   name: "Chelsea Hagon",
   email: "chelsea.hagon@example.com",
   role: "Human Resources Manager",
-  imageUrl:
-    "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  imageUrl: defaultUser,
 };
 
 export default function ProfileHeader({
@@ -57,11 +66,15 @@ export default function ProfileHeader({
             <div className="sm:flex sm:items-center sm:justify-between">
               <div className="sm:flex sm:space-x-5">
                 <div className="flex-shrink-0">
-                  <img
-                    className="mx-auto h-20 w-20 rounded-full"
-                    src={profile ? (profile.image as string) : user.imageUrl}
-                    alt="user avatar"
-                  />
+                  {profile && profile.image ? (
+                    <img
+                      className="mx-auto h-20 w-20 rounded-full"
+                      src={profile.image as string}
+                      alt="user avatar"
+                    />
+                  ) : (
+                    user.imageUrl
+                  )}
                 </div>
                 <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
                   {/* <p className="text-sm font-medium text-gray-600">
@@ -91,7 +104,6 @@ export default function ProfileHeader({
                       }}
                       validationSchema={toFormikValidationSchema(BioSchema)}
                       onSubmit={(values) => {
-                        console.log("onsubmit", values.bio);
                         bioMutation.mutate({ bio: values.bio });
                       }}
                     >
