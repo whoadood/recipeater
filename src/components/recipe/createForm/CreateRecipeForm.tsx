@@ -1,5 +1,13 @@
 // Packages
-import { Formik, Form, FieldArray, ErrorMessage, Field } from "formik";
+import {
+  Formik,
+  Form,
+  FieldArray,
+  ErrorMessage,
+  Field,
+  validateYupSchema,
+} from "formik";
+import { Fragment, useRef } from "react";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
 // Utils
@@ -26,16 +34,22 @@ const recipeInit = {
 };
 
 export default function RecipeForm({ recipe }: { recipe?: any }) {
+  const stepRef = useRef(1);
+
   return (
     <Formik
       initialValues={recipeInit}
-      onSubmit={(values) => {
+      // validationSchema={toFormikValidationSchema(RecipeSchema)}
+      onSubmit={async (values, { resetForm }) => {
         console.log("form submit", values);
+        stepRef.current = 1;
+        resetForm();
       }}
     >
-      {({ values }) => (
-        <Form className="space-y-8 divide-y divide-gray-200 bg-gray-300/50">
+      {(formik) => (
+        <Form className="space-y-8 divide-y divide-gray-200">
           <div className="space-y-8 divide-y divide-gray-200">
+            {/* ********** General Info Section ********** */}
             <div>
               <div>
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -104,9 +118,9 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                   </div>
                 </div>
 
-                {/* ********** Photo Preview ********** */}
+                {/* ********** Photo Section ********** */}
                 <FieldArray name="photos">
-                  {({ insert, remove, push }) => (
+                  {({ remove }) => (
                     <>
                       <div className="sm:col-span-6">
                         <label
@@ -116,14 +130,23 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                           Photos preview
                         </label>
 
-                        <div className="mt-1 flex flex-col items-start">
-                          <span className="h-12 w-12 overflow-hidden bg-gray-100"></span>
-                          <button
-                            type="button"
-                            className="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                          >
-                            Change
-                          </button>
+                        {/* ********** Photo Preview ********** */}
+                        <div className="mt-1 flex gap-2">
+                          {formik.values.photos.map((photo, index) => (
+                            <div
+                              key={photo.name}
+                              className="flex flex-col items-center justify-center"
+                            >
+                              <span className="h-12 w-12 overflow-hidden bg-gray-100" />
+                              <button
+                                type="button"
+                                onClick={() => remove(index)}
+                                className="rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          ))}
                         </div>
                       </div>
 
@@ -153,15 +176,24 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                             </svg>
                             <div className="flex text-sm text-gray-600">
                               <label
-                                htmlFor="file-upload"
+                                htmlFor="photos"
                                 className="relative cursor-pointer rounded-md bg-white font-medium text-cyan-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                               >
                                 <span>Upload a file</span>
                                 <input
-                                  id="file-upload"
-                                  name="file-upload"
+                                  id="photos"
+                                  name="photos"
                                   type="file"
                                   className="sr-only"
+                                  onChange={(e) => {
+                                    if (e.currentTarget.files) {
+                                      console.log(e.currentTarget.files[0]);
+                                      formik.setFieldValue("photos", [
+                                        ...formik.values.photos,
+                                        ...Array.from(e.currentTarget.files),
+                                      ]);
+                                    }
+                                  }}
                                 />
                               </label>
                               <p className="pl-1">or drag and drop</p>
@@ -178,7 +210,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
               </div>
             </div>
 
-            {/* ********** Details Header ********** */}
+            {/* ********** Details Section ********** */}
             <div className="pt-8">
               <div>
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -190,122 +222,160 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
               </div>
 
               {/* ********** Ingredient Section ********** */}
-              <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="city"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Ingredient name
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      name="city"
-                      id="city"
-                      autoComplete="address-level2"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
+              <FieldArray name="ingredients">
+                {({ remove, push }) => (
+                  <ul>
+                    {formik.values.ingredients.map((ingr, index) => (
+                      <li key={`${index}`}>
+                        <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                          <div className="sm:col-span-2">
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Ingredient name
+                            </label>
+                            <div className="mt-1">
+                              <Field
+                                name={`ingredients.${index}.name`}
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
+                              />
+                            </div>
+                          </div>
 
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="region"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Ingredient amount
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      name="region"
-                      id="region"
-                      autoComplete="address-level1"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
+                          <div className="sm:col-span-2">
+                            <label
+                              htmlFor="amount"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Ingredient amount
+                            </label>
+                            <div className="mt-1">
+                              <Field
+                                name={`ingredients.${index}.amount`}
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
+                              />
+                            </div>
+                          </div>
 
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="country"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Ingredient unit
-                  </label>
-                  <div className="mt-1">
-                    <select
-                      id="country"
-                      name="country"
-                      autoComplete="country-name"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    >
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
+                          <div className="sm:col-span-2">
+                            <label
+                              htmlFor="unit"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Ingredient unit
+                            </label>
+                            <div className="mt-1">
+                              <Field
+                                as="select"
+                                name={`ingredients.${index}.unit`}
+                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              >
+                                <option>United States</option>
+                                <option>Canada</option>
+                                <option>Mexico</option>
+                              </Field>
+                            </div>
+                          </div>
+                        </div>
 
-            {/* ********** Direction Section ********** */}
-            <div>
-              <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Title
-                  </label>
-                  <div className="mt-1 flex rounded-md shadow-sm">
-                    <input
-                      type="text"
-                      name="title"
-                      id="title"
-                      className="block w-full min-w-0 flex-1 rounded-md border-gray-300 px-2 focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
-                    />
-                  </div>
-                </div>
+                        {/* ********** Delete Ingredient Button *********** */}
+                        <div className="col-span-6 mt-4">
+                          <button
+                            type="button"
+                            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                            onClick={() => remove(index)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                    {/* ********** Add Ingredient Button *********** */}
+                    <div className="pt-5">
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                          onClick={() =>
+                            push({
+                              name: "",
+                              amount: "",
+                              unit: "United States",
+                            })
+                          }
+                        >
+                          Add Direction
+                        </button>
+                      </div>
+                    </div>
+                  </ul>
+                )}
+              </FieldArray>
 
-                <div className="sm:col-span-6">
-                  <label
-                    htmlFor="about"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Description
-                  </label>
-                  <div className="mt-1">
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows={3}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
-                    />
-                  </div>
-                  <p className="mt-2 text-sm text-gray-500">
-                    Write a few sentences about your recipe.
-                  </p>
-                </div>
-              </div>
-              <div className="pt-5">
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
+              {/* ********** Direction Section ********** */}
+
+              <FieldArray name="directions">
+                {({ remove, push }) => (
+                  <ul>
+                    {formik.values.directions.map((dir, index) => (
+                      <div
+                        key={`${dir.step}${index}`}
+                        className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
+                      >
+                        <div className="sm:col-span-4">
+                          <label
+                            htmlFor="about"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Description
+                          </label>
+                          <div className="mt-1">
+                            <Field
+                              as="textarea"
+                              name={`directions.${index}.text`}
+                              rows={3}
+                              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm"
+                            />
+                          </div>
+                          <p className="mt-2 text-sm text-gray-500">
+                            Write a few sentences about your recipe.
+                          </p>
+                        </div>
+
+                        {/* ********** Delete Direction Button *********** */}
+                        <div className="col-span-6">
+                          <button
+                            type="button"
+                            className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                            onClick={() => remove(index)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    {/* ********** Add Direction Button *********** */}
+                    <div className="pt-5">
+                      <div className="flex justify-end">
+                        <button
+                          type="button"
+                          className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                          onClick={() => {
+                            stepRef.current++;
+                            push({
+                              step: stepRef.current,
+                              text: "",
+                            });
+                          }}
+                        >
+                          Add Direction
+                        </button>
+                      </div>
+                    </div>
+                  </ul>
+                )}
+              </FieldArray>
             </div>
           </div>
 
@@ -320,9 +390,10 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
               </button>
               <button
                 type="submit"
+                disabled={formik.isSubmitting}
                 className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
               >
-                Save
+                Submit
               </button>
             </div>
           </div>
