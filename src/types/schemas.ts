@@ -10,18 +10,17 @@ export const RecipeSchema = z.object({
   category: z.string().min(1).max(30),
   photos: z.array(
     z.object({
-      lastModified: z.number(),
       name: z.string(),
+      lastModified: z.number(),
       size: z.number(),
       type: z.string(),
-      webkitRelativePath: z.string(),
     })
   ),
   ingredients: z.array(
     z.object({
       name: z.string(),
       amount: z.string(),
-      unit: z.string(),
+      unit: z.string().nullable(),
     })
   ),
   directions: z.array(

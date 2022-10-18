@@ -23,7 +23,7 @@ const stats = [
 
 const defaultUser = (
   <svg
-    className="h-full w-full text-gray-300"
+    className="h-20 w-20 rounded-full text-gray-300"
     fill="currentColor"
     viewBox="0 0 24 24"
   >
