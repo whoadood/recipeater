@@ -1,6 +1,8 @@
 // Packages
+import { inferProcedureOutput } from "@trpc/server";
 import Link from "next/link";
 import React from "react";
+import { AppRouter } from "../../server/trpc/router/_app";
 
 // Utils
 const stats = [
@@ -17,7 +19,11 @@ const user = {
     "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 
-export default function ProfileHeader() {
+export default function ProfileHeader({
+  profile,
+}: {
+  profile: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
+}) {
   return (
     <main>
       {" "}
@@ -32,19 +38,21 @@ export default function ProfileHeader() {
                 <div className="flex-shrink-0">
                   <img
                     className="mx-auto h-20 w-20 rounded-full"
-                    src={user.imageUrl}
-                    alt=""
+                    src={profile ? (profile.image as string) : user.imageUrl}
+                    alt="user avatar"
                   />
                 </div>
                 <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
-                  <p className="text-sm font-medium text-gray-600">
+                  {/* <p className="text-sm font-medium text-gray-600">
                     Welcome back,
-                  </p>
+                  </p> */}
                   <p className="text-xl font-bold text-gray-900 sm:text-2xl">
-                    {user.name}
+                    {profile ? profile.name : "username"}
                   </p>
                   <p className="text-sm font-medium text-gray-600">
-                    {user.role}
+                    {profile && profile.profile?.bio
+                      ? profile.profile?.bio
+                      : "bio"}
                   </p>
                 </div>
               </div>

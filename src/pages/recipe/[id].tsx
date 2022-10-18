@@ -7,14 +7,14 @@ import DirectionsList from "../../components/recipe/DirectionsList";
 
 export default function RecipeIdPage() {
   const router = useRouter();
-  const { recipezId } = router.query;
+  const { id } = router.query;
   return (
     <main className="mx-auto max-w-7xl">
       <RecipeHeader />
       <div className="p-2">
         <IngredientList />
       </div>
-      <div className="mt-4">
+      <div className="mt-4 p-2">
         <DirectionsList />
       </div>
     </main>
