@@ -19,7 +19,7 @@ export default function ProfilePage() {
   return (
     <main>
       <PageHeader>
-        <ProfileHeader profile={profile.data} />
+        <ProfileHeader profile={profile.data!} />
       </PageHeader>
       <ProfileList />
     </main>

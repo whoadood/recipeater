@@ -10,6 +10,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 
 // Utils
 import { BioSchema } from "../../types/schemas";
+import { trpc } from "../../utils/trpc";
 
 const stats = [
   { label: "Vacation days left", value: 12 },
@@ -31,6 +32,12 @@ export default function ProfileHeader({
   profile: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
   const { toggle: editBio, handleToggle: handleEditBio } = useToggle();
+  const tUtils = trpc.useContext();
+  const bioMutation = trpc.profile.editBio.useMutation({
+    onSuccess: () => {
+      tUtils.profile.getProfileById.invalidate();
+    },
+  });
 
   return (
     <main>
@@ -77,6 +84,7 @@ export default function ProfileHeader({
                       validationSchema={toFormikValidationSchema(BioSchema)}
                       onSubmit={(values) => {
                         console.log("onsubmit", values.bio);
+                        bioMutation.mutate({ bio: values.bio });
                         handleEditBio();
                       }}
                     >
