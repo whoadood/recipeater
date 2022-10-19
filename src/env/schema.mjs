@@ -18,6 +18,7 @@ export const serverSchema = z.object({
   ),
   TWITTER_CLIENT_ID: z.string(),
   TWITTER_CLIENT_SECRET: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 /**
@@ -27,6 +28,8 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
   // NEXT_PUBLIC_BAR: z.string(),
+  NEXT_PUBLIC_CLOUD_NAME: z.string(),
+  NEXT_PUBLIC_API_KEY: z.string(),
 });
 
 /**
@@ -37,4 +40,6 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
+  NEXT_PUBLIC_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUD_NAME,
+  NEXT_PUBLIC_API_KEY: process.env.NEXT_PUBLIC_API_KEY,
 };

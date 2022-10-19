@@ -15,6 +15,7 @@ import ErrMessage from "./ErrMessage";
 
 // Utils
 import { RecipeSchema } from "../../../types/schemas";
+import { trpc } from "../../../utils/trpc";
 
 const recipeInit: {
   title: string;
@@ -45,13 +46,16 @@ const recipeInit: {
 
 export default function RecipeForm({ recipe }: { recipe?: any }) {
   const stepRef = useRef(1);
+  const { data: signature } = trpc.recipe.getSignature.useQuery();
 
   return (
     <Formik
       initialValues={recipeInit}
       validationSchema={toFormikValidationSchema(RecipeSchema)}
       onSubmit={async (values, { resetForm }) => {
-        console.log("form submit", values);
+        // console.log("form submit", values);
+
+        console.log("form submit sign", signature);
         stepRef.current = 1;
         resetForm();
       }}
@@ -178,7 +182,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                 <button
                                   type="button"
                                   onClick={() => remove(index)}
-                                  className="rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                  className="rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                                 >
                                   Delete
                                 </button>
@@ -216,7 +220,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                               <div className="flex text-sm text-gray-600">
                                 <label
                                   htmlFor="photos"
-                                  className="relative cursor-pointer rounded-md bg-white font-medium text-cyan-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+                                  className="relative cursor-pointer rounded-md bg-white font-medium text-cyan-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-cyan-500 focus-within:ring-offset-2 hover:text-cyan-500"
                                 >
                                   <span>Upload a file</span>
                                   <input
@@ -417,7 +421,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                         <div className="flex justify-end">
                           <button
                             type="button"
-                            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                             onClick={() =>
                               push({
                                 name: "",
@@ -515,7 +519,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                         <div className="flex justify-end">
                           <button
                             type="button"
-                            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                            className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
                             onClick={() => {
                               stepRef.current++;
                               push({

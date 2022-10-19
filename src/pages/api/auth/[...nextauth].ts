@@ -5,7 +5,6 @@ import TwitterProvider from "next-auth/providers/twitter";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
-import { signIn } from "next-auth/react";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
