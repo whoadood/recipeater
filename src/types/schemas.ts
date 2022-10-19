@@ -8,6 +8,16 @@ export const RecipeSchema = z.object({
   title: z.string().min(1).max(60),
   description: z.string().min(1).max(140),
   category: z.string().min(1).max(30),
+  yield: z.number(),
+  difficulty: z.string(),
+  prep_time: z.object({
+    time: z.number(),
+    unit: z.string(),
+  }),
+  cook_time: z.object({
+    time: z.number(),
+    unit: z.string(),
+  }),
   photos: z.array(
     z.object({
       name: z.string(),
@@ -19,8 +29,8 @@ export const RecipeSchema = z.object({
   ingredients: z.array(
     z.object({
       name: z.string(),
-      amount: z.string(),
-      unit: z.string().nullable(),
+      amount: z.number(),
+      unit: z.string(),
     })
   ),
   directions: z.array(

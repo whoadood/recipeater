@@ -13,7 +13,7 @@ export const recipeRouter = router({
       };
     }),
 
-  getSignature: protectedProcedure.query(() => {
+  getSignature: protectedProcedure.mutation(() => {
     const timestamp = Math.round(new Date().getTime() / 1000);
     const signature = cloudinary.utils.api_sign_request(
       { timestamp: timestamp },
@@ -28,6 +28,9 @@ export const recipeRouter = router({
         title: z.string(),
         description: z.string(),
         category: z.string(),
+        yield: z.string(),
+        prep_time: z.string(),
+        cook_time: z.string(),
         photos: z.array(
           z.object({
             public_id: z.string(),
@@ -38,7 +41,7 @@ export const recipeRouter = router({
         ingredients: z.array(
           z.object({
             name: z.string(),
-            amount: z.string(),
+            amount: z.number(),
             unit: z.string(),
           })
         ),

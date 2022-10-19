@@ -15,19 +15,38 @@ const recipeInit: {
   title: string;
   description: string;
   category: string;
+  // yield
+  yield: number;
+  // difficulty
+  difficulty: "easy" | "medium" | "hard" | "expert";
+  // prep time
+  prep_time: {
+    time: number;
+    unit: "sec" | "min" | "hr";
+  };
+  // cook time
+  cook_time: { time: number; unit: "sec" | "min" | "hr" };
   photos: File[];
-  ingredients: { name: string; amount: string; unit: string }[];
+  ingredients: {
+    name: string;
+    amount: number;
+    unit: "tsp" | "tbsp" | "fl oz" | "cups" | "pints" | "ltrs";
+  }[];
   directions: { step: number; text: string }[];
 } = {
   title: "",
   description: "",
   category: "",
+  yield: 1,
+  difficulty: "easy",
+  prep_time: { time: 1, unit: "min" },
+  cook_time: { time: 1, unit: "min" },
   photos: [],
   ingredients: [
     {
       name: "",
-      amount: "",
-      unit: "United States",
+      amount: 1,
+      unit: "tsp",
     },
   ],
   directions: [
@@ -40,7 +59,7 @@ const recipeInit: {
 
 export default function RecipeForm({ recipe }: { recipe?: any }) {
   const stepRef = useRef(1);
-  const { data } = trpc.recipe.getSignature.useQuery();
+  const signatureMutation = trpc.recipe.getSignature.useMutation();
   const recipeMutation = trpc.recipe.createRecipe.useMutation();
 
   return (
@@ -48,11 +67,12 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
       initialValues={recipeInit}
       validationSchema={toFormikValidationSchema(RecipeSchema)}
       onSubmit={async (values, { resetForm }) => {
-        if (data?.signature && data.timestamp) {
+        const { signature, timestamp } = await signatureMutation.mutateAsync();
+        if (signature && timestamp) {
           const cloudinaryPhotos = await uploadCloudinary(
             values.photos,
-            data.signature,
-            data.timestamp
+            signature,
+            timestamp
           );
           console.log("cloud", cloudinaryPhotos);
 
@@ -60,11 +80,16 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
             title: values.title,
             description: values.description,
             category: values.category,
+            yield: `${values.yield} ${values.yield > 1 ? "people" : "person"}`,
+            prep_time: `${values.prep_time.time} ${values.prep_time.unit}`,
+            cook_time: `${values.cook_time.time} ${values.cook_time.unit}`,
             photos: cloudinaryPhotos,
             ingredients: values.ingredients,
             directions: values.directions,
           });
         }
+
+        console.log("form", values);
 
         // stepRef.current = 1;
         // resetForm();
@@ -86,7 +111,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                 </div>
                 {/* ********** Title Section ********** */}
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-4">
+                  <div className="sm:col-span-6">
                     <label
                       htmlFor="username"
                       className="block text-sm font-medium text-gray-700"
@@ -97,7 +122,6 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                       <Field
                         type="text"
                         name="title"
-                        id="title"
                         autoComplete="off"
                         className={`${
                           formik.errors.title && formik.touched.title
@@ -112,7 +136,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                   </div>
 
                   {/* ********** Description Section ********** */}
-                  <div className="sm:col-span-4">
+                  <div className="sm:col-span-6">
                     <label
                       htmlFor="about"
                       className="block text-sm font-medium text-gray-700"
@@ -122,7 +146,6 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                     <div className="mt-1">
                       <Field
                         as="textarea"
-                        id="description"
                         autoComplete="off"
                         name="description"
                         rows={3}
@@ -144,7 +167,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                   </div>
 
                   {/* ********** Category Section ********** */}
-                  <div className="sm:col-span-4">
+                  <div className="sm:col-span-6">
                     <label
                       htmlFor="category"
                       className="block text-sm font-medium text-gray-700"
@@ -156,7 +179,6 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                         type="text"
                         autoComplete="off"
                         name="category"
-                        id="category"
                         className={`${
                           formik.errors.category && formik.touched.category
                             ? "border-red-500"
@@ -169,20 +191,193 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                     )}
                   </div>
 
+                  {/* ********** Difficulty ********** */}
+
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="difficulty"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Diffuclty
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <Field
+                        as={"select"}
+                        name="difficulty"
+                        autoComplete="off"
+                        className={`${
+                          formik.errors.difficulty && formik.touched.difficulty
+                            ? "border-red-500"
+                            : null
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                      >
+                        <option value="easy">easy</option>
+                        <option value="medium">medium</option>
+                        <option value="hard">hard</option>
+                        <option value="expert">expert</option>
+                      </Field>
+                    </div>
+                    {formik.errors.difficulty && formik.touched.difficulty && (
+                      <ErrMessage message={formik.errors.difficulty} />
+                    )}
+                  </div>
+
+                  {/* ********** Yield ********** */}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="username"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Yield
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <Field
+                        type="number"
+                        min={1}
+                        max={100}
+                        name="yield"
+                        autoComplete="off"
+                        className={`${
+                          formik.errors.yield && formik.touched.yield
+                            ? "border-red-500"
+                            : null
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                      />
+                    </div>
+                    {formik.errors.yield && formik.touched.yield && (
+                      <ErrMessage message={formik.errors.yield} />
+                    )}
+                  </div>
+
+                  {/* ********** Prep Time ********** */}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="prep_time.time"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Prep Time
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <Field
+                        type="number"
+                        min={1}
+                        max={60}
+                        autoComplete="off"
+                        name="prep_time.time"
+                        className={`${
+                          formik.errors.prep_time?.time &&
+                          formik.touched.prep_time?.time
+                            ? "border-red-500"
+                            : null
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                      />
+                    </div>
+                    {formik.errors.prep_time?.time &&
+                      formik.touched.prep_time?.time && (
+                        <ErrMessage message={formik.errors.prep_time?.time} />
+                      )}
+                  </div>
+                  {/* ********** Prep Unit ********** */}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="prep_time.unit"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Prep Unit
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <Field
+                        as={"select"}
+                        name="prep_time.unit"
+                        autoComplete="off"
+                        className={`${
+                          formik.errors.prep_time?.unit &&
+                          formik.touched.prep_time?.unit
+                            ? "border-red-500"
+                            : null
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                      >
+                        <option value="sec">seconds</option>
+                        <option value="min">minutes</option>
+                        <option value="hr">hours</option>
+                      </Field>
+                    </div>
+                    {formik.errors.prep_time?.unit &&
+                      formik.touched.prep_time?.unit && (
+                        <ErrMessage message={formik.errors.prep_time.unit} />
+                      )}
+                  </div>
+
+                  {/* ********** Cook Time ********** */}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="cook_time.time"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Cook Time
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <Field
+                        type="number"
+                        min={1}
+                        max={60}
+                        autoComplete="off"
+                        name="cook_time.time"
+                        className={`${
+                          formik.errors.cook_time?.time &&
+                          formik.touched.cook_time?.time
+                            ? "border-red-500"
+                            : null
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                      />
+                    </div>
+                    {formik.errors.cook_time?.time &&
+                      formik.touched.cook_time?.time && (
+                        <ErrMessage message={formik.errors.cook_time?.time} />
+                      )}
+                  </div>
+                  {/* ********** Cook Unit ********** */}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="cook_time.unit"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Cook Unit
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <Field
+                        as={"select"}
+                        name="cook_time.unit"
+                        autoComplete="off"
+                        className={`${
+                          formik.errors.cook_time?.unit &&
+                          formik.touched.cook_time?.unit
+                            ? "border-red-500"
+                            : null
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                      >
+                        <option value="sec">seconds</option>
+                        <option value="min">minutes</option>
+                        <option value="hr">hours</option>
+                      </Field>
+                    </div>
+                    {formik.errors.cook_time?.unit &&
+                      formik.touched.cook_time?.unit && (
+                        <ErrMessage message={formik.errors.cook_time.unit} />
+                      )}
+                  </div>
+
                   {/* ********** Photo Section ********** */}
                   <FieldArray name="photos">
                     {({ remove }) => (
                       <>
                         <div className="sm:col-span-6">
-                          <label
-                            htmlFor="photos"
-                            className="block text-sm font-medium text-gray-700"
-                          >
+                          <label className="block text-sm font-medium text-gray-700">
                             Photos preview
                           </label>
 
                           {/* ********** Photo Preview ********** */}
-                          <div className="mt-1 flex gap-2">
+                          <div className="mt-1 flex gap-2 bg-red-200">
                             {formik.values.photos.map((photo, index) => (
                               <div
                                 key={photo.name}
@@ -205,15 +400,12 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                         </div>
 
                         {/* ********** Add Photos Section ********** */}
-                        <div className="sm:col-span-4">
-                          <label
-                            htmlFor="cover-photo"
-                            className="block text-sm font-medium text-gray-700"
-                          >
+                        <div className="sm:col-span-6">
+                          <label className="block text-sm font-medium text-gray-700">
                             Recipe photos
                           </label>
-                          <div
-                            className={`mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6`}
+                          <label
+                            className={`mt-1 flex cursor-pointer justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6`}
                           >
                             <div className="space-y-1 text-center">
                               <svg
@@ -237,7 +429,6 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                 >
                                   <span>Upload a file</span>
                                   <input
-                                    id="photos"
                                     name="photos"
                                     type="file"
                                     className="sr-only"
@@ -258,7 +449,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                 PNG, JPG, GIF up to 10MB
                               </p>
                             </div>
-                          </div>
+                          </label>
                           {/* *********** photo errors ********** */}
                         </div>
                       </>
@@ -352,6 +543,9 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                               <div className="mt-1">
                                 <Field
                                   autoComplete="off"
+                                  type="number"
+                                  min={1}
+                                  max={60}
                                   name={`ingredients.${index}.amount`}
                                   className={`${
                                     (
@@ -359,7 +553,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                         index
                                       ] as FormikErrors<{
                                         name: string;
-                                        amount: string;
+                                        amount: number;
                                         unit: string;
                                       }>
                                     )?.amount &&
@@ -374,7 +568,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                   index
                                 ] as FormikErrors<{
                                   name: string;
-                                  amount: string;
+                                  amount: number;
                                   unit: string;
                                 }>
                               )?.amount &&
@@ -386,7 +580,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                           index
                                         ] as FormikErrors<{
                                           name: string;
-                                          amount: string;
+                                          amount: number;
                                           unit: string;
                                         }>
                                       )?.amount
@@ -409,11 +603,12 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                                   name={`ingredients.${index}.unit`}
                                   className={`block w-full rounded-md border-2 bg-gray-100 p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                                 >
-                                  <option value="United States">
-                                    United States
-                                  </option>
-                                  <option value="Canada">Canada</option>
-                                  <option value="Mexico">Mexico</option>
+                                  <option value="tsp">teaspoon</option>
+                                  <option value="tbsp">tablespoon</option>
+                                  <option value="fl oz">fluid ounces</option>
+                                  <option value="cups">cups</option>
+                                  <option value="pints">pints</option>
+                                  <option value="ltrs">liters</option>
                                 </Field>
                               </div>
                             </div>
@@ -463,7 +658,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                           key={`${dir.step}${index}`}
                           className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6"
                         >
-                          <div className="sm:col-span-4">
+                          <div className="sm:col-span-6">
                             <label
                               htmlFor="about"
                               className="block text-sm font-medium text-gray-700"
