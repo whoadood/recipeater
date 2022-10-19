@@ -1,12 +1,5 @@
 // Packages
-import {
-  Formik,
-  Form,
-  FieldArray,
-  ErrorMessage,
-  Field,
-  FormikErrors,
-} from "formik";
+import { Formik, Form, FieldArray, Field, FormikErrors } from "formik";
 import { Fragment, useRef } from "react";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
@@ -16,12 +9,13 @@ import ErrMessage from "./ErrMessage";
 // Utils
 import { RecipeSchema } from "../../../types/schemas";
 import { trpc } from "../../../utils/trpc";
+import { uploadCloudinary } from "../../../utils/uploadCloudinary";
 
 const recipeInit: {
   title: string;
   description: string;
   category: string;
-  photos: { name: string; lastModified: number; size: number; type: string }[];
+  photos: File[];
   ingredients: { name: string; amount: string; unit: string }[];
   directions: { step: number; text: string }[];
 } = {
@@ -46,7 +40,7 @@ const recipeInit: {
 
 export default function RecipeForm({ recipe }: { recipe?: any }) {
   const stepRef = useRef(1);
-  const { data: signature } = trpc.recipe.getSignature.useQuery();
+  const { data } = trpc.recipe.getSignature.useQuery();
 
   return (
     <Formik
@@ -55,7 +49,15 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
       onSubmit={async (values, { resetForm }) => {
         // console.log("form submit", values);
 
-        console.log("form submit sign", signature);
+        if (data?.signature && data.timestamp) {
+          const cloudinaryPhotos = await uploadCloudinary(
+            values.photos,
+            data?.signature,
+            data?.timestamp
+          );
+          console.log("cloudinary response", cloudinaryPhotos);
+        }
+
         stepRef.current = 1;
         resetForm();
       }}
@@ -88,6 +90,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                         type="text"
                         name="title"
                         id="title"
+                        autoComplete="off"
                         className={`${
                           formik.errors.title && formik.touched.title
                             ? "border-red-500"
@@ -112,6 +115,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                       <Field
                         as="textarea"
                         id="description"
+                        autoComplete="off"
                         name="description"
                         rows={3}
                         className={`${
@@ -142,6 +146,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                     <div className="mt-1 flex rounded-md shadow-sm">
                       <Field
                         type="text"
+                        autoComplete="off"
                         name="category"
                         id="category"
                         className={`${
@@ -283,6 +288,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                               <div className="mt-1">
                                 <Field
                                   name={`ingredients.${index}.name`}
+                                  autoComplete="off"
                                   className={`
                                   ${
                                     (
@@ -337,6 +343,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                               </label>
                               <div className="mt-1">
                                 <Field
+                                  autoComplete="off"
                                   name={`ingredients.${index}.amount`}
                                   className={`${
                                     (
@@ -458,6 +465,7 @@ export default function RecipeForm({ recipe }: { recipe?: any }) {
                             <div className="mt-1">
                               <Field
                                 as="textarea"
+                                autoComplete="off"
                                 name={`directions.${index}.text`}
                                 rows={3}
                                 className={`${
