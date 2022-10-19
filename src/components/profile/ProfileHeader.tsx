@@ -15,12 +15,6 @@ import { router } from "../../server/trpc/trpc";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-const stats = [
-  { label: "Total recipes", value: 12 },
-  { label: "most used category", value: 4 },
-  { label: "most liked recipe", value: 2 },
-];
-
 const defaultUser = (
   <svg
     className="h-20 w-20 rounded-full text-gray-300"
@@ -39,10 +33,12 @@ const user = {
 };
 
 export default function ProfileHeader({
-  profile,
+  data,
 }: {
-  profile: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
+  data: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
+  console.log("profile header", data);
+  const { profile } = data;
   const router = useRouter();
   const { data: session } = useSession();
   const { toggle: editBio, handleToggle: handleEditBio } = useToggle();
@@ -53,6 +49,17 @@ export default function ProfileHeader({
       handleEditBio();
     },
   });
+
+  const stats = [
+    { label: "Total recipes", value: profile.recipes.length },
+    {
+      label: "most used category",
+      value: profile.recipes.find(
+        (el) => el.category_id === data.mostCategory?.category_id
+      )?.category.name,
+    },
+    { label: "most liked recipe", value: 10 },
+  ];
 
   return (
     <main>
@@ -158,7 +165,10 @@ export default function ProfileHeader({
                 key={stat.label}
                 className="px-6 py-5 text-center text-sm font-medium"
               >
-                <span className="text-gray-900">{stat.value}</span>{" "}
+                <span className="text-lg font-bold text-cyan-500 text-gray-900">
+                  {stat.value}
+                </span>{" "}
+                <br />
                 <span className="text-gray-600">{stat.label}</span>
               </div>
             ))}

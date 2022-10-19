@@ -6,6 +6,8 @@ import { BarsArrowUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 // Utils
 import { classNames } from "../../utils/classNames";
 import ProfileRecipeCard from "./ProfileRecipeCard";
+import { inferProcedureOutput } from "@trpc/server";
+import { AppRouter } from "../../server/trpc/router/_app";
 const projects = [
   {
     name: "Workcation",
@@ -22,7 +24,14 @@ const projects = [
   // More projects...
 ];
 
-export default function ProfileList() {
+export default function ProfileList({
+  data,
+}: {
+  data: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
+}) {
+  const {
+    profile: { recipes },
+  } = data;
   return (
     <>
       {/* Projects List */}
@@ -99,9 +108,10 @@ export default function ProfileList() {
           role="list"
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
-          {projects.map((project) => (
-            <ProfileRecipeCard project={project} key={project.name} />
-          ))}
+          {data.profile.recipes &&
+            recipes.map((recipe) => (
+              <ProfileRecipeCard recipe={recipe} key={recipe.id} />
+            ))}
         </ul>
       </div>
     </>

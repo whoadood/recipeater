@@ -21,12 +21,14 @@ export default function ProfilePage() {
       },
     }
   );
+
+  console.log("prof", profile);
   return (
     <main>
       <PageHeader>
-        <ProfileHeader profile={profile.data!} />
+        {profile.data && <ProfileHeader data={profile.data} />}
       </PageHeader>
-      <ProfileList />
+      {profile.data && <ProfileList data={profile.data} />}
     </main>
   );
 }

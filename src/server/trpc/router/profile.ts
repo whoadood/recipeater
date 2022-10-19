@@ -10,29 +10,36 @@ export const profileRouter = router({
         where: {
           id: input.id,
         },
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          profile: {
-            select: {
-              bio: true,
-            },
-          },
+        include: {
+          profile: true,
           recipes: {
-            select: {
-              id: true,
-              title: true,
-              images: true,
+            include: {
               category: true,
             },
           },
         },
       });
 
+      const mostCategory = await ctx.prisma.recipe.groupBy({
+        where: {
+          user_id: input.id,
+        },
+        by: ["category_id"],
+        orderBy: {
+          _count: {
+            category_id: "desc",
+          },
+        },
+        _count: {
+          category_id: true,
+        },
+        take: 1,
+      });
+
       if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
-      return profile;
+      return { profile, mostCategory: mostCategory[0] };
     }),
+
   editBio: protectedProcedure
     .input(z.object({ bio: z.string().min(1).max(140) }))
     .mutation(async ({ input, ctx }) => {
