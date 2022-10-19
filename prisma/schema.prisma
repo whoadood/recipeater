@@ -14,9 +14,9 @@ model Recipe {
     id          String       @id @default(cuid())
     title       String
     description String
-    yield       String
-    prep_time   String
-    cook_time   String
+    yield       Int
+    prep_time   Prep_time?
+    cook_time   Cook_time?
     difficulty  String
     images      Image[]
     ingredients Ingredient[]
@@ -27,6 +27,22 @@ model Recipe {
     user        User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
+model Prep_time {
+    id        String @id @default(cuid())
+    time      Int
+    unit      String
+    recipe_id String @unique
+    recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+}
+
+model Cook_time {
+    id        String @id @default(cuid())
+    time      Int
+    unit      String
+    recipe_id String @unique
+    recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+}
+
 model Category {
     id      String   @id @default(cuid())
     name    String   @unique
@@ -34,24 +50,28 @@ model Category {
 }
 
 model Direction {
-    id          String @id @default(cuid())
-    step_number Int
-    description String
-    recipe_id   String
-    recipe      Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
+    id        String @id @default(cuid())
+    step      Int
+    text      String
+    recipe_id String
+    recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 }
 
 model Ingredient {
     id        String @id @default(cuid())
     name      String
-    quantity  String
+    amount    Int
+    unit      String
     recipe_id String
     recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 }
 
 model Image {
     id        String @id @default(cuid())
-    url       String
+    name      String
+    public_id String
+    version   Int
+    signature String
     recipe_id String
     recipe    Recipe @relation(fields: [recipe_id], references: [id], onDelete: Cascade)
 }

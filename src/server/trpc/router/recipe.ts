@@ -64,11 +64,66 @@ export const recipeRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       console.log("server input", input);
-      // const newRecipe = ctx.prisma.recipe.create({
-      // 	data: {
+      const newRecipe = ctx.prisma.recipe.create({
+        data: {
+          title: input.title,
+          description: input.description,
+          yield: input.yield,
+          prep_time: {
+            create: {
+              time: input.prep_time.time,
+              unit: input.prep_time.unit,
+            },
+          },
+          cook_time: {
+            create: {
+              time: input.cook_time.time,
+              unit: input.cook_time.unit,
+            },
+          },
+          difficulty: input.difficulty,
+          images: {
+            createMany: {
+              data: input.photos,
+            },
+          },
+          ingredients: {
+            createMany: {
+              data: input.ingredients,
+            },
+          },
+          directions: {
+            createMany: {
+              data: input.directions,
+            },
+          },
+          category: {
+            connectOrCreate: {
+              where: {
+                name: input.category,
+              },
+              create: {
+                name: input.category,
+              },
+            },
+          },
+          user: {
+            connect: {
+              id: ctx.session.user.id,
+            },
+          },
+        },
+        include: {
+          prep_time: true,
+          cook_time: true,
+          images: true,
+          ingredients: true,
+          directions: true,
+          category: true,
+          user: true,
+        },
+      });
 
-      // 	}
-      // })
-      return input;
+      return newRecipe;
     }),
 });

@@ -13,103 +13,103 @@ import { uploadCloudinary } from "../../../utils/uploadCloudinary";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../../server/trpc/router/_app";
 
-const tester = {
-  id: null,
-  title: "second recipe",
-  description: "this is my second recipe description",
-  difficulty: "hard",
-  category: "testing",
-  yield: 8,
-  prep_time: {
-    time: 10,
-    unit: "sec",
-  },
-  cook_time: {
-    time: 15,
-    unit: "hr",
-  },
-  photos: [
-    {
-      name: "modok.png",
-      public_id: "recipeater/modok_d9i2rz",
-      version: 1666192813,
-      signature: "51bdc9c46b2cfce5cb1e3bb7423131dd6d9cb72f",
-    },
-    {
-      name: "jobbot.png",
-      public_id: "recipeater/jobbot-bender_sh4i7v",
-      version: 1666192813,
-      signature: "6aede7ce0a31025205780f5d25d29fceaaa28edd",
-    },
-  ],
-  ingredients: [
-    { name: "asdf", amount: 2, unit: "cups" },
-    { name: "fdsa", amount: 5, unit: "cups" },
-  ],
-  directions: [
-    { step: 1, text: "asdfasdfasdf asdfasdfasdfasdf" },
-    { step: 2, text: "fdsa" },
-  ],
-};
+// const tester = {
+//   id: null,
+//   title: "second recipe",
+//   description: "this is my second recipe description",
+//   difficulty: "hard",
+//   category: "testing",
+//   yield: 8,
+//   prep_time: {
+//     time: 10,
+//     unit: "sec",
+//   },
+//   cook_time: {
+//     time: 15,
+//     unit: "hr",
+//   },
+//   photos: [
+//     {
+//       name: "modok.png",
+//       public_id: "recipeater/modok_d9i2rz",
+//       version: 1666192813,
+//       signature: "51bdc9c46b2cfce5cb1e3bb7423131dd6d9cb72f",
+//     },
+//     {
+//       name: "jobbot.png",
+//       public_id: "recipeater/jobbot-bender_sh4i7v",
+//       version: 1666192813,
+//       signature: "6aede7ce0a31025205780f5d25d29fceaaa28edd",
+//     },
+//   ],
+//   ingredients: [
+//     { name: "asdf", amount: 2, unit: "cups" },
+//     { name: "fdsa", amount: 5, unit: "cups" },
+//   ],
+//   directions: [
+//     { step: 1, text: "asdfasdfasdf asdfasdfasdfasdf" },
+//     { step: 2, text: "fdsa" },
+//   ],
+// };
 
 export default function RecipeForm({
-  recipe = tester,
+  recipe,
 }: {
   recipe?: inferProcedureOutput<AppRouter["recipe"]["createRecipe"]>;
 }) {
   const stepRef = useRef(1);
   const signatureMutation = trpc.recipe.getSignature.useMutation();
-  const recipeMutation = trpc.recipe.createRecipe.useMutation();
+  const recipeMutation = trpc.recipe.createRecipe.useMutation({
+    onSuccess(data, variables, context) {
+      console.log("recipe success", data);
+    },
+  });
 
-  const recipeInit:
-    | inferProcedureOutput<AppRouter["recipe"]["createRecipe"]>
-    | {
-        title: string;
-        description: string;
-        category: string;
-        // yield
-        yield: number;
-        // difficulty
-        difficulty: "easy" | "medium" | "hard" | "expert";
-        // prep time
-        prep_time: {
-          time: number;
-          unit: "sec" | "min" | "hr";
-        };
-        // cook time
-        cook_time: { time: number; unit: "sec" | "min" | "hr" };
-        photos: File[];
-        ingredients: {
-          name: string;
-          amount: number;
-          unit: "tsp" | "tbsp" | "fl oz" | "cups" | "pints" | "ltrs";
-        }[];
-        directions: { step: number; text: string }[];
-      } = recipe
-    ? recipe
-    : {
-        title: "",
-        description: "",
-        category: "",
-        yield: 1,
-        difficulty: "easy",
-        prep_time: { time: 1, unit: "min" },
-        cook_time: { time: 1, unit: "min" },
-        photos: [],
-        ingredients: [
-          {
-            name: "",
-            amount: 1,
-            unit: "tsp",
-          },
-        ],
-        directions: [
-          {
-            step: 1,
-            text: "",
-          },
-        ],
-      };
+  const recipeInit: {
+    title: string;
+    description: string;
+    category: string;
+    // yield
+    yield: number;
+    // difficulty
+    difficulty: "easy" | "medium" | "hard" | "expert";
+    // prep time
+    prep_time: {
+      time: number;
+      unit: "sec" | "min" | "hr";
+    };
+    // cook time
+    cook_time: { time: number; unit: "sec" | "min" | "hr" };
+    photos: File[];
+    ingredients: {
+      name: string;
+      amount: number;
+      unit: "tsp" | "tbsp" | "fl oz" | "cups" | "pints" | "ltrs";
+    }[];
+    directions: { step: number; text: string }[];
+  } = {
+    title: "",
+    description: "",
+    category: "",
+    yield: 1,
+    difficulty: "easy",
+    prep_time: { time: 1, unit: "min" },
+    cook_time: { time: 1, unit: "min" },
+    photos: [],
+    ingredients: [
+      {
+        name: "",
+        amount: 1,
+        unit: "tsp",
+      },
+    ],
+    directions: [
+      {
+        step: 1,
+        text: "",
+      },
+    ],
+  };
 
   return (
     <Formik
