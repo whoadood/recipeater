@@ -8,6 +8,7 @@ import { classNames } from "../../utils/classNames";
 import ProfileRecipeCard from "./ProfileRecipeCard";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
+import { RecipeData } from "../../types/globals";
 const projects = [
   {
     name: "Workcation",
@@ -109,7 +110,7 @@ export default function ProfileList({
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
           {recipes.map((recipe) => (
-            <ProfileRecipeCard recipe={recipe} key={recipe.id} />
+            <ProfileRecipeCard recipe={recipe as RecipeData} key={recipe.id} />
           ))}
         </ul>
       </div>

@@ -5,12 +5,25 @@ import { v2 as cloudinary } from "cloudinary";
 import { env } from "../../../env/server.mjs";
 
 export const recipeRouter = router({
-  hello: publicProcedure
-    .input(z.object({ text: z.string().nullish() }).nullish())
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input?.text ?? "world"}`,
-      };
+  getRecipeById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const recipe = await ctx.prisma.recipe.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          user: true,
+          category: true,
+          directions: true,
+          ingredients: true,
+          cook_time: true,
+          prep_time: true,
+          images: true,
+        },
+      });
+
+      return recipe;
     }),
 
   getSignature: protectedProcedure.mutation(() => {
