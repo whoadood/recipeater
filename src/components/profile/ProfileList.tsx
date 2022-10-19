@@ -108,10 +108,9 @@ export default function ProfileList({
           role="list"
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
-          {data.profile.recipes &&
-            recipes.map((recipe) => (
-              <ProfileRecipeCard recipe={recipe} key={recipe.id} />
-            ))}
+          {recipes.map((recipe) => (
+            <ProfileRecipeCard recipe={recipe} key={recipe.id} />
+          ))}
         </ul>
       </div>
     </>

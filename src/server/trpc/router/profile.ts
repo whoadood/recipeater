@@ -15,6 +15,8 @@ export const profileRouter = router({
           recipes: {
             include: {
               category: true,
+              prep_time: true,
+              cook_time: true,
             },
           },
         },

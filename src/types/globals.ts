@@ -1,3 +1,5 @@
+import { Category, Cook_time, Prep_time, Recipe } from "@prisma/client";
+
 export type NavItem = {
   name: string;
   href: string;
@@ -20,4 +22,10 @@ export type CardProps = {
     }
   ) => JSX.Element;
   amount: string;
+};
+
+export type RecipeData = Recipe & {
+  category: Category;
+  prep_time: Prep_time;
+  cook_time: Cook_time;
 };

@@ -5,50 +5,30 @@ import { ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
 // Utils
 import { classNames } from "../../utils/classNames";
 import Link from "next/link";
+import { RecipeData } from "../../types/globals";
 
-export default function ProfileRecipeCard({ recipe }: { recipe: any }) {
+export default function ProfileRecipeCard({ recipe }: { recipe: RecipeData }) {
   return (
     <li
-      key={recipe.repo}
+      key={recipe.id}
       className="relative py-5 pl-4 pr-6 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
     >
       <div className="flex items-center justify-between space-x-4">
         {/* Repo name and link */}
         <div className="min-w-0 space-y-3">
           <div className="flex items-center space-x-3">
-            <span
-              className={classNames(
-                recipe.active ? "bg-green-100" : "bg-gray-100",
-                "flex h-4 w-4 items-center justify-center rounded-full"
-              )}
-              aria-hidden="true"
-            >
-              <span
-                className={classNames(
-                  recipe.active ? "bg-green-400" : "bg-gray-400",
-                  "h-2 w-2 rounded-full"
-                )}
-              />
-            </span>
-
             <h2 className="text-sm font-medium">
-              <a href={`/recipe/${recipe.id}`}>
+              <div>
                 <span className="absolute inset-0" aria-hidden="true" />
-                {recipe.name}{" "}
-                <span className="sr-only">
-                  {recipe.active ? "Running" : "Not running"}
-                </span>
-              </a>
+                {recipe.title}{" "}
+              </div>
             </h2>
           </div>
-          <a
-            href={`/recipe/${recipe.id}`}
-            className="group relative flex items-center space-x-2.5"
-          >
-            <span className="truncate text-sm font-medium text-gray-500 group-hover:text-gray-900">
-              {recipe.title}
+          <div className="group relative flex items-center space-x-2.5">
+            <span className="truncate text-sm font-medium text-gray-500">
+              {recipe.category.name}
             </span>
-          </a>
+          </div>
         </div>
         <div className="sm:hidden">
           <ChevronRightIcon
@@ -56,6 +36,7 @@ export default function ProfileRecipeCard({ recipe }: { recipe: any }) {
             aria-hidden="true"
           />
         </div>
+
         {/* Repo meta info */}
         <div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
           <p className="flex items-center space-x-4">
@@ -64,7 +45,8 @@ export default function ProfileRecipeCard({ recipe }: { recipe: any }) {
                 View Recipe
               </a>
             </Link>
-            <button
+            {/* ********** like count ********** */}
+            {/* <button
               type="button"
               className="relative rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
@@ -80,10 +62,18 @@ export default function ProfileRecipeCard({ recipe }: { recipe: any }) {
                 )}
                 aria-hidden="true"
               />
-            </button>
+            </button> */}
           </p>
           <p className="flex space-x-2 text-sm text-gray-500">
-            <span>{recipe.category.name}</span>
+            <span>
+              prep {recipe.prep_time.time}
+              {recipe.prep_time.unit}
+            </span>
+            <span aria-hidden="true">&middot;</span>
+            <span>
+              cook {recipe.cook_time.time}
+              {recipe.cook_time.unit}
+            </span>
             <span aria-hidden="true">&middot;</span>
             <span>{recipe.difficulty}</span>
           </p>
