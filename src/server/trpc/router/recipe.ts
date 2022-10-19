@@ -25,14 +25,23 @@ export const recipeRouter = router({
   createRecipe: protectedProcedure
     .input(
       z.object({
+        id: z.string().nullable(),
         title: z.string(),
         description: z.string(),
         category: z.string(),
-        yield: z.string(),
-        prep_time: z.string(),
-        cook_time: z.string(),
+        difficulty: z.string(),
+        yield: z.number(),
+        prep_time: z.object({
+          time: z.number(),
+          unit: z.string(),
+        }),
+        cook_time: z.object({
+          time: z.number(),
+          unit: z.string(),
+        }),
         photos: z.array(
           z.object({
+            name: z.string(),
             public_id: z.string(),
             version: z.number(),
             signature: z.string(),
@@ -60,5 +69,6 @@ export const recipeRouter = router({
 
       // 	}
       // })
+      return input;
     }),
 });

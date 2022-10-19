@@ -8,7 +8,12 @@ export const uploadCloudinary = async (
   if (!fileList) return [];
   const upload = async (
     file: File
-  ): Promise<{ public_id: string; version: number; signature: string }> => {
+  ): Promise<{
+    name: string;
+    public_id: string;
+    version: number;
+    signature: string;
+  }> => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("api_key", env.NEXT_PUBLIC_API_KEY);
@@ -24,6 +29,7 @@ export const uploadCloudinary = async (
     );
     const imageData = await cloudinaryResponse.json();
     return {
+      name: file.name,
       public_id: imageData.public_id,
       version: imageData.version,
       signature: imageData.signature,
