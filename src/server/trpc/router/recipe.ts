@@ -21,4 +21,41 @@ export const recipeRouter = router({
     );
     return { timestamp, signature };
   }),
+
+  createRecipe: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        category: z.string(),
+        photos: z.array(
+          z.object({
+            public_id: z.string(),
+            version: z.number(),
+            signature: z.string(),
+          })
+        ),
+        ingredients: z.array(
+          z.object({
+            name: z.string(),
+            amount: z.string(),
+            unit: z.string(),
+          })
+        ),
+        directions: z.array(
+          z.object({
+            step: z.number(),
+            text: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      console.log("server input", input);
+      // const newRecipe = ctx.prisma.recipe.create({
+      // 	data: {
+
+      // 	}
+      // })
+    }),
 });

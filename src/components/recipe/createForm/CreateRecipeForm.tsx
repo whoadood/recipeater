@@ -41,25 +41,33 @@ const recipeInit: {
 export default function RecipeForm({ recipe }: { recipe?: any }) {
   const stepRef = useRef(1);
   const { data } = trpc.recipe.getSignature.useQuery();
+  const recipeMutation = trpc.recipe.createRecipe.useMutation();
 
   return (
     <Formik
       initialValues={recipeInit}
       validationSchema={toFormikValidationSchema(RecipeSchema)}
       onSubmit={async (values, { resetForm }) => {
-        // console.log("form submit", values);
-
         if (data?.signature && data.timestamp) {
           const cloudinaryPhotos = await uploadCloudinary(
             values.photos,
-            data?.signature,
-            data?.timestamp
+            data.signature,
+            data.timestamp
           );
-          console.log("cloudinary response", cloudinaryPhotos);
+          console.log("cloud", cloudinaryPhotos);
+
+          recipeMutation.mutate({
+            title: values.title,
+            description: values.description,
+            category: values.category,
+            photos: cloudinaryPhotos,
+            ingredients: values.ingredients,
+            directions: values.directions,
+          });
         }
 
-        stepRef.current = 1;
-        resetForm();
+        // stepRef.current = 1;
+        // resetForm();
       }}
     >
       {(formik) => {
