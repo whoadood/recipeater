@@ -21,8 +21,6 @@ export default function ProfilePage() {
       },
     }
   );
-
-  console.log("prof", profile);
   return (
     <main>
       <PageHeader>

@@ -18,6 +18,7 @@ import {
 import NavLink from "../nav/NavLink";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { trpc } from "../../utils/trpc";
 
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
@@ -37,6 +38,7 @@ export default function Nav({
   const { sidebarOpen, setSidebarOpen } = sidebar;
   const [currentActive, setCurrentActive] = useState(router.asPath);
   const { data: session } = useSession();
+  const { data } = trpc.category.getTopCategory.useQuery();
 
   const navigation = session
     ? [
