@@ -17,6 +17,7 @@ import {
 import { classNames } from "../../utils/classNames";
 import { Category, Cook_time, Prep_time, Recipe, User } from "@prisma/client";
 import { IRecipeCard } from "../../types/globals";
+import Link from "next/link";
 
 type question = {
   id: string;
@@ -50,13 +51,16 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-gray-900">
-                <a href={`/recipe/${recipe.id}`} className="hover:underline">
-                  {recipe.user.name}
-                </a>
+                <Link href={`/profile/${recipe.user.id}`}>
+                  <a className="hover:underline">{recipe.user.name}</a>
+                </Link>
               </p>
               <p className="text-sm text-gray-500">
-                <a href={`/recipe/${recipe.id}`} className="hover:underline">
-                  {recipe.difficulty}
+                <a
+                  href={`/recipe/search/${recipe.category.name}`}
+                  className="hover:underline"
+                >
+                  {recipe.category.name}
                 </a>
               </p>
             </div>

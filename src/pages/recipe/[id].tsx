@@ -1,12 +1,15 @@
 // Packages
 import React from "react";
 import { useRouter } from "next/router";
-import RecipeHeader from "../../components/recipe/RecipeHeader";
-import IngredientList from "../../components/recipe/IngredientList";
-import DirectionsList from "../../components/recipe/DirectionsList";
 import { trpc } from "../../utils/trpc";
 import { IRecipeData } from "../../types/globals";
 import { recipeRouter } from "../../server/trpc/router/recipe";
+
+// Components
+import IngredientList from "../../components/recipe/IngredientList";
+import DirectionsList from "../../components/recipe/DirectionsList";
+import RecipeHeader from "../../components/recipe/RecipeHeader";
+import RecipeImage from "../../components/recipe/RecipeImage";
 
 export default function RecipeIdPage() {
   const router = useRouter();
@@ -22,6 +25,7 @@ export default function RecipeIdPage() {
   if (data && data.images)
     return (
       <main className="mx-auto max-w-7xl">
+        <RecipeImage recipe={data} />
         <RecipeHeader recipe={data} />
         <div className="p-2">
           <IngredientList ingredients={data.ingredients} />
