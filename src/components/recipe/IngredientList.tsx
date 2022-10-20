@@ -63,19 +63,7 @@ export default function IngredientList({
                 <div className="font-medium text-gray-900 hover:text-gray-600">
                   {ing.name}
                 </div>
-                <p className="text-gray-500">{ing.name} Members</p>
-              </div>
-              <div className="flex-shrink-0 pr-2">
-                {/* <button
-                  type="button"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <span className="sr-only">Open options</span>
-                  <EllipsisVerticalIcon
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
-                </button> */}
+                <p className="text-gray-500">{ing.name}</p>
               </div>
             </div>
           </li>
