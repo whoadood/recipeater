@@ -58,10 +58,11 @@ export default function RecipeForm({
   recipe?: inferProcedureOutput<AppRouter["recipe"]["createRecipe"]>;
 }) {
   const stepRef = useRef(1);
+  const utils = trpc.useContext();
   const signatureMutation = trpc.recipe.getSignature.useMutation();
   const recipeMutation = trpc.recipe.createRecipe.useMutation({
     onSuccess(data, variables, context) {
-      console.log("recipe success", data);
+      utils.category.getTopCategory.invalidate();
     },
   });
 
