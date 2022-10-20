@@ -35,6 +35,56 @@ export const recipeRouter = router({
     return { timestamp, signature };
   }),
 
+  getRecipesBySearch: publicProcedure
+    .input(
+      z
+        .object({
+          search: z.string().nullable(),
+        })
+        .nullable()
+    )
+    .query(async ({ input, ctx }) => {
+      const recipes = await ctx.prisma.recipe.findMany({
+        where: {
+          OR: [
+            {
+              title: {
+                contains: input?.search || undefined,
+              },
+            },
+            {
+              category: {
+                name: {
+                  contains: input?.search || undefined,
+                },
+              },
+            },
+            {
+              user: {
+                name: {
+                  contains: input?.search || undefined,
+                },
+              },
+            },
+          ],
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          category: true,
+          user: true,
+          prep_time: true,
+          cook_time: true,
+          difficulty: true,
+          yield: true,
+          images: true,
+        },
+      });
+
+      return { recipes };
+    }),
+
   createRecipe: protectedProcedure
     .input(
       z.object({

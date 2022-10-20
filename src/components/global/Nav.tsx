@@ -44,7 +44,7 @@ export default function Nav({
   const navigation = session
     ? [
         { name: "Home", href: "/", icon: HomeIcon },
-        { name: "Browse", href: "/recipe", icon: ClockIcon },
+        { name: "Browse", href: "/recipe/search/all", icon: ClockIcon },
         {
           name: "Profile",
           href: `/profile/${session.user?.id}`,
@@ -193,7 +193,7 @@ export default function Nav({
                   Top categories
                 </p>
                 {topCategories?.map((cat) => (
-                  <Link key={cat.id} href={`/browse`}>
+                  <Link key={cat.id} href={`/recipe/search/`}>
                     <a
                       className={
                         "group flex items-center rounded-md px-2 py-2 text-base font-medium text-cyan-100 hover:bg-cyan-600 hover:text-white"

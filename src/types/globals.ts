@@ -48,3 +48,16 @@ export type IRecipeData = Recipe & {
   directions: Direction[];
   images: Image[];
 };
+
+export type IRecipeCard = {
+  user: User;
+  prep_time: Prep_time | null;
+  id: string;
+  title: string;
+  description: string;
+  category: Category;
+  difficulty: string;
+  yield: number;
+  cook_time: Cook_time | null;
+  images: Image[];
+};
