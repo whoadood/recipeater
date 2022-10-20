@@ -19,6 +19,7 @@ import NavLink from "../nav/NavLink";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../utils/trpc";
+import Link from "next/link";
 
 const secondaryNavigation = [
   { name: "Settings", href: "#", icon: CogIcon },
@@ -38,7 +39,7 @@ export default function Nav({
   const { sidebarOpen, setSidebarOpen } = sidebar;
   const [currentActive, setCurrentActive] = useState(router.asPath);
   const { data: session } = useSession();
-  const { data } = trpc.category.getTopCategory.useQuery();
+  const { data: topCategories } = trpc.category.getTopCategory.useQuery();
 
   const navigation = session
     ? [
@@ -135,8 +136,20 @@ export default function Nav({
                   </div>
                   <div className="mt-6 pt-6">
                     <div className="space-y-1 px-2">
-                      {secondaryNavigation.map((item) => (
-                        <NavLink key={item.name} item={item} />
+                      {topCategories?.map((cat) => (
+                        <Link key={cat.id} href={`/browse`}>
+                          <a
+                            className={
+                              "group flex items-center rounded-md px-2 py-2 text-base font-medium text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                            }
+                          >
+                            <div
+                              className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
+                              aria-hidden="true"
+                            />
+                            {cat.name}
+                          </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -176,8 +189,26 @@ export default function Nav({
             </div>
             <div className="mt-6 pt-6">
               <div className="space-y-1 px-2">
-                {secondaryNavigation.map((item) => (
-                  <NavLink key={item.name} item={item} />
+                <p className="pl-2 text-sm font-bold text-gray-300">
+                  Top categories
+                </p>
+                {topCategories?.map((cat) => (
+                  <Link key={cat.id} href={`/browse`}>
+                    <a
+                      className={
+                        "group flex items-center rounded-md px-2 py-2 text-base font-medium text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                      }
+                    >
+                      <div className="flex items-center justify-center rounded bg-cyan-900 px-2">
+                        {cat._count.recipes}
+                      </div>
+                      <div
+                        className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
+                        aria-hidden="true"
+                      />
+                      {cat.name}
+                    </a>
+                  </Link>
                 ))}
               </div>
             </div>

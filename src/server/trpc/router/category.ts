@@ -18,9 +18,7 @@ export const categoryRouter = router({
       take: 8,
     });
 
-    console.log("categorys db", categories);
-
-    return "hello";
+    return categories;
   }),
   // getAll: publicProcedure.query(({ ctx }) => {
   //   return ctx.prisma.example.findMany();

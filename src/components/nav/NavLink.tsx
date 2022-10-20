@@ -19,7 +19,6 @@ export default function NavLink({
   return (
     <Link href={item.href}>
       <a
-        onClick={() => setCurrentActive && setCurrentActive(item.name)}
         className={classNames(
           item.current
             ? "bg-cyan-800 text-white hover:bg-cyan-900"
@@ -29,6 +28,7 @@ export default function NavLink({
         aria-current={item.current ? "page" : undefined}
       >
         <item.icon
+          onClick={() => setCurrentActive && setCurrentActive(item.name)}
           className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
           aria-hidden="true"
         />
