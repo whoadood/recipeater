@@ -690,7 +690,7 @@ export default function RecipeForm({
                             onClick={() =>
                               push({
                                 name: "",
-                                amount: "",
+                                amount: 1,
                                 unit: "United States",
                               })
                             }
