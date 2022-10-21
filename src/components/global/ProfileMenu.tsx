@@ -69,18 +69,22 @@ export default function ProfileMenu() {
         >
           {session ? (
             <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              {/* Next Link with headless ui will not close menu, solution navigate via router.push */}
               <Menu.Item>
                 {({ active }) => (
-                  <Link href={`/profile/${session.user?.id}`}>
-                    <a
-                      className={classNames(
-                        active ? "bg-gray-100" : "",
-                        "block px-4 py-2 text-sm text-gray-700"
-                      )}
-                    >
-                      My Profile
-                    </a>
-                  </Link>
+                  <a
+                    onClick={() =>
+                      router.push({
+                        pathname: `/profile/${session.user?.id}`,
+                      })
+                    }
+                    className={classNames(
+                      active ? "bg-gray-100" : "",
+                      "block cursor-pointer px-4 py-2 text-sm text-gray-700"
+                    )}
+                  >
+                    My Profile
+                  </a>
                 )}
               </Menu.Item>
               <Menu.Item>
@@ -99,7 +103,6 @@ export default function ProfileMenu() {
             </Menu.Items>
           ) : (
             <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              {/* Next Link with headless ui will not close menu, solution navigate via router.push */}
               <Menu.Item>
                 {({ active }) => (
                   <a
