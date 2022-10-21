@@ -4,18 +4,14 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   ChatBubbleLeftEllipsisIcon,
-  CodeBracketIcon,
   EllipsisVerticalIcon,
   EyeIcon,
-  FlagIcon,
   HandThumbUpIcon,
   ShareIcon,
   StarIcon,
 } from "@heroicons/react/20/solid";
 
 // Utils
-import { classNames } from "../../utils/classNames";
-import { Category, Cook_time, Prep_time, Recipe, User } from "@prisma/client";
 import { IRecipeCard } from "../../types/globals";
 import Link from "next/link";
 import { makeImageUrl } from "../../utils/makeImageUrl";
@@ -85,7 +81,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             style={{
               backgroundImage: `url('${makeImageUrl(recipe.images[0])}')`,
             }}
-            className="h-64 w-full bg-red-200 bg-cover bg-center bg-no-repeat"
+            className="h-64 w-full bg-cover bg-center bg-no-repeat"
           />
           <div className="px-4 sm:px-6">
             <h2

@@ -6,9 +6,11 @@ import {
 } from "@heroicons/react/24/outline";
 import Button from "./Button";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function Hero() {
   const router = useRouter();
+  const { data: session } = useSession();
   return (
     <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
       <div className="min-w-0 flex-1">
@@ -42,10 +44,10 @@ export default function Hero() {
           }
         />
         <Button
-          text="Sign up"
+          text={session?.user ? "Create" : "Sign up"}
           onClick={() =>
             router.push({
-              pathname: "/signin",
+              pathname: session?.user ? "/recipe/create" : "/signin",
             })
           }
         />

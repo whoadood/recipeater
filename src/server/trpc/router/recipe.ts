@@ -5,6 +5,24 @@ import { v2 as cloudinary } from "cloudinary";
 import { env } from "../../../env/server.mjs";
 
 export const recipeRouter = router({
+  getHomePage: publicProcedure.query(async ({ ctx }) => {
+    const featured = await ctx.prisma.recipe.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        user: true,
+        prep_time: true,
+        cook_time: true,
+        difficulty: true,
+        yield: true,
+        images: true,
+      },
+      take: 4,
+    });
+    return featured;
+  }),
   getRecipeById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -126,7 +144,6 @@ export const recipeRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      console.log("server input", input);
       const newRecipe = ctx.prisma.recipe.create({
         data: {
           title: input.title,

@@ -6,9 +6,10 @@ import { trpc } from "../utils/trpc";
 // copmonents
 import Hero from "../components/global/Hero";
 import PageHeader from "../components/global/PageHeader";
+import BrowseCard from "../components/browse/BrowseCard";
 
 const Home: NextPage = () => {
-  // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const { data: featured } = trpc.recipe.getHomePage.useQuery();
 
   return (
     <>
@@ -20,10 +21,23 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="mx-auto max-w-7xl">
         <PageHeader>
           <Hero />
         </PageHeader>
+        <div className="px-8 py-4">
+          <h2 className="text-lg">Featured Recipe</h2>
+          {featured && featured[0] && <BrowseCard recipe={featured[0]} />}
+          <h2 className="text-lg">Recent recipes</h2>
+          <ul className="flex flex-col gap-2 xl:flex-row">
+            {featured &&
+              featured.slice(1).map((rec) => (
+                <li className="flex-1" key={rec.id}>
+                  <BrowseCard recipe={rec} />
+                </li>
+              ))}
+          </ul>
+        </div>
       </main>
     </>
   );
