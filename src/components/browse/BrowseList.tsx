@@ -98,7 +98,7 @@ export default function BrowseList({
   return (
     <div className="">
       <h1 className="sr-only">Recipe Search Results</h1>
-      <ul role="list" className="max-h-[85vh] space-y-4 overflow-scroll px-2">
+      <ul role="list" className="h-[85vh] space-y-4 overflow-scroll px-2">
         {recipes.recipes.map((recipe) => (
           <BrowseCard key={recipe.id} recipe={recipe} />
         ))}

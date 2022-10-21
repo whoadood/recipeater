@@ -3,12 +3,15 @@ import React from "react";
 export default function Button({
   alt = false,
   text,
+  onClick,
 }: {
   alt?: boolean;
   text: string;
+  onClick?: () => void;
 }) {
   return (
     <button
+      onClick={onClick}
       type="button"
       className={`inline-flex items-center rounded-md border ${
         alt
