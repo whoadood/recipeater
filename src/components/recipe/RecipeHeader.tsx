@@ -18,8 +18,8 @@ export default function RecipeHeader({
             <h1 className="pr-15 font-bold tracking-tight text-cyan-500 sm:text-5xl md:text-6xl">
               <span className="block xl:inline">{recipe?.title}</span>
             </h1>
-            <div className="mt-2 flex">
-              <p className="rounded-md bg-cyan-500 p-2 font-bold text-white">
+            <div className="mt-2 flex sm:justify-center lg:justify-start">
+              <p className="rounded-md bg-cyan-500 px-2 py-1 font-bold text-white">
                 {recipe?.category.name}
               </p>
             </div>
