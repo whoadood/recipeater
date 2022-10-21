@@ -39,14 +39,11 @@ type question = {
 
 export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
   return (
-    <li
-      style={{ backgroundImage: `url('${makeImageUrl(recipe.images[0])}')` }}
-      className="opacity-1/2 relative mx-auto max-w-2xl overflow-hidden bg-gray-600 bg-cover bg-center bg-no-repeat px-4 py-6 pb-4 text-white bg-blend-overlay shadow sm:rounded-lg sm:p-6"
-    >
+    <li className="relative mx-auto max-w-2xl overflow-hidden shadow sm:rounded-lg">
       <article aria-labelledby={"recipe-title-" + recipe.id}>
         <div>
           {/* ********** Author section  ********** */}
-          <div className="flex space-x-3">
+          <div className="flex space-x-3 px-4 py-6 pb-4 sm:p-6">
             <div className="flex-shrink-0">
               <img
                 className="h-10 w-10 rounded-full"
@@ -84,65 +81,73 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
               </div>
             </div>
           </div>
-          <h2
-            id={"question-title-" + recipe.id}
-            className="mt-4 text-base font-medium text-gray-900"
-          >
-            <Link href={`/recipe/${recipe.id}`}>
-              <a className="hover:underline">{recipe.title}</a>
-            </Link>
-          </h2>
-        </div>
-        <div
-          className="mt-2 space-y-4 text-sm text-gray-700"
-          dangerouslySetInnerHTML={{ __html: recipe.description }}
-        />
-        <div className="mt-6 flex justify-between space-x-8">
-          <div className="flex space-x-6">
-            <span className="inline-flex items-center text-sm">
-              <button
-                type="button"
-                className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-              >
-                <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                <span className="font-medium text-gray-900">{11}</span>
-                <span className="sr-only">likes</span>
-              </button>
-            </span>
-            <span className="inline-flex items-center text-sm">
-              <button
-                type="button"
-                className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-              >
-                <ChatBubbleLeftEllipsisIcon
-                  className="h-5 w-5"
-                  aria-hidden="true"
-                />
-                <span className="font-medium text-gray-900">{23}</span>
-                <span className="sr-only">replies</span>
-              </button>
-            </span>
-            <span className="inline-flex items-center text-sm">
-              <button
-                type="button"
-                className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-              >
-                <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                <span className="font-medium text-gray-900">{44}</span>
-                <span className="sr-only">views</span>
-              </button>
-            </span>
+          <div
+            style={{
+              backgroundImage: `url('${makeImageUrl(recipe.images[0])}')`,
+            }}
+            className="h-64 w-full bg-red-200 bg-cover bg-center bg-no-repeat"
+          />
+          <div className="px-4 sm:px-6">
+            <h2
+              id={"question-title-" + recipe.id}
+              className="mt-4 text-base font-medium text-gray-900"
+            >
+              <Link href={`/recipe/${recipe.id}`}>
+                <a className="hover:underline">{recipe.title}</a>
+              </Link>
+            </h2>
           </div>
-          <div className="flex text-sm">
-            <span className="inline-flex items-center text-sm">
-              <button
-                type="button"
-                className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-              >
-                <ShareIcon className="h-5 w-5" aria-hidden="true" />
-                <span className="font-medium text-gray-900">Share</span>
-              </button>
-            </span>
+          <div
+            className="mt-2 space-y-4 px-4 text-sm text-gray-700 sm:px-6"
+            dangerouslySetInnerHTML={{ __html: recipe.description }}
+          />
+          <div className=" flex justify-between space-x-8 px-4 py-6 pb-4 sm:p-6">
+            <div className="flex space-x-6">
+              <span className="inline-flex items-center text-sm">
+                <button
+                  type="button"
+                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                >
+                  <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
+                  <span className="font-medium text-gray-900">{11}</span>
+                  <span className="sr-only">likes</span>
+                </button>
+              </span>
+              <span className="inline-flex items-center text-sm">
+                <button
+                  type="button"
+                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                >
+                  <ChatBubbleLeftEllipsisIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
+                  <span className="font-medium text-gray-900">{23}</span>
+                  <span className="sr-only">replies</span>
+                </button>
+              </span>
+              <span className="inline-flex items-center text-sm">
+                <button
+                  type="button"
+                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                >
+                  <EyeIcon className="h-5 w-5" aria-hidden="true" />
+                  <span className="font-medium text-gray-900">{44}</span>
+                  <span className="sr-only">views</span>
+                </button>
+              </span>
+            </div>
+            <div className="flex text-sm">
+              <span className="inline-flex items-center text-sm">
+                <button
+                  type="button"
+                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                >
+                  <ShareIcon className="h-5 w-5" aria-hidden="true" />
+                  <span className="font-medium text-gray-900">Share</span>
+                </button>
+              </span>
+            </div>
           </div>
         </div>
       </article>
