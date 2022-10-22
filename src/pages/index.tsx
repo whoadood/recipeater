@@ -1,9 +1,9 @@
-// packages
+// Packages
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
 
-// copmonents
+// Components
 import Hero from "../components/global/Hero";
 import PageHeader from "../components/global/PageHeader";
 import BrowseCard from "../components/browse/BrowseCard";
