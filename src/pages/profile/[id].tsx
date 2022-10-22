@@ -22,7 +22,7 @@ export default function ProfilePage() {
     }
   );
   return (
-    <main>
+    <main className="max-h-[90vh] overflow-scroll">
       <PageHeader>
         {profile.data && <ProfileHeader data={profile.data} />}
       </PageHeader>

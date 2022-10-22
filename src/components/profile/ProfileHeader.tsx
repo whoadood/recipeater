@@ -14,6 +14,7 @@ import { trpc } from "../../utils/trpc";
 import { router } from "../../server/trpc/trpc";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useDarkmode } from "../../hooks/useDark";
 
 const defaultUser = (
   <svg
@@ -41,6 +42,7 @@ export default function ProfileHeader({
   const { profile } = data;
   const router = useRouter();
   const { data: session } = useSession();
+  const { darkmode, justFont, addClasses } = useDarkmode();
   const { toggle: editBio, handleToggle: handleEditBio } = useToggle();
   const tUtils = trpc.useContext();
   const bioMutation = trpc.profile.editBio.useMutation({
@@ -65,11 +67,11 @@ export default function ProfileHeader({
     <main>
       {" "}
       <section aria-labelledby="profile-overview-title">
-        <div className="overflow-hidden rounded-lg bg-white shadow">
+        <div className="overflow-hidden rounded-lg  shadow">
           <h2 className="sr-only" id="profile-overview-title">
             Profile Overview
           </h2>
-          <div className="bg-white p-6">
+          <div className="p-6">
             <div className="sm:flex sm:items-center sm:justify-between">
               <div className="sm:flex sm:space-x-5">
                 <div className="flex-shrink-0">
@@ -87,12 +89,16 @@ export default function ProfileHeader({
                   {/* <p className="text-sm font-medium text-gray-600">
                     Welcome back,
                   </p> */}
-                  <p className="text-xl font-bold text-gray-900 sm:text-2xl">
+                  <p
+                    className={`text-xl font-bold sm:text-2xl ${
+                      darkmode ? "text-white" : "text-gray-900"
+                    }`}
+                  >
                     {profile ? profile.name : "username"}
                   </p>
                   {!editBio ? (
                     <div className="flex gap-2">
-                      <p className="text-sm font-medium text-gray-600">
+                      <p className="text-sm font-medium text-gray-400">
                         {profile && profile.profile?.bio
                           ? profile.profile?.bio
                           : "bio"}
@@ -100,7 +106,7 @@ export default function ProfileHeader({
                       {session && session.user?.id === router.query.id && (
                         <PencilIcon
                           onClick={handleEditBio}
-                          className="h-4 w-4 cursor-pointer text-gray-600"
+                          className="h-4 w-4 cursor-pointer text-gray-400"
                         />
                       )}
                     </div>
@@ -135,7 +141,9 @@ export default function ProfileHeader({
                               errors.bio &&
                               touched.bio &&
                               "border-2 border-red-500"
-                            } resize-none rounded bg-gray-200/50 px-2 outline-none focus:border-2 focus:border-cyan-500`}
+                            } resize-none rounded ${
+                              darkmode ? "bg-inherit" : "bg-gray-200/50"
+                            } px-2 outline-none focus:border-2 focus:border-cyan-500`}
                             rows={3}
                           />
                           {errors.bio && touched.bio ? (
@@ -149,27 +157,24 @@ export default function ProfileHeader({
               </div>
               <div className="mt-5 flex justify-center sm:mt-0">
                 <Link href="/recipe/create">
-                  <a
-                    href="#"
-                    className="flex items-center justify-center rounded-md border bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700"
-                  >
+                  <a className="flex items-center justify-center rounded-md border bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700">
                     Create recipe
                   </a>
                 </Link>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
+          <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
             {stats.map((stat) => (
               <div
                 key={stat.label}
                 className="px-6 py-5 text-center text-sm font-medium"
               >
-                <span className="text-lg font-bold text-cyan-500 text-gray-900">
+                <span className="text-lg font-bold text-cyan-500">
                   {stat.value}
                 </span>{" "}
                 <br />
-                <span className="text-gray-600">{stat.label}</span>
+                <span className={`${justFont()}`}>{stat.label}</span>
               </div>
             ))}
           </div>

@@ -12,16 +12,19 @@ import { useSession, signOut } from "next-auth/react";
 import { classNames } from "../../utils/classNames";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDarkmode } from "../../hooks/useDark";
 
 export default function ProfileMenu() {
   const { data: session } = useSession();
   const router = useRouter();
+  const { darkmode, handleDarkmode, addClasses } = useDarkmode();
 
   return (
     <div className="ml-4 flex items-center md:ml-6">
       <button
+        onClick={handleDarkmode}
         type="button"
-        className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+        className="rounded-full p-1 text-gray-400 outline-none hover:text-gray-500 focus:outline-cyan-500 focus:ring-cyan-500"
       >
         <span className="sr-only">View notifications</span>
         <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -30,7 +33,11 @@ export default function ProfileMenu() {
       {/* Profile dropdown */}
       <Menu as="div" className="relative ml-3">
         <div>
-          <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
+          <Menu.Button
+            className={`flex max-w-xs items-center rounded-full text-sm outline-none focus:outline-cyan-500 focus:ring-2 lg:rounded-md lg:p-2 ${
+              darkmode ? "lg:hover:bg-black/50" : "lg:hover:bg-gray-200"
+            }`}
+          >
             {session && session.user ? (
               <>
                 <img
@@ -38,7 +45,7 @@ export default function ProfileMenu() {
                   src={session.user.image!}
                   alt="user avatar"
                 />
-                <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
+                <span className="ml-3 hidden text-sm font-medium lg:block">
                   <span className="sr-only">Open user menu for </span>
                   {session?.user?.name}
                 </span>
@@ -47,7 +54,7 @@ export default function ProfileMenu() {
               <>
                 {" "}
                 <UserCircleIcon className="h-8 w-8 rounded-full text-gray-400 hover:text-gray-500" />
-                <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
+                <span className="ml-3 hidden text-sm font-medium text-white lg:block">
                   <span className="sr-only">Open user menu for </span>
                 </span>
               </>
@@ -68,7 +75,9 @@ export default function ProfileMenu() {
           leaveTo="transform opacity-0 scale-95"
         >
           {session ? (
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items
+              className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${addClasses()}`}
+            >
               {/* Next Link with headless ui will not close menu, solution navigate via router.push */}
               <Menu.Item>
                 {({ active }) => (
@@ -78,10 +87,9 @@ export default function ProfileMenu() {
                         pathname: `/profile/${session.user?.id}`,
                       })
                     }
-                    className={classNames(
-                      active ? "bg-gray-100" : "",
-                      "block cursor-pointer px-4 py-2 text-sm text-gray-700"
-                    )}
+                    className={`block cursor-pointer px-4 py-2 text-sm ${
+                      darkmode ? "hover:bg-black/50" : "hover:bg-gray-200/50"
+                    } `}
                   >
                     My Profile
                   </a>
@@ -91,10 +99,9 @@ export default function ProfileMenu() {
                 {({ active }) => (
                   <div
                     onClick={() => signOut()}
-                    className={classNames(
-                      active ? "bg-gray-100" : "",
-                      "block cursor-pointer px-4 py-2 text-sm text-gray-700"
-                    )}
+                    className={`block cursor-pointer px-4 py-2 text-sm ${
+                      darkmode ? "hover:bg-black/50" : "hover:bg-gray-200/50"
+                    } `}
                   >
                     Logout
                   </div>
@@ -102,7 +109,7 @@ export default function ProfileMenu() {
               </Menu.Item>
             </Menu.Items>
           ) : (
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
                   <a
@@ -111,10 +118,7 @@ export default function ProfileMenu() {
                         pathname: "/signin",
                       })
                     }
-                    className={classNames(
-                      active ? "bg-gray-100" : "",
-                      "block cursor-pointer px-4 py-2 text-sm text-gray-700"
-                    )}
+                    className={`block cursor-pointer px-4 py-2 text-sm `}
                   >
                     Login
                   </a>

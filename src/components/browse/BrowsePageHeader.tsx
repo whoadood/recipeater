@@ -1,5 +1,6 @@
 // Packages
 import React, { useState } from "react";
+import { useDarkmode } from "../../hooks/useDark";
 
 // Utils
 import { classNames } from "../../utils/classNames";
@@ -8,12 +9,15 @@ const tabs = [{ name: "Recent" }, { name: "Likes" }, { name: "Comments" }];
 
 export default function NewPageHeader() {
   const [activeTab, setActiveTab] = useState("Recent");
+  const { darkmode } = useDarkmode();
 
   return (
     <div className="px-4 sm:px-0">
       <div>
         <nav
-          className="isolate flex divide-x divide-gray-200 rounded-lg shadow"
+          className={`isolate flex divide-x ${
+            darkmode ? "divide-gray-600" : "divide-gray-200"
+          } rounded-lg shadow`}
           aria-label="Tabs"
         >
           {tabs.map((tab, tabIdx) => (
@@ -21,11 +25,15 @@ export default function NewPageHeader() {
               key={tab.name}
               className={classNames(
                 tab.name === activeTab
-                  ? "text-gray-900"
-                  : "text-gray-500 hover:text-gray-700",
+                  ? `${darkmode ? "text-white" : "text-gray-900"}`
+                  : `${
+                      darkmode ? "hover:text-gray-200" : "hover:text-gray-700"
+                    } text-gray-500`,
                 tabIdx === 0 ? "rounded-l-lg" : "",
                 tabIdx === tabs.length - 1 ? "rounded-r-lg" : "",
-                "group relative min-w-0 flex-1 cursor-pointer overflow-hidden bg-white py-4 px-6 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
+                `group relative min-w-0 flex-1 cursor-pointer overflow-hidden py-4 px-6 text-center text-sm font-medium focus:z-10 ${
+                  darkmode ? "bg-black/50" : ""
+                }`
               )}
               htmlFor={`${tab.name} tab`}
               onClick={() => setActiveTab(tab.name)}

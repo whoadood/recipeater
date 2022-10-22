@@ -12,6 +12,8 @@ import { trpc } from "../../../utils/trpc";
 import { uploadCloudinary } from "../../../utils/uploadCloudinary";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../../server/trpc/router/_app";
+import { useDarkmode } from "../../../hooks/useDark";
+import Button from "../../global/Button";
 
 // const tester = {
 //   id: null,
@@ -59,6 +61,7 @@ export default function RecipeForm({
 }) {
   const stepRef = useRef(1);
   const utils = trpc.useContext();
+  const { justFont, darkmode } = useDarkmode();
   const signatureMutation = trpc.recipe.getSignature.useMutation();
   const recipeMutation = trpc.recipe.createRecipe.useMutation({
     onSuccess(data, variables, context) {
@@ -152,12 +155,12 @@ export default function RecipeForm({
     >
       {(formik) => {
         return (
-          <Form className="space-y-8 divide-y divide-gray-200">
+          <Form className="mx-auto max-w-4xl space-y-8 divide-y divide-gray-200">
             <div className="space-y-8 divide-y divide-gray-200">
               {/* ********** General Info Section ********** */}
               <div>
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  <h3 className="text-lg font-medium leading-6">
                     Create Recipe
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">
@@ -169,7 +172,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-6">
                     <label
                       htmlFor="username"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Title
                     </label>
@@ -182,7 +185,7 @@ export default function RecipeForm({
                           formik.errors.title && formik.touched.title
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       />
                     </div>
                     {formik.errors.title && formik.touched.title && (
@@ -194,7 +197,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-6">
                     <label
                       htmlFor="about"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Description
                     </label>
@@ -209,7 +212,7 @@ export default function RecipeForm({
                           formik.touched.description
                             ? "border-red-500"
                             : null
-                        } block w-full rounded-md border-2 bg-gray-100 p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full rounded-md border-2 bg-inherit p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       />
                     </div>
                     {formik.errors.description &&
@@ -225,7 +228,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-6">
                     <label
                       htmlFor="category"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`${justFont()} block text-sm font-medium `}
                     >
                       Category
                     </label>
@@ -238,7 +241,7 @@ export default function RecipeForm({
                           formik.errors.category && formik.touched.category
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       />
                     </div>
                     {formik.errors.category && formik.touched.category && (
@@ -251,7 +254,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="difficulty"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Diffuclty
                     </label>
@@ -264,7 +267,7 @@ export default function RecipeForm({
                           formik.errors.difficulty && formik.touched.difficulty
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       >
                         <option value="easy">easy</option>
                         <option value="medium">medium</option>
@@ -281,7 +284,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="username"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Yield
                     </label>
@@ -296,7 +299,7 @@ export default function RecipeForm({
                           formik.errors.yield && formik.touched.yield
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       />
                     </div>
                     {formik.errors.yield && formik.touched.yield && (
@@ -308,7 +311,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="prep_time.time"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Prep Time
                     </label>
@@ -324,7 +327,7 @@ export default function RecipeForm({
                           formik.touched.prep_time?.time
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       />
                     </div>
                     {formik.errors.prep_time?.time &&
@@ -336,7 +339,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="prep_time.unit"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Prep Unit
                     </label>
@@ -350,7 +353,7 @@ export default function RecipeForm({
                           formik.touched.prep_time?.unit
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       >
                         <option value="sec">seconds</option>
                         <option value="min">minutes</option>
@@ -367,7 +370,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="cook_time.time"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Cook Time
                     </label>
@@ -383,7 +386,7 @@ export default function RecipeForm({
                           formik.touched.cook_time?.time
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       />
                     </div>
                     {formik.errors.cook_time?.time &&
@@ -395,7 +398,7 @@ export default function RecipeForm({
                   <div className="sm:col-span-3">
                     <label
                       htmlFor="cook_time.unit"
-                      className="block text-sm font-medium text-gray-700"
+                      className={`block text-sm font-medium ${justFont()}`}
                     >
                       Cook Unit
                     </label>
@@ -409,7 +412,7 @@ export default function RecipeForm({
                           formik.touched.cook_time?.unit
                             ? "border-red-500"
                             : null
-                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-gray-100 p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                        } block w-full min-w-0 flex-1 rounded-md border-2 bg-inherit p-2 outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                       >
                         <option value="sec">seconds</option>
                         <option value="min">minutes</option>
@@ -427,9 +430,11 @@ export default function RecipeForm({
                     {({ remove }) => (
                       <>
                         <div className="sm:col-span-6">
-                          <label className="block text-sm font-medium text-gray-700">
+                          <p
+                            className={`block text-sm font-medium ${justFont()}`}
+                          >
                             Photos preview
-                          </label>
+                          </p>
 
                           {/* ********** Photo Preview ********** */}
                           <div className="mt-1 flex gap-2">
@@ -442,13 +447,11 @@ export default function RecipeForm({
                                   className={`h-12 w-12 overflow-hidden bg-gray-100`}
                                 />
                                 <span>{photo.name}</span>
-                                <button
-                                  type="button"
+                                <Button
+                                  alt={true}
+                                  text="delete"
                                   onClick={() => remove(index)}
-                                  className="rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
-                                >
-                                  Delete
-                                </button>
+                                />
                               </div>
                             ))}
                           </div>
@@ -456,7 +459,9 @@ export default function RecipeForm({
 
                         {/* ********** Add Photos Section ********** */}
                         <div className="sm:col-span-6">
-                          <label className="block text-sm font-medium text-gray-700">
+                          <label
+                            className={`block text-sm font-medium ${justFont()}`}
+                          >
                             Recipe photos
                           </label>
                           <label
@@ -477,10 +482,10 @@ export default function RecipeForm({
                                   strokeLinejoin="round"
                                 />
                               </svg>
-                              <div className="flex text-sm text-gray-600">
+                              <div className={`flex text-sm ${justFont()}`}>
                                 <label
                                   htmlFor="photos"
-                                  className="relative cursor-pointer rounded-md bg-white font-medium text-cyan-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-cyan-500 focus-within:ring-offset-2 hover:text-cyan-500"
+                                  className="relative cursor-pointer rounded-md font-medium text-cyan-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-cyan-500 focus-within:ring-offset-2 hover:text-cyan-500"
                                 >
                                   <span>Upload a file</span>
                                   <input
@@ -516,7 +521,7 @@ export default function RecipeForm({
               {/* ********** Details Section ********** */}
               <div className="pt-8">
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  <h3 className={`text-lg font-medium leading-6 ${justFont()}`}>
                     Recipe Details
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">
@@ -535,7 +540,7 @@ export default function RecipeForm({
                             <div className="sm:col-span-2">
                               <label
                                 htmlFor="name"
-                                className="block text-sm font-medium text-gray-700"
+                                className={`block text-sm font-medium ${justFont()}`}
                               >
                                 Ingredient name
                               </label>
@@ -558,7 +563,7 @@ export default function RecipeForm({
                                       ? "border-red-500"
                                       : null
                                   }
-                                  block w-full rounded-md border-2 bg-gray-100 p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                                  block w-full rounded-md border-2 bg-inherit p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                                 />
                               </div>
                               {(
@@ -591,7 +596,7 @@ export default function RecipeForm({
                             <div className="sm:col-span-2">
                               <label
                                 htmlFor="amount"
-                                className="block text-sm font-medium text-gray-700"
+                                className={`block text-sm font-medium ${justFont()}`}
                               >
                                 Ingredient amount
                               </label>
@@ -615,7 +620,7 @@ export default function RecipeForm({
                                     formik.touched.ingredients?.[index]?.amount
                                       ? "border-red-500"
                                       : null
-                                  } block w-full rounded-md border-2  bg-gray-100 p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                                  } block w-full rounded-md border-2  bg-inherit p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                                 />
                               </div>
                               {(
@@ -648,7 +653,7 @@ export default function RecipeForm({
                             <div className="sm:col-span-2">
                               <label
                                 htmlFor="unit"
-                                className="block text-sm font-medium text-gray-700"
+                                className={`block text-sm font-medium ${justFont()}`}
                               >
                                 Ingredient unit
                               </label>
@@ -656,7 +661,7 @@ export default function RecipeForm({
                                 <Field
                                   as="select"
                                   name={`ingredients.${index}.unit`}
-                                  className={`block w-full rounded-md border-2 bg-gray-100 p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                                  className={`block w-full rounded-md border-2 bg-inherit p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                                 >
                                   <option value="tsp">teaspoon</option>
                                   <option value="tbsp">tablespoon</option>
@@ -671,13 +676,11 @@ export default function RecipeForm({
 
                           {/* ********** Delete Ingredient Button *********** */}
                           <div className="col-span-6 mt-4">
-                            <button
-                              type="button"
-                              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                            <Button
+                              alt={true}
+                              text="Delete"
                               onClick={() => remove(index)}
-                            >
-                              Delete
-                            </button>
+                            />
                           </div>
                         </li>
                       ))}
@@ -716,7 +719,7 @@ export default function RecipeForm({
                           <div className="sm:col-span-6">
                             <label
                               htmlFor="about"
-                              className="block text-sm font-medium text-gray-700"
+                              className={`block text-sm font-medium ${justFont()}`}
                             >
                               Description
                             </label>
@@ -738,7 +741,7 @@ export default function RecipeForm({
                                   formik.touched.directions?.[index]?.text
                                     ? "border-red-500"
                                     : null
-                                } block w-full rounded-md border-2 bg-gray-100  p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
+                                } block w-full rounded-md border-2 bg-inherit  p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                               />
                             </div>
                             <p className="mt-2 text-sm text-gray-500">
@@ -770,13 +773,11 @@ export default function RecipeForm({
 
                           {/* ********** Delete Direction Button *********** */}
                           <div className="col-span-6">
-                            <button
-                              type="button"
-                              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                            <Button
+                              alt={true}
+                              text="Delete"
                               onClick={() => remove(index)}
-                            >
-                              Delete
-                            </button>
+                            />
                           </div>
                         </div>
                       ))}
@@ -807,19 +808,7 @@ export default function RecipeForm({
             {/* ********** Submit Section ********** */}
             <div className="pt-5">
               <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={formik.isSubmitting}
-                  className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
-                >
-                  Submit
-                </button>
+                <Button text="Submit" disabled={formik.isSubmitting} />
               </div>
             </div>
           </Form>

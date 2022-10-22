@@ -4,6 +4,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 
 // Utils
 import { Ingredient } from "@prisma/client";
+import { useDarkmode } from "../../hooks/useDark";
 
 const projects = [
   {
@@ -41,6 +42,7 @@ export default function IngredientList({
 }: {
   ingredients: Ingredient[];
 }) {
+  const { addClasses, darkmode, justFont } = useDarkmode();
   return (
     <div>
       <h2 className="text-sm font-medium text-gray-500">Ingredients</h2>
@@ -58,11 +60,13 @@ export default function IngredientList({
               <span className="text-xl">{ing.amount}</span>
               <span className="text-gray-500">{ing.unit}</span>
             </div>
-            <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
+            <div
+              className={`flex flex-1 items-center justify-between truncate rounded-r-md ${
+                darkmode ? "" : "border-t border-r border-b"
+              } ${darkmode ? "bg-black/50" : ""}`}
+            >
               <div className="flex-1 truncate px-4 py-2 text-sm">
-                <div className="font-medium text-gray-900 hover:text-gray-600">
-                  {ing.name}
-                </div>
+                <div className={`font-medium ${justFont()}`}>{ing.name}</div>
                 <p className="text-gray-500">{ing.name}</p>
               </div>
             </div>

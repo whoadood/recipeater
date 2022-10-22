@@ -25,7 +25,7 @@ const Home: NextPage = () => {
         <PageHeader>
           <Hero />
         </PageHeader>
-        <div className="px-8 py-4">
+        <div className="max-h-[85vh] overflow-scroll px-8 py-4">
           <h2 className="text-lg">Featured Recipe</h2>
           {featured && featured[0] && <BrowseCard recipe={featured[0]} />}
           <h2 className="text-lg">Recent recipes</h2>

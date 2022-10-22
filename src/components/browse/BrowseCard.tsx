@@ -15,6 +15,7 @@ import {
 import { IRecipeCard } from "../../types/globals";
 import Link from "next/link";
 import { makeImageUrl } from "../../utils/makeImageUrl";
+import { useDarkmode } from "../../hooks/useDark";
 
 type question = {
   id: string;
@@ -34,8 +35,13 @@ type question = {
 };
 
 export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
+  const { justFont, darkmode } = useDarkmode();
   return (
-    <li className="relative mx-auto max-w-2xl overflow-hidden shadow sm:rounded-lg">
+    <li
+      className={`${
+        darkmode ? "bg-black/40" : "bg-gray-100"
+      } relative mx-auto max-w-2xl overflow-hidden shadow sm:rounded-lg`}
+    >
       <article aria-labelledby={"recipe-title-" + recipe.id}>
         <div>
           {/* ********** Author section  ********** */}
@@ -53,7 +59,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                   <a className="hover:underline">{recipe.user.name}</a>
                 </Link>
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-400">
                 <a
                   href={`/recipe/search/${recipe.category.name}`}
                   className="hover:underline"
@@ -83,10 +89,10 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             }}
             className="h-64 w-full bg-cover bg-center bg-no-repeat"
           />
-          <div className="px-4 sm:px-6">
+          <div className="px-4 pt-4 sm:px-6">
             <h2
               id={"question-title-" + recipe.id}
-              className="mt-4 text-base font-medium text-gray-900"
+              className={`${justFont()}mt-4 text-base font-medium`}
             >
               <Link href={`/recipe/${recipe.id}`}>
                 <a className="hover:underline">{recipe.title}</a>
@@ -94,7 +100,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             </h2>
           </div>
           <div
-            className="mt-2 space-y-4 px-4 text-sm text-gray-700 sm:px-6"
+            className={`${justFont()} mt-2 space-y-4 px-4 text-sm  sm:px-6`}
             dangerouslySetInnerHTML={{ __html: recipe.description }}
           />
           <div className=" flex justify-between space-x-8 px-4 py-6 pb-4 sm:p-6">
@@ -105,7 +111,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                   className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                 >
                   <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                  <span className="font-medium text-gray-900">{11}</span>
+                  <span className={`font-medium ${justFont()}`}>{11}</span>
                   <span className="sr-only">likes</span>
                 </button>
               </span>
@@ -118,7 +124,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                     className="h-5 w-5"
                     aria-hidden="true"
                   />
-                  <span className="font-medium text-gray-900">{23}</span>
+                  <span className={`font-medium ${justFont()}`}>{23}</span>
                   <span className="sr-only">replies</span>
                 </button>
               </span>
@@ -128,7 +134,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                   className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                 >
                   <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                  <span className="font-medium text-gray-900">{44}</span>
+                  <span className={`font-medium ${justFont()}`}>{44}</span>
                   <span className="sr-only">views</span>
                 </button>
               </span>
@@ -140,7 +146,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                   className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                 >
                   <ShareIcon className="h-5 w-5" aria-hidden="true" />
-                  <span className="font-medium text-gray-900">Share</span>
+                  <span className={`font-medium ${justFont()}`}>Share</span>
                 </button>
               </span>
             </div>

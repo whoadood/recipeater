@@ -7,6 +7,7 @@ import { trpc } from "../utils/trpc";
 
 // Components
 import Header from "../components/layouts/Header";
+import { DarkmodeProvider } from "../hooks/useDark";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -14,9 +15,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Header>
-        <Component {...pageProps} />
-      </Header>
+      <DarkmodeProvider>
+        <Header>
+          <Component {...pageProps} />
+        </Header>
+      </DarkmodeProvider>
     </SessionProvider>
   );
 };

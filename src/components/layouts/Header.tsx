@@ -16,6 +16,7 @@ import ProfileMenu from "../global/ProfileMenu";
 
 // Utils
 import { classNames } from "../../utils/classNames";
+import { useDarkmode } from "../../hooks/useDark";
 
 const cards = [
   { name: "Account balance", href: "#", icon: ScaleIcon, amount: "$30,659.45" },
@@ -38,18 +39,19 @@ const transactions = [
 
 export default function Header({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { darkmode, addClasses } = useDarkmode();
 
   return (
     <>
-      <div className="min-h-full">
+      <div className={`h-screen ${addClasses()}`}>
         <Nav sidebar={{ sidebarOpen, setSidebarOpen }} />
 
         <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 lg:border-none">
             {/* Toggle Nav Menu */}
             <button
               type="button"
-              className="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden"
+              className="border-r border-gray-400 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
@@ -63,7 +65,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Main body */}
-          <div className="flex-1 pb-8">
+          <div className="max-h-full flex-1 bg-inherit">
             {/* Page */}
             {children}
           </div>

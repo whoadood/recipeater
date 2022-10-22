@@ -9,6 +9,7 @@ import ProfileRecipeCard from "./ProfileRecipeCard";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
 import { RecipeData } from "../../types/globals";
+import { useDarkmode } from "../../hooks/useDark";
 const projects = [
   {
     name: "Workcation",
@@ -30,18 +31,23 @@ export default function ProfileList({
 }: {
   data: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
+  const { darkmode, addClasses } = useDarkmode();
   const {
     profile: { recipes },
   } = data;
   return (
     <>
       {/* Projects List */}
-      <div className="bg-white lg:min-w-0 lg:flex-1">
+      <div className="lg:min-w-0 lg:flex-1">
         <div className="border-b border-t border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
           <div className="flex items-center">
             <h1 className="flex-1 text-lg font-medium">My Recipes</h1>
-            <Menu as="div" className="relative">
-              <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            <Menu as="div" className={`relative`}>
+              <Menu.Button
+                className={`inline-flex w-full justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ${
+                  darkmode ? "hover:bg-black/60" : "hover:bg-gray-50"
+                } ${addClasses()} focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
+              >
                 <BarsArrowUpIcon
                   className="mr-3 h-5 w-5 text-gray-400"
                   aria-hidden="true"
@@ -52,18 +58,17 @@ export default function ProfileList({
                   aria-hidden="true"
                 />
               </Menu.Button>
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items
+                className={`${addClasses()} absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-400 shadow-lg `}
+              >
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
                       <a
                         href="#"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
+                        className={`${
+                          darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
+                        } block px-4 py-2 text-sm text-inherit`}
                       >
                         Name
                       </a>
@@ -73,12 +78,9 @@ export default function ProfileList({
                     {({ active }) => (
                       <a
                         href="#"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
+                        className={`${
+                          darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
+                        } block px-4 py-2 text-sm text-inherit`}
                       >
                         Date modified
                       </a>
@@ -88,12 +90,9 @@ export default function ProfileList({
                     {({ active }) => (
                       <a
                         href="#"
-                        className={classNames(
-                          active
-                            ? "bg-gray-100 text-gray-900"
-                            : "text-gray-700",
-                          "block px-4 py-2 text-sm"
-                        )}
+                        className={`${
+                          darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
+                        } block px-4 py-2 text-sm text-inherit`}
                       >
                         Date created
                       </a>

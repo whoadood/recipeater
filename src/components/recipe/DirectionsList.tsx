@@ -12,6 +12,7 @@ import {
 // Utils
 import { classNames } from "../../utils/classNames";
 import { Direction } from "@prisma/client";
+import { useDarkmode } from "../../hooks/useDark";
 
 const actions = [
   {
@@ -63,10 +64,13 @@ export default function DirectionsList({
 }: {
   directions: Direction[];
 }) {
+  const { darkmode, addClasses } = useDarkmode();
   return (
     <>
-      <h2 className="text-sm font-medium text-gray-500">Directions</h2>
-      <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-gray-200 shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+      <h2 className="pb-4 text-sm font-medium text-gray-500">Directions</h2>
+      <div
+        className={`divide-y divide-gray-400 overflow-hidden rounded-lg shadow sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0`}
+      >
         {directions.map((direc, direcIdx) => (
           <div
             key={direc.id}
@@ -79,13 +83,13 @@ export default function DirectionsList({
               direcIdx === actions.length - 1
                 ? "rounded-bl-lg rounded-br-lg sm:rounded-bl-none"
                 : "",
-              "group relative bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
+              `group relative p-6 ${darkmode ? "bg-black/50" : "bg-gray-100"}`
             )}
           >
             <div>
               <span
                 className={
-                  "inline-flex rounded-lg bg-cyan-50 p-3 text-center text-cyan-700 ring-4 ring-white"
+                  "inline-flex rounded-lg bg-cyan-500 p-3 text-center text-white"
                 }
               >
                 <div className="h-6 w-6" aria-hidden="true">

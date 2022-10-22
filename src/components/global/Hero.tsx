@@ -12,7 +12,7 @@ export default function Hero() {
   const router = useRouter();
   const { data: session } = useSession();
   return (
-    <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
+    <div className="py-6 text-inherit md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
       <div className="min-w-0 flex-1">
         {/* Profile */}
         <div className="flex items-center">
@@ -20,7 +20,7 @@ export default function Hero() {
 
           <div>
             <div className="flex items-center">
-              <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
+              <h1 className="ml-3 text-2xl font-bold leading-7 sm:truncate sm:leading-9">
                 Welcome to <span className="text-cyan-500">Recipeater</span>
               </h1>
             </div>
