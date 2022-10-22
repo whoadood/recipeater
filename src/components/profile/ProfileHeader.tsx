@@ -38,7 +38,6 @@ export default function ProfileHeader({
 }: {
   data: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
-  console.log("profile header", data);
   const { profile } = data;
   const router = useRouter();
   const { data: session } = useSession();
@@ -71,7 +70,9 @@ export default function ProfileHeader({
           <h2 className="sr-only" id="profile-overview-title">
             Profile Overview
           </h2>
-          <div className={`p-6 ${addClasses()}`}>
+          <div
+            className={`p-6 ${darkmode ? "bg-[#2e2e2e]" : "bg-gray-200/50"}`}
+          >
             <div className="sm:flex sm:items-center sm:justify-between">
               <div className="sm:flex sm:space-x-5">
                 <div className="flex-shrink-0">
@@ -168,7 +169,9 @@ export default function ProfileHeader({
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="px-6 py-5 text-center text-sm font-medium"
+                className={`px-6 py-5 text-center text-sm font-medium ${
+                  darkmode ? "bg-[#2e2e2e]" : "bg-gray-200/50"
+                }`}
               >
                 <span className="text-lg font-bold text-cyan-500">
                   {stat.value}

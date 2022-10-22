@@ -47,7 +47,9 @@ export default function Signin({
 
         <div className={`sm:mx-auto sm:w-full sm:max-w-md`}>
           <div
-            className={`mt-4 py-8 px-4 shadow sm:rounded-lg sm:px-10 ${addClasses()}`}
+            className={`mt-4 py-8 px-4 shadow sm:rounded-lg sm:px-10 ${
+              darkmode ? "bg-[#2e2e2e] " : "bg-white"
+            }`}
           >
             <div className="mt-6">
               <div className="relative">
@@ -57,7 +59,7 @@ export default function Signin({
                 <div className="relative flex justify-center text-sm">
                   <span
                     className={`${
-                      darkmode ? "bg-[#171717] text-white" : "bg-white"
+                      darkmode ? "bg-[#2e2e2e] text-white" : "bg-white"
                     } px-2 text-gray-500`}
                   >
                     Continue with

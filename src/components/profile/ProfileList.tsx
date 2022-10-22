@@ -45,8 +45,10 @@ export default function ProfileList({
             <Menu as="div" className={`relative`}>
               <Menu.Button
                 className={`inline-flex w-full justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ${
-                  darkmode ? "hover:bg-black/60" : "hover:bg-gray-50"
-                } ${addClasses()} focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
+                  darkmode
+                    ? "bg-[#2e2e2e] text-white hover:bg-[#1e1e1e]"
+                    : "bg-white hover:bg-gray-50"
+                } focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               >
                 <BarsArrowUpIcon
                   className="mr-3 h-5 w-5 text-gray-400"

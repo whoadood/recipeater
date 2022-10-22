@@ -76,7 +76,9 @@ export default function ProfileMenu() {
         >
           {session ? (
             <Menu.Items
-              className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${addClasses()}`}
+              className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+                darkmode ? "bg-[#2e2e2e] " : "bg-white"
+              }`}
             >
               {/* Next Link with headless ui will not close menu, solution navigate via router.push */}
               <Menu.Item>
@@ -88,7 +90,9 @@ export default function ProfileMenu() {
                       })
                     }
                     className={`block cursor-pointer px-4 py-2 text-sm ${
-                      darkmode ? "hover:bg-black/50" : "hover:bg-gray-200/50"
+                      darkmode
+                        ? "bg-[#2e2e2e] hover:bg-[#1e1e1e]"
+                        : "hover:bg-gray-200/50"
                     } `}
                   >
                     My Profile
@@ -100,7 +104,9 @@ export default function ProfileMenu() {
                   <div
                     onClick={() => signOut()}
                     className={`block cursor-pointer px-4 py-2 text-sm ${
-                      darkmode ? "hover:bg-black/50" : "hover:bg-gray-200/50"
+                      darkmode
+                        ? "bg-[#2e2e2e] hover:bg-[#1e1e1e]"
+                        : "hover:bg-gray-200/50"
                     } `}
                   >
                     Logout
@@ -119,7 +125,9 @@ export default function ProfileMenu() {
                       })
                     }
                     className={`block cursor-pointer px-4 py-2 text-sm ${
-                      darkmode ? "hover:bg-black/50" : "hover:bg-gray-200/50"
+                      darkmode
+                        ? "bg-[#2e2e2e] hover:bg-[#1e1e1e]"
+                        : "hover:bg-gray-200/50"
                     } `}
                   >
                     Login
