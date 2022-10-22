@@ -3,8 +3,9 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
-  BellIcon,
   UserCircleIcon,
+  SunIcon,
+  MoonIcon,
 } from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
 
@@ -17,7 +18,7 @@ import { useDarkmode } from "../../hooks/useDark";
 export default function ProfileMenu() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { darkmode, handleDarkmode, addClasses } = useDarkmode();
+  const { darkmode, handleDarkmode } = useDarkmode();
 
   return (
     <div className="ml-4 flex items-center md:ml-6">
@@ -27,7 +28,11 @@ export default function ProfileMenu() {
         className="rounded-full p-1 text-gray-400 outline-none hover:text-gray-500 focus:outline-cyan-500 focus:ring-cyan-500"
       >
         <span className="sr-only">View notifications</span>
-        <BellIcon className="h-6 w-6" aria-hidden="true" />
+        {darkmode ? (
+          <MoonIcon className="h-6 w-6" aria-hidden="true" />
+        ) : (
+          <SunIcon className="h-6 w-6" aria-hidden="true" />
+        )}
       </button>
 
       {/* Profile dropdown */}
@@ -42,7 +47,7 @@ export default function ProfileMenu() {
               <>
                 <img
                   className="h-8 w-8 rounded-full"
-                  src={session.user.image!}
+                  src={session.user.image as string}
                   alt="user avatar"
                 />
                 <span className="ml-3 hidden text-sm font-medium lg:block">

@@ -72,13 +72,15 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
               <div className="relative inline-block text-left">
                 <div>
                   {/* ********** favorite this recipe ********** */}
-                  <button
-                    // onClick={() => {}}
-                    className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600"
-                  >
-                    <span className="sr-only">Open options</span>
-                    <StarIcon className="h-5 w-5" aria-hidden="true" />
-                  </button>
+                  <Link href={`/recipe/edit/${recipe.id}`}>
+                    <a
+                      // onClick={() => {}}
+                      className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600"
+                    >
+                      <span className="sr-only">Open options</span>
+                      <StarIcon className="h-5 w-5" aria-hidden="true" />
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -141,13 +143,18 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             </div>
             <div className="flex text-sm">
               <span className="inline-flex items-center text-sm">
-                <button
+                <a
+                  href={`https://twitter.com/intent/tweet?text=Check%20out%20my%20new%20recipe%20%23${recipe.title
+                    .split(" ")
+                    .join("")}%20www.recipeater.com/recipe/${recipe.id}`}
+                  target="_blank"
+                  rel="noreferrer"
                   type="button"
                   className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                 >
                   <ShareIcon className="h-5 w-5" aria-hidden="true" />
                   <span className={`font-medium ${justFont()}`}>Share</span>
-                </button>
+                </a>
               </span>
             </div>
           </div>

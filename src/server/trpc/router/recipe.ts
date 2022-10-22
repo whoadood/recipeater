@@ -3,6 +3,7 @@ import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { v2 as cloudinary } from "cloudinary";
 import { env } from "../../../env/server.mjs";
+import { TRPCError } from "@trpc/server";
 
 export const recipeRouter = router({
   getHomePage: publicProcedure.query(async ({ ctx }) => {
@@ -52,6 +53,38 @@ export const recipeRouter = router({
     );
     return { timestamp, signature };
   }),
+
+  getDeleteSignature: protectedProcedure
+    .input(
+      z.object({
+        photo_id: z.string(),
+        public_id: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      cloudinary.config({
+        cloud_name: env.NEXT_PUBLIC_CLOUD_NAME,
+        api_key: env.NEXT_PUBLIC_API_KEY,
+        api_secret: env.CLOUDINARY_API_SECRET,
+      });
+
+      return cloudinary.uploader.destroy(
+        input.public_id,
+        async (err: any, result: any) => {
+          if (err) {
+            console.log("error", err);
+            throw new Error((err as Error).message);
+          }
+          const deleted = await ctx.prisma.image.delete({
+            where: {
+              id: input.photo_id,
+            },
+          });
+          console.log("result", result);
+          return { message: "successfully deleted " + deleted.id };
+        }
+      );
+    }),
 
   getRecipesBySearch: publicProcedure
     .input(
@@ -109,7 +142,10 @@ export const recipeRouter = router({
         id: z.string().nullable(),
         title: z.string(),
         description: z.string(),
-        category: z.string(),
+        category: z.object({
+          id: z.string().nullable(),
+          name: z.string(),
+        }),
         difficulty: z.string(),
         yield: z.number(),
         prep_time: z.object({
@@ -180,10 +216,10 @@ export const recipeRouter = router({
           category: {
             connectOrCreate: {
               where: {
-                name: input.category,
+                id: input.category.id ? input.category.id : undefined,
               },
               create: {
-                name: input.category,
+                name: input.category.name,
               },
             },
           },
@@ -205,5 +241,134 @@ export const recipeRouter = router({
       });
 
       return newRecipe;
+    }),
+
+  editRecipe: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string(),
+        category: z.string(),
+        difficulty: z.string(),
+        yield: z.number(),
+        prep_time: z.object({
+          id: z.string().nullable(),
+          time: z.number(),
+          unit: z.string(),
+        }),
+        cook_time: z.object({
+          id: z.string().nullable(),
+          time: z.number(),
+          unit: z.string(),
+        }),
+        photos: z.array(
+          z.object({
+            id: z.string().nullable(),
+            name: z.string(),
+            public_id: z.string(),
+            version: z.number(),
+            signature: z.string(),
+          })
+        ),
+        ingredients: z.array(
+          z.object({
+            id: z.string().nullable(),
+            name: z.string(),
+            amount: z.number(),
+            unit: z.string(),
+          })
+        ),
+        directions: z.array(
+          z.object({
+            id: z.string().nullable(),
+            step: z.number(),
+            text: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const edittedRecipe = ctx.prisma.recipe.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          description: input.description,
+          category: {
+            connectOrCreate: {
+              where: { name: input.category },
+              create: { name: input.category },
+            },
+          },
+          difficulty: input.difficulty,
+          yield: input.yield,
+          prep_time: {
+            upsert: {
+              create: {
+                time: input.prep_time.time,
+                unit: input.prep_time.unit,
+              },
+              update: {
+                time: input.prep_time.time,
+                unit: input.prep_time.unit,
+              },
+            },
+          },
+          cook_time: {
+            upsert: {
+              create: {
+                time: input.cook_time.time,
+                unit: input.cook_time.unit,
+              },
+              update: {
+                time: input.cook_time.time,
+                unit: input.cook_time.unit,
+              },
+            },
+          },
+          images: {
+            upsert: input.photos.map((photo) => {
+              return {
+                create: {
+                  name: photo.name,
+                  public_id: photo.public_id,
+                  version: photo.version,
+                  signature: photo.signature,
+                },
+                update: {
+                  name: photo.name,
+                  public_id: photo.public_id,
+                  version: photo.version,
+                  signature: photo.signature,
+                },
+                where: { id: photo.id ? photo.id : "no id" },
+              };
+            }),
+          },
+          ingredients: {
+            upsert: input.ingredients.map((ing) => {
+              return {
+                create: { name: ing.name, amount: ing.amount, unit: ing.unit },
+                update: { name: ing.name, amount: ing.amount, unit: ing.unit },
+                where: { id: ing.id ? ing.id : "no id" },
+              };
+            }),
+          },
+          directions: {
+            upsert: input.directions.map((dir) => {
+              return {
+                create: { step: dir.step, text: dir.text },
+                update: { step: dir.step, text: dir.text },
+                where: { id: dir.id ? dir.id : "no id" },
+              };
+            }),
+          },
+        },
+      });
+      if (!edittedRecipe) throw new TRPCError({ code: "NOT_FOUND" });
+
+      return edittedRecipe;
     }),
 });

@@ -1,11 +1,23 @@
 // Packages
 import React, { useState } from "react";
 import { useDarkmode } from "../../hooks/useDark";
+import {
+  ChatBubbleLeftEllipsisIcon,
+  HandThumbUpIcon,
+  ShareIcon,
+} from "@heroicons/react/20/solid";
 
 // Utils
 import { classNames } from "../../utils/classNames";
 
-const tabs = [{ name: "Recent" }, { name: "Likes" }, { name: "Comments" }];
+const tabs = [
+  { name: "Recent", icon: <ShareIcon className="h-6 w-6" /> },
+  { name: "Likes", icon: <HandThumbUpIcon className="h-6 w-6" /> },
+  {
+    name: "Comments",
+    icon: <ChatBubbleLeftEllipsisIcon className="h-6 w-6" />,
+  },
+];
 
 export default function NewPageHeader() {
   const [activeTab, setActiveTab] = useState("Recent");
@@ -25,13 +37,13 @@ export default function NewPageHeader() {
               key={tab.name}
               className={classNames(
                 tab.name === activeTab
-                  ? `${darkmode ? "text-white" : "text-gray-900"}`
+                  ? `${darkmode ? "text-white" : "text-gray-700"}`
                   : `${
                       darkmode ? "hover:text-gray-200" : "hover:text-gray-700"
                     } text-gray-500`,
                 tabIdx === 0 ? "rounded-l-lg" : "",
                 tabIdx === tabs.length - 1 ? "rounded-r-lg" : "",
-                `group relative min-w-0 flex-1 cursor-pointer overflow-hidden py-4 px-6 text-center text-sm font-medium focus:z-10 ${
+                `group relative flex min-w-0 flex-1 cursor-pointer flex-col items-center justify-center overflow-hidden py-4 px-6 text-center text-sm font-medium focus:z-10 ${
                   darkmode ? "bg-black/50" : ""
                 }`
               )}
@@ -45,6 +57,7 @@ export default function NewPageHeader() {
                   tab.name === activeTab ? `${tab.name} tab` : undefined
                 }
               />
+              <span>{tab.icon}</span>
               <span>{tab.name}</span>
               <span
                 aria-hidden="true"

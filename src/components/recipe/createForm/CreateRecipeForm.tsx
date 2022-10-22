@@ -55,16 +55,29 @@ import Button from "../../global/Button";
 // };
 
 export default function RecipeForm({
+  editing = false,
   recipe,
 }: {
+  editing?: boolean;
   recipe?: inferProcedureOutput<AppRouter["recipe"]["createRecipe"]>;
 }) {
   const stepRef = useRef(1);
   const utils = trpc.useContext();
   const { justFont, darkmode } = useDarkmode();
   const signatureMutation = trpc.recipe.getSignature.useMutation();
-  const recipeMutation = trpc.recipe.createRecipe.useMutation({
+  const deleteSignatrueMutation = trpc.recipe.getDeleteSignature.useMutation({
+    onSuccess(data) {
+      console.log("delete on success data", data);
+      utils.recipe.getRecipeById.invalidate();
+    },
+  });
+  const createMutation = trpc.recipe.createRecipe.useMutation({
     onSuccess(data, variables, context) {
+      utils.category.getTopCategory.invalidate();
+    },
+  });
+  const editMutation = trpc.recipe.editRecipe.useMutation({
+    onSuccess() {
       utils.category.getTopCategory.invalidate();
     },
   });
@@ -76,44 +89,74 @@ export default function RecipeForm({
     // yield
     yield: number;
     // difficulty
-    difficulty: "easy" | "medium" | "hard" | "expert";
+    difficulty: string;
     // prep time
     prep_time: {
+      id: string | null;
       time: number;
-      unit: "sec" | "min" | "hr";
+      unit: string;
     };
     // cook time
-    cook_time: { time: number; unit: "sec" | "min" | "hr" };
-    photos: File[];
+    cook_time: { id: string | null; time: number; unit: string };
+    photos:
+      | File[]
+      | {
+          id: string | null;
+          name: string;
+          public_id: string;
+          version: string;
+          signature: string;
+        }[];
     ingredients: {
+      id: string | null;
       name: string;
       amount: number;
-      unit: "tsp" | "tbsp" | "fl oz" | "cups" | "pints" | "ltrs";
+      unit: string;
     }[];
-    directions: { step: number; text: string }[];
-  } = {
-    title: "",
-    description: "",
-    category: "",
-    yield: 1,
-    difficulty: "easy",
-    prep_time: { time: 1, unit: "min" },
-    cook_time: { time: 1, unit: "min" },
-    photos: [],
-    ingredients: [
-      {
-        name: "",
-        amount: 1,
-        unit: "tsp",
-      },
-    ],
-    directions: [
-      {
-        step: 1,
-        text: "",
-      },
-    ],
-  };
+    directions: { id: string | null; step: number; text: string }[];
+  } =
+    recipe &&
+    recipe.prep_time &&
+    recipe.cook_time &&
+    recipe.directions &&
+    recipe.ingredients
+      ? {
+          title: recipe.title,
+          description: recipe.description,
+          category: recipe.category.name,
+          yield: recipe.yield,
+          difficulty: recipe.difficulty,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          photos: [],
+          ingredients: recipe.ingredients,
+          directions: recipe.directions,
+        }
+      : {
+          title: "",
+          description: "",
+          category: "",
+          yield: 1,
+          difficulty: "easy",
+          prep_time: { id: null, time: 1, unit: "min" },
+          cook_time: { id: null, time: 1, unit: "min" },
+          photos: [],
+          ingredients: [
+            {
+              id: null,
+              name: "",
+              amount: 1,
+              unit: "tsp",
+            },
+          ],
+          directions: [
+            {
+              id: null,
+              step: 1,
+              text: "",
+            },
+          ],
+        };
 
   return (
     <Formik
@@ -121,22 +164,34 @@ export default function RecipeForm({
       validationSchema={toFormikValidationSchema(RecipeSchema)}
       onSubmit={async (values, { resetForm }) => {
         const { signature, timestamp } = await signatureMutation.mutateAsync();
-        if (signature && timestamp) {
-          const cloudinaryPhotos = await uploadCloudinary(
-            // account for already uploaded photos here
-            // types are different
-            // ditch type casting
-            values.photos as File[],
-            signature,
-            timestamp
-          );
-          console.log("cloud", cloudinaryPhotos);
-
-          recipeMutation.mutate({
-            id: null,
+        const cloudinaryPhotos = await uploadCloudinary(
+          // account for already uploaded photos here
+          // types are different
+          // ditch type casting
+          values.photos as File[],
+          signature,
+          timestamp
+        );
+        if (editing && recipe) {
+          editMutation.mutate({
+            id: recipe?.id,
             title: values.title,
             description: values.description,
             category: values.category,
+            difficulty: values.difficulty,
+            yield: values.yield,
+            prep_time: values.prep_time,
+            cook_time: values.cook_time,
+            photos: [...recipe.images, ...cloudinaryPhotos],
+            ingredients: values.ingredients,
+            directions: values.directions,
+          });
+        } else {
+          createMutation.mutate({
+            id: null,
+            title: values.title,
+            description: values.description,
+            category: { id: null, name: values.category },
             difficulty: values.difficulty,
             yield: values.yield,
             prep_time: values.prep_time,
@@ -146,8 +201,6 @@ export default function RecipeForm({
             directions: values.directions,
           });
         }
-
-        console.log("form", values);
 
         stepRef.current = 1;
         resetForm();
@@ -161,7 +214,7 @@ export default function RecipeForm({
               <div>
                 <div>
                   <h3 className="text-lg font-medium leading-6">
-                    Create Recipe
+                    {editing ? "Edit Recipe" : "Create Recipe"}
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">
                     Create and share your all your favorite recipes!
@@ -438,6 +491,31 @@ export default function RecipeForm({
 
                           {/* ********** Photo Preview ********** */}
                           <div className="mt-1 flex gap-2">
+                            {/* ********** edit existing images ********** */}
+                            {editing &&
+                              recipe?.images.map((photo, index) => (
+                                <div
+                                  key={photo.name}
+                                  className="flex flex-col items-center justify-center"
+                                >
+                                  <span
+                                    className={`h-12 w-12 overflow-hidden bg-gray-100`}
+                                  />
+                                  <span>{photo.name}</span>
+                                  <Button
+                                    alt={true}
+                                    text="delete"
+                                    onClick={async () => {
+                                      await deleteSignatrueMutation.mutateAsync(
+                                        {
+                                          photo_id: photo.id,
+                                          public_id: photo.public_id,
+                                        }
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              ))}
                             {formik.values.photos.map((photo, index) => (
                               <div
                                 key={photo.name}
@@ -494,7 +572,6 @@ export default function RecipeForm({
                                     className="sr-only"
                                     onChange={(e) => {
                                       if (e.currentTarget.files) {
-                                        console.log(e.currentTarget.files[0]);
                                         formik.setFieldValue("photos", [
                                           ...formik.values.photos,
                                           ...Array.from(e.currentTarget.files),
@@ -808,7 +885,11 @@ export default function RecipeForm({
             {/* ********** Submit Section ********** */}
             <div className="pt-5">
               <div className="flex justify-end">
-                <Button text="Submit" disabled={formik.isSubmitting} />
+                <Button
+                  type={"submit"}
+                  text="Submit"
+                  disabled={formik.isSubmitting}
+                />
               </div>
             </div>
           </Form>

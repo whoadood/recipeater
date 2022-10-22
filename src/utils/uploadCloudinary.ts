@@ -1,3 +1,4 @@
+import { Image } from "@prisma/client";
 import { env } from "../env/client.mjs";
 
 export const uploadCloudinary = async (
@@ -9,6 +10,7 @@ export const uploadCloudinary = async (
   const upload = async (
     file: File
   ): Promise<{
+    id: null;
     name: string;
     public_id: string;
     version: number;
@@ -28,7 +30,11 @@ export const uploadCloudinary = async (
       }
     );
     const imageData = await cloudinaryResponse.json();
+
+    console.log("create image data", imageData);
+
     return {
+      id: null,
       name: file.name,
       public_id: imageData.public_id,
       version: imageData.version,
