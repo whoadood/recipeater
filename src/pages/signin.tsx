@@ -1,5 +1,4 @@
-// Packages
-import React from "react";
+// Packagesimport React from "react";
 import {
   ClientSafeProvider,
   getProviders,
@@ -7,6 +6,7 @@ import {
   signIn,
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
+import { useDarkmode } from "../hooks/useDark";
 
 export default function Signin({
   providers,
@@ -16,6 +16,7 @@ export default function Signin({
     ClientSafeProvider
   >;
 }) {
+  const { darkmode, justFont, addClasses } = useDarkmode();
   return (
     <>
       {/*
@@ -26,27 +27,39 @@ export default function Signin({
         <body class="h-full">
         ```
       */}
-      <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div
+        className={`flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8`}
+      >
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=500"
             alt="Your Company"
           />
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+          <h2
+            className={`mt-6 text-center text-3xl font-bold tracking-tight ${
+              darkmode ? "text-white" : "text-black"
+            }`}
+          >
             Sign in to your account
           </h2>
         </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className={`sm:mx-auto sm:w-full sm:max-w-md`}>
+          <div
+            className={`mt-4 py-8 px-4 shadow sm:rounded-lg sm:px-10 ${addClasses()}`}
+          >
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="bg-white px-2 text-gray-500">
+                  <span
+                    className={`${
+                      darkmode ? "bg-[#171717] text-white" : "bg-white"
+                    } px-2 text-gray-500`}
+                  >
                     Continue with
                   </span>
                 </div>
@@ -57,13 +70,13 @@ export default function Signin({
                   <div key={provider.id} className="col-span-3">
                     <button
                       onClick={() => signIn(provider.id)}
-                      className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                      className="group inline-flex w-full justify-center rounded-md border border-gray-300 py-2 px-4 text-sm font-medium text-gray-500 shadow-sm"
                     >
                       <span className="sr-only">
                         Sign in with {provider.name}
                       </span>
                       <svg
-                        className="h-5 w-5"
+                        className="h-5 w-5 text-gray-500 group-hover:text-cyan-500"
                         aria-hidden="true"
                         fill="currentColor"
                         viewBox="0 0 20 20"

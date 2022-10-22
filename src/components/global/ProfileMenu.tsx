@@ -118,7 +118,9 @@ export default function ProfileMenu() {
                         pathname: "/signin",
                       })
                     }
-                    className={`block cursor-pointer px-4 py-2 text-sm `}
+                    className={`block cursor-pointer px-4 py-2 text-sm ${
+                      darkmode ? "hover:bg-black/50" : "hover:bg-gray-200/50"
+                    } `}
                   >
                     Login
                   </a>
