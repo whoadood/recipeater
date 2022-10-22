@@ -65,7 +65,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Main body */}
-          <div className="max-h-full flex-1 bg-inherit">
+          <div className="max-h-[94vh] flex-1 overflow-scroll bg-inherit py-2">
             {/* Page */}
             {children}
           </div>

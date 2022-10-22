@@ -6,7 +6,7 @@ import RecipeForm from "../../components/recipe/createForm/CreateRecipeForm";
 
 export default function create() {
   return (
-    <main className="max-h-[90vh] overflow-scroll px-2 py-4">
+    <main className="px-2 py-4">
       <RecipeForm />
     </main>
   );

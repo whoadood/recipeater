@@ -1,5 +1,5 @@
 // Packages
-import React, { useContext, createContext } from "react";
+import React, { useContext, createContext, useEffect } from "react";
 import useToggle from "./useToggle";
 
 const Darkmode = createContext<
@@ -13,7 +13,19 @@ const Darkmode = createContext<
 >(undefined);
 
 const DarkmodeProvider = ({ children }: { children: React.ReactNode }) => {
-  const { toggle: darkmode, handleToggle: handleDarkmode } = useToggle();
+  const { toggle: darkmode, handleToggle, setToggle } = useToggle();
+
+  useEffect(() => {
+    const dm = localStorage.getItem("darkmode");
+    if (dm) {
+      setToggle(!!JSON.parse(dm));
+    }
+  }, [setToggle]);
+
+  const handleDarkmode = () => {
+    handleToggle();
+    localStorage.setItem("darkmode", JSON.stringify(!darkmode));
+  };
   const addClasses = () =>
     darkmode ? "bg-black/70 text-white" : "bg-white text-black";
   const justFont = () => (darkmode ? "text-gray-400" : "text-gray-700");
