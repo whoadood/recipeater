@@ -20,6 +20,7 @@ export const recipeRouter = router({
         yield: true,
         views: true,
         images: true,
+        favorites: true,
       },
       take: 4,
     });
@@ -60,11 +61,49 @@ export const recipeRouter = router({
           ingredients: true,
           cook_time: true,
           prep_time: true,
+          favorites: true,
           images: true,
         },
       });
 
       return recipe;
+    }),
+
+  addFavorite: protectedProcedure
+    .input(
+      z.object({
+        recipeId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const newFavorite = await ctx.prisma.favorite.create({
+        data: {
+          recipe: {
+            connect: { id: input.recipeId },
+          },
+          user: {
+            connect: { id: ctx.session.user.id },
+          },
+        },
+      });
+
+      console.log("create fav", newFavorite);
+      return newFavorite;
+    }),
+
+  removeFavorite: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const delFavorite = await ctx.prisma.favorite.delete({
+        where: { id: input.id },
+      });
+
+      console.log("delete fav", delFavorite);
+      return delFavorite;
     }),
 
   getSignature: protectedProcedure.mutation(() => {
@@ -150,6 +189,7 @@ export const recipeRouter = router({
           prep_time: true,
           views: true,
           cook_time: true,
+          favorites: true,
           difficulty: true,
           yield: true,
           images: true,

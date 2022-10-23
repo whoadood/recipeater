@@ -6,6 +6,7 @@ import {
   Prep_time,
   Recipe,
   User,
+  Favorite,
 } from "@prisma/client";
 import { Direction } from "readline";
 
@@ -46,6 +47,7 @@ export type IRecipeData = Recipe & {
   cook_time: Cook_time;
   ingredients: Ingredient[];
   directions: Direction[];
+  favorites: Favorite[];
   images: Image[];
 };
 
@@ -54,8 +56,10 @@ export type IRecipeCard = {
   prep_time: Prep_time | null;
   id: string;
   title: string;
+  views: number;
   description: string;
   category: Category;
+  favorites: Favorite[];
   difficulty: string;
   yield: number;
   cook_time: Cook_time | null;

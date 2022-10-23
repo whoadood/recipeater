@@ -16,6 +16,8 @@ import { IRecipeCard } from "../../types/globals";
 import Link from "next/link";
 import { makeImageUrl } from "../../utils/makeImageUrl";
 import { useDarkmode } from "../../hooks/useDark";
+import { trpc } from "../../utils/trpc";
+import { useSession } from "next-auth/react";
 
 type question = {
   id: string;
@@ -36,6 +38,23 @@ type question = {
 
 export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
   const { justFont, darkmode } = useDarkmode();
+  const utils = trpc.useContext();
+  const { data: session } = useSession();
+  const favoriteMutation = trpc.recipe.addFavorite.useMutation({
+    onSuccess() {
+      utils.recipe.getHomePage.invalidate();
+      utils.recipe.getRecipeById.invalidate();
+      utils.recipe.getRecipesBySearch.invalidate();
+    },
+  });
+  const unFavoriteMutation = trpc.recipe.removeFavorite.useMutation({
+    onSuccess() {
+      utils.recipe.getHomePage.invalidate();
+      utils.recipe.getRecipeById.invalidate();
+      utils.recipe.getRecipesBySearch.invalidate();
+    },
+  });
+
   return (
     <li
       className={`${
@@ -108,14 +127,52 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
           <div className=" flex justify-between space-x-8 px-4 py-6 pb-4 sm:p-6">
             <div className="flex space-x-6">
               <span className="inline-flex items-center text-sm">
-                <button
-                  type="button"
-                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                >
-                  <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
-                  <span className={`font-medium ${justFont()}`}>{11}</span>
-                  <span className="sr-only">likes</span>
-                </button>
+                {session ? (
+                  <button
+                    onClick={() => {
+                      if (
+                        !recipe.favorites.find(
+                          (fav) => fav.userId === session?.user?.id
+                        )
+                      ) {
+                        favoriteMutation.mutate({
+                          recipeId: recipe.id,
+                        });
+                      } else {
+                        unFavoriteMutation.mutate({
+                          id: recipe?.favorites.filter(
+                            (fav) => fav.userId === session.user?.id
+                          )[0]?.id as string,
+                        });
+                      }
+                    }}
+                    type="button"
+                    className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
+                  >
+                    <HandThumbUpIcon
+                      className={`h-5 w-5 ${
+                        recipe.favorites.find(
+                          (fav) => fav.userId === session?.user?.id
+                        )
+                          ? "text-cyan-500"
+                          : ""
+                      }`}
+                      aria-hidden="true"
+                    />
+                    <span className={`font-medium ${justFont()}`}>
+                      {recipe.favorites.length}
+                    </span>
+                    <span className="sr-only">likes</span>
+                  </button>
+                ) : (
+                  <div className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                    <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
+                    <span className={`font-medium ${justFont()}`}>
+                      {recipe.favorites.length}
+                    </span>
+                    <span className="sr-only">likes</span>
+                  </div>
+                )}
               </span>
               <span className="inline-flex items-center text-sm">
                 <button
