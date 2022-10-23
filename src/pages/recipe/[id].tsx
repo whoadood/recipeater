@@ -1,5 +1,5 @@
 // Packages
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { IRecipeData } from "../../types/globals";
@@ -14,14 +14,30 @@ import RecipeImage from "../../components/recipe/RecipeImage";
 export default function RecipeIdPage() {
   const router = useRouter();
   const { id } = router.query;
+  const utils = trpc.useContext();
   const { data } = trpc.recipe.getRecipeById.useQuery(
     {
       id: id as string,
     },
     {
       enabled: !!id,
+      onSuccess(data) {
+        if (typeof id === "string" && data) {
+          viewMutation.mutate({
+            id: id,
+            views: data.views,
+          });
+        }
+      },
     }
   );
+  const viewMutation = trpc.recipe.addView.useMutation({
+    onSuccess() {
+      utils.recipe.getHomePage.invalidate();
+      utils.recipe.getRecipesBySearch.invalidate();
+    },
+  });
+
   if (data && data.images)
     return (
       <main className="mx-auto max-w-7xl">

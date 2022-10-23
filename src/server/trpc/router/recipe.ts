@@ -18,12 +18,34 @@ export const recipeRouter = router({
         cook_time: true,
         difficulty: true,
         yield: true,
+        views: true,
         images: true,
       },
       take: 4,
     });
     return featured;
   }),
+
+  addView: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        views: z.number(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      const addedView = ctx.prisma.recipe.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          views: input.views + 1,
+        },
+      });
+      if (!addedView) throw new TRPCError({ code: "NOT_FOUND" });
+      return addedView;
+    }),
+
   getRecipeById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input, ctx }) => {
@@ -126,6 +148,7 @@ export const recipeRouter = router({
           category: true,
           user: true,
           prep_time: true,
+          views: true,
           cook_time: true,
           difficulty: true,
           yield: true,
@@ -185,6 +208,7 @@ export const recipeRouter = router({
           title: input.title,
           description: input.description,
           yield: input.yield,
+          views: 0,
           prep_time: {
             create: {
               time: input.prep_time.time,
@@ -216,7 +240,7 @@ export const recipeRouter = router({
           category: {
             connectOrCreate: {
               where: {
-                id: input.category.id ? input.category.id : undefined,
+                name: input.category.name,
               },
               create: {
                 name: input.category.name,
@@ -289,7 +313,7 @@ export const recipeRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const edittedRecipe = ctx.prisma.recipe.update({
+      const editedRecipe = ctx.prisma.recipe.update({
         where: {
           id: input.id,
         },
@@ -367,8 +391,8 @@ export const recipeRouter = router({
           },
         },
       });
-      if (!edittedRecipe) throw new TRPCError({ code: "NOT_FOUND" });
+      if (!editedRecipe) throw new TRPCError({ code: "NOT_FOUND" });
 
-      return edittedRecipe;
+      return editedRecipe;
     }),
 });

@@ -18,6 +18,7 @@ model Recipe {
     prep_time   Prep_time?
     cook_time   Cook_time?
     difficulty  String
+    views       Int
     images      Image[]
     ingredients Ingredient[]
     directions  Direction[]

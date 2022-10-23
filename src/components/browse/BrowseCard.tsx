@@ -136,7 +136,9 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                   className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
                 >
                   <EyeIcon className="h-5 w-5" aria-hidden="true" />
-                  <span className={`font-medium ${justFont()}`}>{44}</span>
+                  <span className={`font-medium ${justFont()}`}>
+                    {recipe.views}
+                  </span>
                   <span className="sr-only">views</span>
                 </button>
               </span>
