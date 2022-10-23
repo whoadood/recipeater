@@ -10,6 +10,7 @@ import IngredientList from "../../components/recipe/IngredientList";
 import DirectionsList from "../../components/recipe/DirectionsList";
 import RecipeHeader from "../../components/recipe/RecipeHeader";
 import RecipeImage from "../../components/recipe/RecipeImage";
+import CommentList from "../../components/recipe/CommentList";
 
 export default function RecipeIdPage() {
   const router = useRouter();
@@ -48,6 +49,9 @@ export default function RecipeIdPage() {
         </div>
         <div className="mt-4 p-2">
           <DirectionsList directions={data.directions} />
+        </div>
+        <div className="p-2">
+          <CommentList />
         </div>
       </main>
     );
