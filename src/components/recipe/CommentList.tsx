@@ -130,7 +130,7 @@ export default function CommentList() {
                             <Field
                               as="textarea"
                               autoComplete="off"
-                              name="description"
+                              name="text"
                               rows={3}
                               className={` block w-full rounded-md border-2 bg-inherit p-2 shadow-sm outline-none focus:border-cyan-500 focus:ring-cyan-500 sm:text-sm`}
                             />
@@ -150,7 +150,7 @@ export default function CommentList() {
                               <ErrMessage message={formik.errors.description} />
                             )} */}
                           <p className="mt-2 text-sm text-gray-500">
-                            Write a few sentences about your recipe.
+                            Leave a friendly comment about this recipe.
                           </p>
                         </div>
                         <div className="mt-3 flex items-center justify-end">

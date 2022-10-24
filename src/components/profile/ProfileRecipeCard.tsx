@@ -34,12 +34,14 @@ export default function ProfileRecipeCard({ recipe }: { recipe: RecipeData }) {
             </span>
           </div>
         </div>
-        <div className="sm:hidden">
-          <ChevronRightIcon
-            className="h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </div>
+        <Link href={`/recipe/${recipe.id}`}>
+          <a className="p-4 sm:hidden">
+            <ChevronRightIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </a>
+        </Link>
 
         {/* Repo meta info */}
         <div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
