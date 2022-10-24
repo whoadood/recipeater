@@ -44,10 +44,10 @@ export default function ProfileList({
             <h1 className="flex-1 text-lg font-medium">My Recipes</h1>
             <Menu as="div" className={`relative`}>
               <Menu.Button
-                className={`inline-flex w-full justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm ${
+                className={`inline-flex w-full justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium shadow-sm ${
                   darkmode
                     ? "bg-[#2e2e2e] text-white hover:bg-[#1e1e1e]"
-                    : "bg-white hover:bg-gray-50"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
                 } focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2`}
               >
                 <BarsArrowUpIcon

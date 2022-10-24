@@ -37,7 +37,7 @@ export default function ProfileRecipeCard({ recipe }: { recipe: RecipeData }) {
         <Link href={`/recipe/${recipe.id}`}>
           <a className="p-4 sm:hidden">
             <ChevronRightIcon
-              className="h-5 w-5 text-gray-400"
+              className="h-5 w-5 text-cyan-400"
               aria-hidden="true"
             />
           </a>
