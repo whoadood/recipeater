@@ -23,6 +23,7 @@ model Recipe {
     ingredients Ingredient[]
     directions  Direction[]
     favorites   Favorite[]
+    comments    Comment[]
     category_id String
     category    Category     @relation(fields: [category_id], references: [id])
     user_id     String
@@ -126,6 +127,16 @@ model User {
     profile       Profile?
     recipes       Recipe[]
     favorites     Favorite[]
+    comments      Comment[]
+}
+
+model Comment {
+    id        String @id @default(cuid())
+    text      String
+    userId    String
+    user      User   @relation(fields: [userId], references: [id])
+    recipe_id String
+    recipe    Recipe @relation(fields: [recipe_id], references: [id])
 }
 
 model Favorite {

@@ -49,6 +49,7 @@ export type IRecipeData = Recipe & {
   directions: Direction[];
   favorites: Favorite[];
   images: Image[];
+  comments: Comment[];
 };
 
 export type IRecipeCard = {
@@ -60,6 +61,7 @@ export type IRecipeCard = {
   description: string;
   category: Category;
   favorites: Favorite[];
+  comments: Comment[];
   difficulty: string;
   yield: number;
   cook_time: Cook_time | null;

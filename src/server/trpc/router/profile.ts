@@ -18,6 +18,12 @@ export const profileRouter = router({
               category: true,
               prep_time: true,
               cook_time: true,
+              comments: true,
+            },
+          },
+          favorites: {
+            include: {
+              recipe: true,
             },
           },
         },

@@ -20,6 +20,7 @@ export const recipeRouter = router({
         yield: true,
         views: true,
         images: true,
+        comments: true,
         favorites: true,
       },
       take: 4,
@@ -62,11 +63,39 @@ export const recipeRouter = router({
           cook_time: true,
           prep_time: true,
           favorites: true,
+          comments: {
+            include: {
+              user: true,
+            },
+          },
           images: true,
         },
       });
 
       return recipe;
+    }),
+
+  addComment: protectedProcedure
+    .input(
+      z.object({
+        recipe_id: z.string(),
+        comment: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const newComment = ctx.prisma.comment.create({
+        data: {
+          text: input.comment,
+          user: {
+            connect: { id: ctx.session.user.id },
+          },
+          recipe: {
+            connect: { id: input.recipe_id },
+          },
+        },
+      });
+      if (!newComment) throw new TRPCError({ code: "NOT_FOUND" });
+      return newComment;
     }),
 
   addFavorite: protectedProcedure
@@ -190,6 +219,7 @@ export const recipeRouter = router({
           views: true,
           cook_time: true,
           favorites: true,
+          comments: true,
           difficulty: true,
           yield: true,
           images: true,

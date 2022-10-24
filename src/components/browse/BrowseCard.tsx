@@ -8,7 +8,6 @@ import {
   EyeIcon,
   HandThumbUpIcon,
   ShareIcon,
-  StarIcon,
 } from "@heroicons/react/20/solid";
 
 // Utils
@@ -90,14 +89,14 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             <div className="flex flex-shrink-0 self-center">
               <div className="relative inline-block text-left">
                 <div>
-                  {/* ********** favorite this recipe ********** */}
+                  {/* ********** edit this recipe ********** */}
                   <Link href={`/recipe/edit/${recipe.id}`}>
-                    <a
-                      // onClick={() => {}}
-                      className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600"
-                    >
-                      <span className="sr-only">Open options</span>
-                      <StarIcon className="h-5 w-5" aria-hidden="true" />
+                    <a className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-500">
+                      <span className="sr-only">Edit recipe</span>
+                      <EllipsisVerticalIcon
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      />
                     </a>
                   </Link>
                 </div>
@@ -183,7 +182,9 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                     className="h-5 w-5"
                     aria-hidden="true"
                   />
-                  <span className={`font-medium ${justFont()}`}>{23}</span>
+                  <span className={`font-medium ${justFont()}`}>
+                    {recipe.comments.length}
+                  </span>
                   <span className="sr-only">replies</span>
                 </button>
               </span>

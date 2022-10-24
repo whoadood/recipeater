@@ -51,7 +51,7 @@ export default function RecipeIdPage() {
           <DirectionsList directions={data.directions} />
         </div>
         <div className="p-2">
-          <CommentList />
+          <CommentList recipe={data} />
         </div>
       </main>
     );
