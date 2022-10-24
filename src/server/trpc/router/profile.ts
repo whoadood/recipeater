@@ -45,8 +45,31 @@ export const profileRouter = router({
         take: 1,
       });
 
+      const mostLiked = await ctx.prisma.favorite.groupBy({
+        where: {
+          recipe: {
+            user_id: input.id,
+          },
+        },
+        by: ["recipe_id"],
+        orderBy: {
+          _count: {
+            recipe_id: "desc",
+          },
+        },
+        _count: {
+          recipe_id: true,
+        },
+      });
+
+      console.log("most liked return", mostLiked);
+
       if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
-      return { profile, mostCategory: mostCategory[0] };
+      return {
+        profile,
+        mostCategory: mostCategory[0],
+        mostLiked: mostLiked[0],
+      };
     }),
 
   editBio: protectedProcedure

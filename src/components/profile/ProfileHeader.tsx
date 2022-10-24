@@ -59,7 +59,11 @@ export default function ProfileHeader({
         (el) => el.category_id === data.mostCategory?.category_id
       )?.category.name,
     },
-    { label: "most liked recipe", value: 10 },
+    {
+      label: "most liked recipe",
+      value: profile.recipes.find((el) => el.id === data.mostLiked?.recipe_id)
+        ?.title,
+    },
   ];
 
   return (
