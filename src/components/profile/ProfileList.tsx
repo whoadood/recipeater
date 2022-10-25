@@ -61,7 +61,11 @@ export default function ProfileList({
                 />
               </Menu.Button>
               <Menu.Items
-                className={`${addClasses()} absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-400 shadow-lg `}
+                className={`${
+                  darkmode
+                    ? "bg-[#2e2e2e] text-white hover:bg-[#1e1e1e]"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }} absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md border-2 border-gray-400 shadow-lg `}
               >
                 <div className="py-1">
                   <Menu.Item>

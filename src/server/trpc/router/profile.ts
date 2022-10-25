@@ -62,8 +62,6 @@ export const profileRouter = router({
         },
       });
 
-      console.log("most liked return", mostLiked);
-
       if (!profile) throw new TRPCError({ code: "NOT_FOUND" });
       return {
         profile,
