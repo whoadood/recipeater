@@ -1,4 +1,5 @@
 // Packages
+import { Fragment } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
@@ -32,9 +33,9 @@ const Home: NextPage = () => {
           <ul className="flex flex-col gap-2 xl:flex-row">
             {featured &&
               featured.slice(1).map((rec) => (
-                <li className="flex-1" key={rec.id}>
+                <div className="flex-1" key={rec.id}>
                   <BrowseCard recipe={rec} />
-                </li>
+                </div>
               ))}
           </ul>
         </div>

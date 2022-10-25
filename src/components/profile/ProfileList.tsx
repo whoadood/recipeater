@@ -1,5 +1,5 @@
 // Packages
-import React from "react";
+import React, { useEffect, useReducer } from "react";
 import { Menu } from "@headlessui/react";
 import { BarsArrowUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -11,7 +11,8 @@ import { AppRouter } from "../../server/trpc/router/_app";
 import { IRecipeCard, IRecipeData } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
 import useToggle from "../../hooks/useToggle";
-import useRecipeSortReducer from "../../hooks/useRecipeSortReducer";
+import { recipeReducer } from "../../hooks/recipeReducer";
+
 const projects = [
   {
     name: "Workcation",
@@ -36,7 +37,8 @@ export default function ProfileList({
   const { darkmode, addClasses } = useDarkmode();
   const { toggle, handleToggle } = useToggle();
   const { profile } = data;
-  const { recipes, recipeDispatch } = useRecipeSortReducer(profile.recipes);
+  const [recipes, recipeDispatch] = useReducer(recipeReducer, profile.recipes);
+
   return (
     <>
       {/* Projects List */}
@@ -93,7 +95,7 @@ export default function ProfileList({
                         onClick={() => recipeDispatch({ type: "TITLE" })}
                         className={`${
                           darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
-                        } block px-4 py-2 text-sm text-inherit`}
+                        } w-full px-4 py-2 text-start text-sm text-inherit`}
                       >
                         Title
                       </button>
@@ -105,7 +107,7 @@ export default function ProfileList({
                         onClick={() => recipeDispatch({ type: "CATEGORY" })}
                         className={`${
                           darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
-                        } block px-4 py-2 text-sm text-inherit`}
+                        } w-full px-4 py-2 text-start text-sm text-inherit`}
                       >
                         Category
                       </button>
