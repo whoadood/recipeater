@@ -27,7 +27,7 @@ export default function BrowsePage() {
           <PageHeader>
             <BrowsePageHeader />
           </PageHeader>
-          <div className="pt-2">
+          <div className="pt-4">
             <BrowseList recipes={data} />
           </div>
         </main>

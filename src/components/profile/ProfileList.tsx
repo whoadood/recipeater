@@ -10,6 +10,7 @@ import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
 import { RecipeData } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
+import useToggle from "../../hooks/useToggle";
 const projects = [
   {
     name: "Workcation",
@@ -32,16 +33,32 @@ export default function ProfileList({
   data: inferProcedureOutput<AppRouter["profile"]["getProfileById"]>;
 }) {
   const { darkmode, addClasses } = useDarkmode();
-  const {
-    profile: { recipes },
-  } = data;
+  const { toggle, handleToggle } = useToggle();
+  const { profile } = data;
   return (
     <>
       {/* Projects List */}
       <div className="lg:min-w-0 lg:flex-1">
         <div className="border-b border-t border-gray-200 pl-4 pr-6 pt-4 pb-4 sm:pl-6 lg:pl-8 xl:border-t-0 xl:pl-6 xl:pt-6">
           <div className="flex items-center">
-            <h1 className="flex-1 text-lg font-medium">My Recipes</h1>
+            <h2 className="flex flex-1 gap-8 text-lg font-medium">
+              <div
+                onClick={handleToggle}
+                className={`${
+                  toggle ? "text-gray-400" : ""
+                } hover:cursor-pointer`}
+              >
+                My Recipes
+              </div>
+              <div
+                onClick={handleToggle}
+                className={`${
+                  toggle ? "" : "text-gray-400"
+                } hover:cursor-pointer`}
+              >
+                Favorite Recipes
+              </div>
+            </h2>
             <Menu as="div" className={`relative`}>
               <Menu.Button
                 className={`inline-flex w-full justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium shadow-sm ${
@@ -114,9 +131,19 @@ export default function ProfileList({
           role="list"
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
-          {recipes.map((recipe) => (
-            <ProfileRecipeCard recipe={recipe as RecipeData} key={recipe.id} />
-          ))}
+          {!toggle
+            ? profile.recipes.map((recipe) => (
+                <ProfileRecipeCard
+                  recipe={recipe as RecipeData}
+                  key={recipe.id}
+                />
+              ))
+            : profile.favorites.map((fav) => (
+                <ProfileRecipeCard
+                  recipe={fav.recipe as RecipeData}
+                  key={fav.recipe.id}
+                />
+              ))}
         </ul>
       </div>
     </>

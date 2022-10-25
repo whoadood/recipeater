@@ -43,6 +43,8 @@ export default function ProfileHeader({
   const { data: session } = useSession();
   const { darkmode, justFont, addClasses } = useDarkmode();
   const { toggle: editBio, handleToggle: handleEditBio } = useToggle();
+  const { toggle: activeRecipeList, handleToggle: handleActiveRecipeList } =
+    useToggle();
   const tUtils = trpc.useContext();
   const bioMutation = trpc.profile.editBio.useMutation({
     onSuccess: () => {
@@ -160,13 +162,15 @@ export default function ProfileHeader({
                   )}
                 </div>
               </div>
-              <div className="mt-5 flex justify-center sm:mt-0">
-                <Link href="/recipe/create">
-                  <a className="flex items-center justify-center rounded-md border bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700">
-                    Create recipe
-                  </a>
-                </Link>
-              </div>
+              {session && (
+                <div className="mt-5 flex justify-center sm:mt-0">
+                  <Link href="/recipe/create">
+                    <a className="flex items-center justify-center rounded-md border bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700">
+                      Create recipe
+                    </a>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">

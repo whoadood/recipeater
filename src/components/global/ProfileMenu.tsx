@@ -40,7 +40,7 @@ export default function ProfileMenu() {
         <div>
           <Menu.Button
             className={`flex max-w-xs items-center rounded-full text-sm outline-none focus:outline-cyan-500 focus:ring-2 lg:rounded-md lg:p-2 ${
-              darkmode ? "lg:hover:bg-black/50" : "lg:hover:bg-gray-200"
+              darkmode ? "bg-[#2e2e2e] " : "bg-white"
             }`}
           >
             {session && session.user ? (
@@ -120,7 +120,11 @@ export default function ProfileMenu() {
               </Menu.Item>
             </Menu.Items>
           ) : (
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items
+              className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+                darkmode ? "bg-[#2e2e2e] " : "bg-white"
+              }`}
+            >
               <Menu.Item>
                 {({ active }) => (
                   <a

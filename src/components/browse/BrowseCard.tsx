@@ -86,22 +86,24 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
                 </a>
               </p>
             </div>
-            <div className="flex flex-shrink-0 self-center">
-              <div className="relative inline-block text-left">
-                <div>
-                  {/* ********** edit this recipe ********** */}
-                  <Link href={`/recipe/edit/${recipe.id}`}>
-                    <a className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-500">
-                      <span className="sr-only">Edit recipe</span>
-                      <EllipsisVerticalIcon
-                        className="h-5 w-5"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  </Link>
+            {session && (
+              <div className="flex flex-shrink-0 self-center">
+                <div className="relative inline-block text-left">
+                  <div>
+                    {/* ********** edit this recipe ********** */}
+                    <Link href={`/recipe/edit/${recipe.id}`}>
+                      <a className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-500">
+                        <span className="sr-only">Edit recipe</span>
+                        <EllipsisVerticalIcon
+                          className="h-5 w-5"
+                          aria-hidden="true"
+                        />
+                      </a>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
           <div
             style={{

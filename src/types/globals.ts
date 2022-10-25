@@ -2,6 +2,7 @@ import {
   Category,
   Cook_time,
   Image,
+  Comment,
   Ingredient,
   Prep_time,
   Recipe,
