@@ -8,9 +8,10 @@ import { classNames } from "../../utils/classNames";
 import ProfileRecipeCard from "./ProfileRecipeCard";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
-import { RecipeData } from "../../types/globals";
+import { IRecipeCard, IRecipeData } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
 import useToggle from "../../hooks/useToggle";
+import useRecipeSortReducer from "../../hooks/useRecipeSortReducer";
 const projects = [
   {
     name: "Workcation",
@@ -35,6 +36,7 @@ export default function ProfileList({
   const { darkmode, addClasses } = useDarkmode();
   const { toggle, handleToggle } = useToggle();
   const { profile } = data;
+  const { recipes, recipeDispatch } = useRecipeSortReducer(profile.recipes);
   return (
     <>
       {/* Projects List */}
@@ -87,29 +89,29 @@ export default function ProfileList({
                 <div className="py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => recipeDispatch({ type: "TITLE" })}
                         className={`${
                           darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
                         } block px-4 py-2 text-sm text-inherit`}
                       >
-                        Name
-                      </a>
+                        Title
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => recipeDispatch({ type: "CATEGORY" })}
                         className={`${
                           darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
                         } block px-4 py-2 text-sm text-inherit`}
                       >
-                        Date modified
-                      </a>
+                        Category
+                      </button>
                     )}
                   </Menu.Item>
-                  <Menu.Item>
+                  {/* <Menu.Item>
                     {({ active }) => (
                       <a
                         href="#"
@@ -120,7 +122,7 @@ export default function ProfileList({
                         Date created
                       </a>
                     )}
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </div>
               </Menu.Items>
             </Menu>
@@ -132,15 +134,15 @@ export default function ProfileList({
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
           {!toggle
-            ? profile.recipes.map((recipe) => (
+            ? recipes.map((recipe) => (
                 <ProfileRecipeCard
-                  recipe={recipe as RecipeData}
+                  recipe={recipe as IRecipeData}
                   key={recipe.id}
                 />
               ))
             : profile.favorites.map((fav) => (
                 <ProfileRecipeCard
-                  recipe={fav.recipe as RecipeData}
+                  recipe={fav.recipe as IRecipeData}
                   key={fav.recipe.id}
                 />
               ))}

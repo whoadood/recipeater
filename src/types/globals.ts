@@ -68,3 +68,10 @@ export type IRecipeCard = {
   cook_time: Cook_time | null;
   images: Image[];
 };
+
+export type ReducerRecipe = Recipe & {
+  prep_time: Prep_time | null;
+  category: Category;
+  cook_time: Cook_time | null;
+  comments: Comment[];
+};

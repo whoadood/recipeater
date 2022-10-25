@@ -5,10 +5,10 @@ import { ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
 // Utils
 import { classNames } from "../../utils/classNames";
 import Link from "next/link";
-import { RecipeData } from "../../types/globals";
+import { RecipeData, IRecipeCard, IRecipeData } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
 
-export default function ProfileRecipeCard({ recipe }: { recipe: RecipeData }) {
+export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
   const { darkmode } = useDarkmode();
   return (
     <li
