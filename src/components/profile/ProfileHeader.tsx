@@ -136,7 +136,6 @@ export default function ProfileHeader({
                             onKeyDown={(
                               e: React.KeyboardEvent<HTMLInputElement>
                             ) => {
-                              console.log("e.code", e);
                               if (e.code === "Escape") {
                                 handleEditBio();
                               }
