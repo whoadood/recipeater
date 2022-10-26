@@ -93,7 +93,6 @@ export default function ProfileList({
                     {({ active }) => (
                       <button
                         onClick={(e) => {
-                          e.stopPropagation();
                           recipeDispatch({ type: "TITLE" });
                           console.log("on click", recipes);
                         }}
@@ -139,9 +138,19 @@ export default function ProfileList({
           role="list"
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
-          {recipes.map((recipe) => (
-            <ProfileRecipeCard recipe={recipe as IRecipeData} key={recipe.id} />
-          ))}
+          {!toggle
+            ? recipes.map((recipe) => (
+                <ProfileRecipeCard
+                  recipe={recipe as IRecipeData}
+                  key={recipe.id}
+                />
+              ))
+            : profile.favorites.map((fav) => (
+                <ProfileRecipeCard
+                  recipe={fav.recipe as IRecipeData}
+                  key={fav.recipe.id}
+                />
+              ))}
         </ul>
       </div>
     </>
