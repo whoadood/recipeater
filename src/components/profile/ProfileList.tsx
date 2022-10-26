@@ -1,5 +1,5 @@
 // Packages
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { Menu } from "@headlessui/react";
 import { BarsArrowUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -8,7 +8,7 @@ import { classNames } from "../../utils/classNames";
 import ProfileRecipeCard from "./ProfileRecipeCard";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
-import { IRecipeCard, IRecipeData } from "../../types/globals";
+import { IRecipeCard, IRecipeData, ReducerRecipe } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
 import useToggle from "../../hooks/useToggle";
 import { recipeReducer } from "../../hooks/recipeReducer";
@@ -92,7 +92,11 @@ export default function ProfileList({
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => recipeDispatch({ type: "TITLE" })}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          recipeDispatch({ type: "TITLE" });
+                          console.log("on click", recipes);
+                        }}
                         className={`${
                           darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
                         } w-full px-4 py-2 text-start text-sm text-inherit`}
@@ -135,19 +139,9 @@ export default function ProfileList({
           role="list"
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
-          {!toggle
-            ? recipes.map((recipe) => (
-                <ProfileRecipeCard
-                  recipe={recipe as IRecipeData}
-                  key={recipe.id}
-                />
-              ))
-            : profile.favorites.map((fav) => (
-                <ProfileRecipeCard
-                  recipe={fav.recipe as IRecipeData}
-                  key={fav.recipe.id}
-                />
-              ))}
+          {recipes.map((recipe) => (
+            <ProfileRecipeCard recipe={recipe as IRecipeData} key={recipe.id} />
+          ))}
         </ul>
       </div>
     </>

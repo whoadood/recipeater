@@ -19,7 +19,7 @@ export default function EditRecipePage() {
       enabled: !!id,
     }
   );
-  if (data && data.images) console.log("recipe edit id", data);
+
   return (
     <main className="mx-auto max-w-7xl">
       {data && <RecipeForm editing={true} recipe={data} />}

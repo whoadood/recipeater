@@ -12,12 +12,14 @@ type Action = {
 export const recipeReducer = (state: ReducerRecipe[], action: Action) => {
   switch (action.type) {
     case "TITLE": {
-      return state.sort((a, b) =>
+      const titleSort = [...state];
+      return titleSort.sort((a, b) =>
         a.title > b.title ? 1 : b.title > a.title ? -1 : 0
       );
     }
     case "CATEGORY": {
-      return state.sort((a, b) =>
+      const catSort = [...state];
+      return catSort.sort((a, b) =>
         a.category.name > b.category.name
           ? 1
           : b.category.name > a.category.name
