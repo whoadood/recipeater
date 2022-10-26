@@ -26,10 +26,10 @@ export default function BrowsePage() {
 
   console.log(data);
 
-  const [recipes, recipeDispatch] = useReducer(
-    recipeReducer,
-    data?.recipes as ReducerRecipe[]
-  );
+  // const [recipes, recipeDispatch] = useReducer(
+  //   recipeReducer,
+  //   data?.recipes as ReducerRecipe[]
+  // );
 
   return (
     <>

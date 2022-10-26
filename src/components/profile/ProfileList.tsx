@@ -38,7 +38,10 @@ export default function ProfileList({
   const { toggle, handleToggle } = useToggle();
   const { profile } = data;
 
-  const [recipes, recipeDispatch] = useReducer(recipeReducer, profile.recipes);
+  const [recipes, recipeDispatch] = useReducer(recipeReducer, {
+    sort: "ASC",
+    rec: profile.recipes,
+  });
 
   return (
     <>
@@ -164,7 +167,7 @@ export default function ProfileList({
           className="divide-y divide-gray-200 border-b border-gray-200"
         >
           {!toggle
-            ? recipes.map((recipe) => (
+            ? recipes.rec.map((recipe) => (
                 <ProfileRecipeCard
                   recipe={recipe as IRecipeData}
                   key={recipe.id}
