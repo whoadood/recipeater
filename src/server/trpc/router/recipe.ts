@@ -209,19 +209,13 @@ export const recipeRouter = router({
             },
           ],
         },
-        select: {
-          id: true,
-          title: true,
-          description: true,
+        include: {
           category: true,
           user: true,
           prep_time: true,
-          views: true,
           cook_time: true,
           favorites: true,
           comments: true,
-          difficulty: true,
-          yield: true,
           images: true,
         },
       });

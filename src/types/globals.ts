@@ -74,4 +74,7 @@ export type ReducerRecipe = Recipe & {
   category: Category;
   cook_time: Cook_time | null;
   comments: Comment[];
+  favorites: Favorite[];
+  images?: Image[] | null;
+  user?: User | null;
 };

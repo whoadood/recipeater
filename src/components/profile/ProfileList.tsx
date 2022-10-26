@@ -13,21 +13,21 @@ import { useDarkmode } from "../../hooks/useDark";
 import useToggle from "../../hooks/useToggle";
 import { recipeReducer } from "../../hooks/recipeReducer";
 
-const projects = [
-  {
-    name: "Workcation",
-    href: "#",
-    siteHref: "/recipe/aaaaa111111",
-    repoHref: "#",
-    repo: "debbielewis/workcation",
-    tech: "Laravel",
-    lastDeploy: "3h ago",
-    location: "United states",
-    starred: true,
-    active: true,
-  },
-  // More projects...
-];
+// const projects = [
+//   {
+//     name: "Workcation",
+//     href: "#",
+//     siteHref: "/recipe/aaaaa111111",
+//     repoHref: "#",
+//     repo: "debbielewis/workcation",
+//     tech: "Laravel",
+//     lastDeploy: "3h ago",
+//     location: "United states",
+//     starred: true,
+//     active: true,
+//   },
+//   // More projects...
+// ];
 
 export default function ProfileList({
   data,
@@ -37,6 +37,7 @@ export default function ProfileList({
   const { darkmode, addClasses } = useDarkmode();
   const { toggle, handleToggle } = useToggle();
   const { profile } = data;
+
   const [recipes, recipeDispatch] = useReducer(recipeReducer, profile.recipes);
 
   return (
@@ -113,6 +114,30 @@ export default function ProfileList({
                         } w-full px-4 py-2 text-start text-sm text-inherit`}
                       >
                         Category
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={() => recipeDispatch({ type: "COMMENT" })}
+                        className={`${
+                          darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
+                        } w-full px-4 py-2 text-start text-sm text-inherit`}
+                      >
+                        Comments
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={() => recipeDispatch({ type: "FAVORITE" })}
+                        className={`${
+                          darkmode ? "hover:bg-black/70" : "hover:bg-gray-100"
+                        } w-full px-4 py-2 text-start text-sm text-inherit`}
+                      >
+                        Favorites
                       </button>
                     )}
                   </Menu.Item>

@@ -1,12 +1,16 @@
 // Packages
-import React from "react";
+import React, { Reducer, useReducer } from "react";
+import { useRouter } from "next/router";
+import { trpc } from "../../../utils/trpc";
+
+// Hooks
+import { recipeReducer } from "../../../hooks/recipeReducer";
 
 // Components
 import PageHeader from "../../../components/global/PageHeader";
 import BrowsePageHeader from "../../../components/browse/BrowsePageHeader";
 import BrowseList from "../../../components/browse/BrowseList";
-import { trpc } from "../../../utils/trpc";
-import { useRouter } from "next/router";
+import { ReducerRecipe } from "../../../types/globals";
 
 export default function BrowsePage() {
   const { query } = useRouter();
@@ -18,6 +22,13 @@ export default function BrowsePage() {
           : null,
     },
     { enabled: !!query.search }
+  );
+
+  console.log(data);
+
+  const [recipes, recipeDispatch] = useReducer(
+    recipeReducer,
+    data?.recipes as ReducerRecipe[]
   );
 
   return (
