@@ -2,15 +2,12 @@
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  ClockIcon,
-  CogIcon,
-  CreditCardIcon,
-  DocumentChartBarIcon,
+  UserCircleIcon,
+  MagnifyingGlassCircleIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
-  ScaleIcon,
+  DocumentPlusIcon,
   ShieldCheckIcon,
-  UserGroupIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -20,12 +17,6 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../utils/trpc";
 import Link from "next/link";
-
-const secondaryNavigation = [
-  { name: "Settings", href: "#", icon: CogIcon },
-  { name: "Help", href: "#", icon: QuestionMarkCircleIcon },
-  { name: "Privacy", href: "#", icon: ShieldCheckIcon },
-];
 
 export default function Nav({
   sidebar,
@@ -37,24 +28,31 @@ export default function Nav({
 }) {
   const router = useRouter();
   const { sidebarOpen, setSidebarOpen } = sidebar;
-  const [currentActive, setCurrentActive] = useState(router.asPath);
   const { data: session } = useSession();
   const { data: topCategories } = trpc.category.getTopCategory.useQuery();
 
   const navigation = session
     ? [
         { name: "Home", href: "/", icon: HomeIcon },
-        { name: "Browse", href: "/recipe/search/all", icon: ClockIcon },
+        {
+          name: "Browse",
+          href: "/recipe/search/all",
+          icon: MagnifyingGlassCircleIcon,
+        },
         {
           name: "Profile",
           href: `/profile/${session.user?.id}`,
-          icon: ScaleIcon,
+          icon: UserCircleIcon,
         },
-        { name: "Create", href: "/recipe/create", icon: CreditCardIcon },
+        { name: "Create", href: "/recipe/create", icon: DocumentPlusIcon },
       ]
     : [
         { name: "Home", href: "/", icon: HomeIcon },
-        { name: "Browse", href: "/recipe/search/all", icon: ClockIcon },
+        {
+          name: "Browse",
+          href: "/recipe/search/all",
+          icon: MagnifyingGlassCircleIcon,
+        },
       ];
 
   return (
@@ -130,7 +128,6 @@ export default function Nav({
                           ...item,
                           current: item.href === router.asPath,
                         }}
-                        setCurrentActive={setCurrentActive}
                       />
                     ))}
                   </div>
@@ -183,7 +180,6 @@ export default function Nav({
                 <NavLink
                   key={item.name}
                   item={{ ...item, current: item.href === router.asPath }}
-                  setCurrentActive={setCurrentActive}
                 />
               ))}
             </div>

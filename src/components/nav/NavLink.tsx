@@ -9,13 +9,7 @@ import { NavItem } from "../../types/globals";
 import { classNames } from "../../utils/classNames";
 import { useRouter } from "next/router";
 
-export default function NavLink({
-  item,
-  setCurrentActive,
-}: {
-  item: NavItem;
-  setCurrentActive?: Dispatch<SetStateAction<string>>;
-}) {
+export default function NavLink({ item }: { item: NavItem }) {
   return (
     <Link href={item.href}>
       <a
@@ -28,7 +22,6 @@ export default function NavLink({
         aria-current={item.current ? "page" : undefined}
       >
         <item.icon
-          onClick={() => setCurrentActive && setCurrentActive(item.name)}
           className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
           aria-hidden="true"
         />
