@@ -7,7 +7,7 @@ export default function PageHeader({
   children: React.ReactNode;
 }) {
   return (
-    <div className="shadow">
+    <div>
       <div className="px-4 pb-2 sm:px-6 lg:mx-auto lg:px-8">{children}</div>
     </div>
   );
