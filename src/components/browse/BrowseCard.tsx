@@ -107,12 +107,14 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
               </div>
             )}
           </div>
-          <div
-            style={{
-              backgroundImage: `url('${makeImageUrl(recipe.images[0])}')`,
-            }}
-            className="h-64 w-full bg-cover bg-center bg-no-repeat"
-          />
+          {recipe.images && (
+            <div
+              style={{
+                backgroundImage: `url('${makeImageUrl(recipe.images[0])}')`,
+              }}
+              className="h-64 w-full bg-cover bg-center bg-no-repeat"
+            />
+          )}
           <div className="px-4 pt-4 sm:px-6">
             <h2
               id={"question-title-" + recipe.id}
@@ -157,7 +159,7 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
                         recipe.favorites.find(
                           (fav) => fav.userId === session?.user?.id
                         )
-                          ? "text-cyan-500"
+                          ? "text-cyan-500 hover:text-cyan-600"
                           : ""
                       }`}
                       aria-hidden="true"
@@ -178,10 +180,7 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
                 )}
               </span>
               <span className="inline-flex items-center text-sm">
-                <button
-                  type="button"
-                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                >
+                <div className="inline-flex space-x-2 text-gray-400">
                   <ChatBubbleLeftEllipsisIcon
                     className="h-5 w-5"
                     aria-hidden="true"
@@ -190,19 +189,16 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
                     {recipe.comments.length}
                   </span>
                   <span className="sr-only">replies</span>
-                </button>
+                </div>
               </span>
               <span className="inline-flex items-center text-sm">
-                <button
-                  type="button"
-                  className="inline-flex space-x-2 text-gray-400 hover:text-gray-500"
-                >
+                <div className="inline-flex space-x-2 text-gray-400">
                   <EyeIcon className="h-5 w-5" aria-hidden="true" />
                   <span className={`font-medium ${justFont()}`}>
                     {recipe.views}
                   </span>
                   <span className="sr-only">views</span>
-                </button>
+                </div>
               </span>
             </div>
             <div className="flex text-sm">

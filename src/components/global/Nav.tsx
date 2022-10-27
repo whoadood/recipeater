@@ -128,7 +128,7 @@ export default function Nav({
                         key={item.name}
                         item={{
                           ...item,
-                          current: item.href === currentActive,
+                          current: item.href === router.asPath,
                         }}
                         setCurrentActive={setCurrentActive}
                       />
