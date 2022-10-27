@@ -40,7 +40,7 @@ export default function ProfileMenu() {
         <div>
           <Menu.Button
             className={`flex max-w-xs items-center rounded-full text-sm outline-none focus:outline-cyan-500 focus:ring-2 lg:rounded-md lg:p-2 ${
-              darkmode ? "bg-[#2e2e2e] " : "bg-white"
+              darkmode ? "hover:bg-[#2e2e2e] " : "hover:bg-gray-100"
             }`}
           >
             {session && session.user ? (
