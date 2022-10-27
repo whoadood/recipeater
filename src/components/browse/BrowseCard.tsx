@@ -58,7 +58,7 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
     <li
       className={`${
         darkmode ? "bg-black/40" : "bg-gray-100"
-      } relative mx-auto max-w-2xl overflow-hidden shadow sm:rounded-lg`}
+      } relative mx-auto w-full max-w-2xl flex-shrink flex-grow overflow-hidden shadow sm:rounded-lg lg:w-auto`}
     >
       <article aria-labelledby={"recipe-title-" + recipe.id}>
         <div>

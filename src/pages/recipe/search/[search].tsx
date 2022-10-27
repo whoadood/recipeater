@@ -34,7 +34,7 @@ export default function BrowsePage() {
   return (
     <>
       {data && (
-        <main>
+        <main className="mx-auto max-w-7xl">
           <PageHeader>
             <BrowsePageHeader />
           </PageHeader>
