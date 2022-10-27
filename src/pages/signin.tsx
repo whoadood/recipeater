@@ -2,11 +2,13 @@
 import {
   ClientSafeProvider,
   getProviders,
+  getSession,
   LiteralUnion,
   signIn,
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers";
 import { useDarkmode } from "../hooks/useDark";
+import { GetServerSidePropsContext } from "next";
 
 export default function Signin({
   providers,
@@ -97,8 +99,19 @@ export default function Signin({
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
   const providers = await getProviders();
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: { providers },
   };

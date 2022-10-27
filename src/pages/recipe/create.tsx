@@ -1,4 +1,6 @@
 // Packages
+import { GetServerSidePropsContext } from "next";
+import { getSession } from "next-auth/react";
 import React from "react";
 
 // Components
@@ -10,4 +12,21 @@ export default function create() {
       <RecipeForm />
     </main>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }

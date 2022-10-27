@@ -7,6 +7,8 @@ import { recipeRouter } from "../../../server/trpc/router/recipe";
 
 // Components
 import RecipeForm from "../../../components/recipe/createForm/CreateRecipeForm";
+import { getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 export default function EditRecipePage() {
   const router = useRouter();
@@ -25,4 +27,21 @@ export default function EditRecipePage() {
       {data && <RecipeForm editing={true} recipe={data} />}
     </main>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }
