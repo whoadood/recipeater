@@ -1,12 +1,19 @@
 // Packages
 import React from "react";
-import { ChevronRightIcon, StarIcon } from "@heroicons/react/20/solid";
+import {
+  ChatBubbleLeftEllipsisIcon,
+  ChevronRightIcon,
+  EyeIcon,
+  HandThumbUpIcon,
+  StarIcon,
+} from "@heroicons/react/20/solid";
 
 // Utils
 import { classNames } from "../../utils/classNames";
 import Link from "next/link";
 import { RecipeData, IRecipeCard, IRecipeData } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
+import { makeImageUrl } from "../../utils/makeImageUrl";
 
 export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
   const { darkmode } = useDarkmode();
@@ -19,19 +26,18 @@ export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
     >
       <div className="flex items-center justify-between space-x-4">
         {/* Repo name and link */}
-        <div className="min-w-0 space-y-3">
-          <div className="flex items-center space-x-3">
-            <h2 className="text-sm font-medium">
-              <div>
-                <span className="absolute inset-0" aria-hidden="true" />
-                {recipe.title}{" "}
-              </div>
-            </h2>
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="max-h-14 w-14">
+            {recipe.images && <img src={makeImageUrl(recipe.images[0])} />}
           </div>
-          <div className="group relative flex items-center space-x-2.5">
-            <span className="truncate text-sm font-medium text-gray-400">
-              {recipe.category.name}
-            </span>
+          <div>
+            <h2 className="text-sm font-medium">{recipe.title}</h2>
+
+            <div className="group relative flex items-center space-x-2.5">
+              <span className="truncate text-sm font-medium text-gray-400">
+                {recipe.category.name}
+              </span>
+            </div>
           </div>
         </div>
         <Link href={`/recipe/${recipe.id}`}>
@@ -71,15 +77,26 @@ export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
             </button> */}
           </p>
           <p className="font-base flex space-x-2 text-sm text-gray-400">
-            <span>
-              prep {recipe.prep_time.time}
-              {recipe.prep_time.unit}
-            </span>
+            <div className="inline-flex space-x-2 text-gray-400">
+              <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
+              <span className={`font-medium `}>{recipe.favorites.length}</span>
+              <span className="sr-only">views</span>
+            </div>
             <span aria-hidden="true">&middot;</span>
-            <span>
-              cook {recipe.cook_time.time}
-              {recipe.cook_time.unit}
-            </span>
+            <div className="inline-flex space-x-2 text-gray-400">
+              <ChatBubbleLeftEllipsisIcon
+                className="h-5 w-5"
+                aria-hidden="true"
+              />
+              <span className={`font-medium `}>{recipe.comments.length}</span>
+              <span className="sr-only">views</span>
+            </div>
+            <span aria-hidden="true">&middot;</span>
+            <div className="inline-flex space-x-2 text-gray-400">
+              <EyeIcon className="h-5 w-5" aria-hidden="true" />
+              <span className={`font-medium `}>{recipe.views}</span>
+              <span className="sr-only">views</span>
+            </div>
             <span aria-hidden="true">&middot;</span>
             <span>{recipe.difficulty}</span>
           </p>

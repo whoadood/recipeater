@@ -16,6 +16,7 @@ export const profileRouter = router({
           recipes: {
             include: {
               category: true,
+              images: true,
               prep_time: true,
               favorites: true,
               cook_time: true,
@@ -26,9 +27,9 @@ export const profileRouter = router({
             include: {
               recipe: {
                 include: {
+                  favorites: true,
+                  images: true,
                   category: true,
-                  prep_time: true,
-                  cook_time: true,
                   comments: true,
                 },
               },
