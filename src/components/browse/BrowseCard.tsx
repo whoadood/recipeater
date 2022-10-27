@@ -1,5 +1,6 @@
 // Packages
-import React from "react";
+import React, { Reducer } from "react";
+import Link from "next/link";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
@@ -9,33 +10,34 @@ import {
   HandThumbUpIcon,
   ShareIcon,
 } from "@heroicons/react/20/solid";
-
-// Utils
-import { IRecipeCard } from "../../types/globals";
-import Link from "next/link";
-import { makeImageUrl } from "../../utils/makeImageUrl";
-import { useDarkmode } from "../../hooks/useDark";
 import { trpc } from "../../utils/trpc";
 import { useSession } from "next-auth/react";
 
-type question = {
-  id: string;
-  likes: string;
-  replies: string;
-  views: string;
-  author: {
-    name: string;
-    imageUrl: string;
-    href: string;
-  };
-  date: string;
-  datetime: string;
-  href: string;
-  title: string;
-  body: string;
-};
+// Hooks
+import { useDarkmode } from "../../hooks/useDark";
 
-export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
+// Utils
+import { IRecipeCard, ReducerRecipe } from "../../types/globals";
+import { makeImageUrl } from "../../utils/makeImageUrl";
+
+// type question = {
+//   id: string;
+//   likes: string;
+//   replies: string;
+//   views: string;
+//   author: {
+//     name: string;
+//     imageUrl: string;
+//     href: string;
+//   };
+//   date: string;
+//   datetime: string;
+//   href: string;
+//   title: string;
+//   body: string;
+// };
+
+export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
   const { justFont, darkmode } = useDarkmode();
   const utils = trpc.useContext();
   const { data: session } = useSession();
@@ -67,14 +69,14 @@ export default function BrowseCard({ recipe }: { recipe: IRecipeCard }) {
             <div className="flex-shrink-0">
               <img
                 className="h-10 w-10 rounded-full"
-                src={recipe.user.image!}
+                src={recipe?.user?.image as string}
                 alt=""
               />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium">
-                <Link href={`/profile/${recipe.user.id}`}>
-                  <a className="hover:underline">{recipe.user.name}</a>
+                <Link href={`/profile/${recipe?.user?.id}`}>
+                  <a className="hover:underline">{recipe?.user?.name}</a>
                 </Link>
               </p>
               <p className="text-sm text-gray-400">

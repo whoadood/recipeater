@@ -1,10 +1,16 @@
 // Packages
 import { inferProcedureOutput } from "@trpc/server";
-import React from "react";
+import React, { useReducer } from "react";
 import { AppRouter } from "../../server/trpc/router/_app";
+
+// Components
+import PageHeader from "../global/PageHeader";
+import BrowsePageHeader from "./BrowsePageHeader";
 
 // Utils
 import BrowseCard from "./BrowseCard";
+import { recipeReducer } from "../../hooks/recipeReducer";
+import { ReducerRecipe } from "../../types/globals";
 
 // const questions = [
 //   {
@@ -95,17 +101,27 @@ export default function BrowseList({
 }: {
   recipes: inferProcedureOutput<AppRouter["recipe"]["getRecipesBySearch"]>;
 }) {
+  const [sortRec, recipeDispatch] = useReducer(recipeReducer, {
+    sort: "ASC",
+    rec: recipes.recipes as ReducerRecipe[],
+  });
+
   return (
     <div>
-      <h1 className="sr-only">Recipe Search Results</h1>
-      <ul
-        role="list"
-        className="wrap flex flex-col flex-wrap gap-4 px-2 lg:flex-row"
-      >
-        {recipes.recipes.map((recipe) => (
-          <BrowseCard key={recipe.id} recipe={recipe} />
-        ))}
-      </ul>
+      <PageHeader>
+        <BrowsePageHeader recipeDispatch={recipeDispatch} />
+      </PageHeader>
+      <div className="pt-4">
+        <h1 className="sr-only">Recipe Search Results</h1>
+        <ul
+          role="list"
+          className="wrap flex flex-col flex-wrap gap-4 px-2 lg:flex-row"
+        >
+          {sortRec.rec.map((recipe) => (
+            <BrowseCard key={recipe.id} recipe={recipe} />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

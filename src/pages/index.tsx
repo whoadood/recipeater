@@ -8,6 +8,7 @@ import { trpc } from "../utils/trpc";
 import Hero from "../components/global/Hero";
 import PageHeader from "../components/global/PageHeader";
 import BrowseCard from "../components/browse/BrowseCard";
+import { ReducerRecipe } from "../types/globals";
 
 const Home: NextPage = () => {
   const { data: featured } = trpc.recipe.getHomePage.useQuery();
@@ -28,13 +29,15 @@ const Home: NextPage = () => {
         </PageHeader>
         <div className="px-8 py-4">
           <h2 className="text-lg">Featured Recipe</h2>
-          {featured && featured[0] && <BrowseCard recipe={featured[0]} />}
+          {featured && featured[0] && (
+            <BrowseCard recipe={featured[0] as ReducerRecipe} />
+          )}
           <h2 className="text-lg">Recent recipes</h2>
           <ul className="flex flex-col gap-2 xl:flex-row">
             {featured &&
               featured.slice(1).map((rec) => (
                 <div className="flex-1" key={rec.id}>
-                  <BrowseCard recipe={rec} />
+                  <BrowseCard recipe={rec as ReducerRecipe} />
                 </div>
               ))}
           </ul>

@@ -4,12 +4,12 @@ import React, { useReducer } from "react";
 // Types
 import { ReducerRecipe } from "../types/globals";
 
-type Action = {
+export type Action = {
   type: "TITLE" | "CATEGORY" | "COMMENT" | "FAVORITE";
   value?: undefined;
 };
 
-type State = {
+export type State = {
   sort: string;
   rec: ReducerRecipe[];
 };

@@ -10,7 +10,6 @@ import { recipeReducer } from "../../../hooks/recipeReducer";
 import PageHeader from "../../../components/global/PageHeader";
 import BrowsePageHeader from "../../../components/browse/BrowsePageHeader";
 import BrowseList from "../../../components/browse/BrowseList";
-import { ReducerRecipe } from "../../../types/globals";
 
 export default function BrowsePage() {
   const { query } = useRouter();
@@ -24,23 +23,11 @@ export default function BrowsePage() {
     { enabled: !!query.search }
   );
 
-  console.log(data);
-
-  // const [recipes, recipeDispatch] = useReducer(
-  //   recipeReducer,
-  //   data?.recipes as ReducerRecipe[]
-  // );
-
   return (
     <>
       {data && (
         <main className="mx-auto max-w-7xl">
-          <PageHeader>
-            <BrowsePageHeader />
-          </PageHeader>
-          <div className="pt-4">
-            <BrowseList recipes={data} />
-          </div>
+          <BrowseList recipes={data} />
         </main>
       )}
     </>

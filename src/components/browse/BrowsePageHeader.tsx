@@ -9,18 +9,31 @@ import {
 
 // Utils
 import { classNames } from "../../utils/classNames";
+import { Action } from "../../hooks/recipeReducer";
 
-const tabs = [
-  { name: "Recent", icon: <ShareIcon className="h-6 w-6" /> },
-  { name: "Likes", icon: <HandThumbUpIcon className="h-6 w-6" /> },
-  {
-    name: "Comments",
-    icon: <ChatBubbleLeftEllipsisIcon className="h-6 w-6" />,
-  },
-];
-
-export default function NewPageHeader() {
-  const [activeTab, setActiveTab] = useState("Recent");
+export default function NewPageHeader({
+  recipeDispatch,
+}: {
+  recipeDispatch: React.Dispatch<Action>;
+}) {
+  const tabs = [
+    {
+      name: "Title",
+      icon: <ShareIcon className="h-6 w-6" />,
+      onClick: () => recipeDispatch({ type: "TITLE" }),
+    },
+    {
+      name: "Likes",
+      icon: <HandThumbUpIcon className="h-6 w-6" />,
+      onClick: () => recipeDispatch({ type: "FAVORITE" }),
+    },
+    {
+      name: "Comments",
+      icon: <ChatBubbleLeftEllipsisIcon className="h-6 w-6" />,
+      onClick: () => recipeDispatch({ type: "COMMENT" }),
+    },
+  ];
+  const [activeTab, setActiveTab] = useState("Title");
   const { darkmode } = useDarkmode();
 
   return (
@@ -48,7 +61,10 @@ export default function NewPageHeader() {
                 }`
               )}
               htmlFor={`${tab.name} tab`}
-              onClick={() => setActiveTab(tab.name)}
+              onClick={() => {
+                setActiveTab(tab.name);
+                tab.onClick();
+              }}
             >
               <input
                 type="radio"
