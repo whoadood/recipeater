@@ -54,17 +54,23 @@ export default function ProfileHeader({
   });
 
   const stats = [
-    { label: "Total recipes", value: profile.recipes.length },
+    { label: "Total recipes", value: profile.recipes.length, href: null },
     {
       label: "most used category",
       value: profile.recipes.find(
         (el) => el.category_id === data.mostCategory?.category_id
       )?.category.name,
+      href: `/recipe/search/${
+        profile.recipes.find(
+          (el) => el.category_id === data.mostCategory?.category_id
+        )?.category.name
+      }`,
     },
     {
       label: "most liked recipe",
       value: profile.recipes.find((el) => el.id === data.mostLiked?.recipe_id)
         ?.title,
+      href: `/recipe/${data.mostLiked?.recipe_id}`,
     },
   ];
 
@@ -104,7 +110,7 @@ export default function ProfileHeader({
                     {profile ? profile.name : "username"}
                   </p>
                   {!editBio ? (
-                    <div className="flex gap-2">
+                    <div className="flex justify-center gap-2">
                       <p className="text-sm font-medium text-gray-400">
                         {profile && profile.profile?.bio
                           ? profile.profile?.bio
@@ -174,18 +180,21 @@ export default function ProfileHeader({
           </div>
           <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
             {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className={`px-6 py-5 text-center text-sm font-medium ${
-                  darkmode ? "bg-[#2e2e2e]" : "bg-gray-200/50"
-                }`}
-              >
-                <span className="text-lg font-bold text-cyan-500">
-                  {stat.value}
-                </span>{" "}
-                <br />
-                <span className={`${justFont()}`}>{stat.label}</span>
-              </div>
+              <Link key={stat.label} href={stat.href ? stat.href : ""}>
+                <a
+                  className={`px-6 py-5 text-center text-sm font-medium ${
+                    darkmode
+                      ? "bg-[#2e2e2e] hover:bg-[#1e1e1e]"
+                      : "bg-gray-200/50 hover:bg-gray-200"
+                  }`}
+                >
+                  <span className="text-lg font-bold text-cyan-500">
+                    {stat.value}
+                  </span>{" "}
+                  <br />
+                  <span className={`${justFont()}`}>{stat.label}</span>
+                </a>
+              </Link>
             ))}
           </div>
         </div>

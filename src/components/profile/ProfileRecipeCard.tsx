@@ -51,7 +51,7 @@ export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
 
         {/* Repo meta info */}
         <div className="hidden flex-shrink-0 flex-col items-end space-y-3 sm:flex">
-          <p className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
             <Link href={`/recipe/${recipe.id}`}>
               <a className="relative text-sm font-medium text-cyan-400 hover:text-cyan-500">
                 View Recipe
@@ -75,8 +75,8 @@ export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
                 aria-hidden="true"
               />
             </button> */}
-          </p>
-          <p className="font-base flex space-x-2 text-sm text-gray-400">
+          </div>
+          <div className="font-base flex space-x-2 text-sm text-gray-400">
             <div className="inline-flex space-x-2 text-gray-400">
               <HandThumbUpIcon className="h-5 w-5" aria-hidden="true" />
               <span className={`font-medium `}>{recipe.favorites.length}</span>
@@ -99,7 +99,7 @@ export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
             </div>
             <span aria-hidden="true">&middot;</span>
             <span>{recipe.difficulty}</span>
-          </p>
+          </div>
         </div>
       </div>
     </li>
