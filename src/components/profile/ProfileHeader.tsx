@@ -76,7 +76,6 @@ export default function ProfileHeader({
 
   return (
     <main>
-      {" "}
       <section aria-labelledby="profile-overview-title">
         <div className="overflow-hidden rounded-lg  shadow">
           <h2 className="sr-only" id="profile-overview-title">
@@ -179,13 +178,28 @@ export default function ProfileHeader({
             </div>
           </div>
           <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 sm:grid-cols-3 sm:divide-y-0 sm:divide-x">
-            {stats.map((stat) => (
-              <Link key={stat.label} href={stat.href ? stat.href : ""}>
-                <a
+            {stats.map((stat) =>
+              stat.href ? (
+                <Link key={stat.label} href={stat.href ? stat.href : ""}>
+                  <a
+                    className={`px-6 py-5 text-center text-sm font-medium ${
+                      darkmode
+                        ? "bg-[#2e2e2e] hover:bg-[#1e1e1e]"
+                        : "bg-gray-200/50 hover:bg-gray-200"
+                    }`}
+                  >
+                    <span className="text-lg font-bold text-cyan-500">
+                      {stat.value}
+                    </span>{" "}
+                    <br />
+                    <span className={`${justFont()}`}>{stat.label}</span>
+                  </a>
+                </Link>
+              ) : (
+                <div
+                  key={stat.label}
                   className={`px-6 py-5 text-center text-sm font-medium ${
-                    darkmode
-                      ? "bg-[#2e2e2e] hover:bg-[#1e1e1e]"
-                      : "bg-gray-200/50 hover:bg-gray-200"
+                    darkmode ? "bg-[#2e2e2e]" : "bg-gray-200/50"
                   }`}
                 >
                   <span className="text-lg font-bold text-cyan-500">
@@ -193,9 +207,9 @@ export default function ProfileHeader({
                   </span>{" "}
                   <br />
                   <span className={`${justFont()}`}>{stat.label}</span>
-                </a>
-              </Link>
-            ))}
+                </div>
+              )
+            )}
           </div>
         </div>
       </section>

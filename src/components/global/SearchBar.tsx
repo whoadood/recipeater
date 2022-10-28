@@ -25,7 +25,7 @@ export default function SearchBar() {
               <label htmlFor="search" className="sr-only">
                 Search
               </label>
-              <div className="relative w-full text-gray-400 focus-within:text-gray-600">
+              <div className="relative w-full text-gray-400 focus-within:text-gray-100">
                 <div
                   className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2"
                   aria-hidden="true"
