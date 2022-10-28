@@ -111,7 +111,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       redirect: {
         destination: "/",
-        permanent: false,
       },
     };
   }

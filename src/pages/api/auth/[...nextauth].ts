@@ -17,11 +17,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url }) {
-      if (url.includes("signin")) {
-        return "/";
-      } else {
-        return url;
-      }
+      return url;
     },
   },
   // Configure one or more authentication providers
