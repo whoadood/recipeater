@@ -75,11 +75,13 @@ export default function RecipeForm({
   const createMutation = trpc.recipe.createRecipe.useMutation({
     onSuccess(data, variables, context) {
       utils.category.getTopCategory.invalidate();
+      utils.profile.getProfileById.invalidate();
     },
   });
   const editMutation = trpc.recipe.editRecipe.useMutation({
     onSuccess() {
       utils.category.getTopCategory.invalidate();
+      utils.profile.getProfileById.invalidate();
     },
   });
 
