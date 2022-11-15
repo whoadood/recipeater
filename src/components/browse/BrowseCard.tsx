@@ -206,7 +206,7 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
                 <a
                   href={`https://twitter.com/intent/tweet?text=Check%20out%20my%20new%20recipe%20%23${recipe.title
                     .split(" ")
-                    .join("")}%20www.recipeater.com/recipe/${recipe.id}`}
+                    .join("")}%20www.recipeater.vercel.app/recipe/${recipe.id}`}
                   target="_blank"
                   rel="noreferrer"
                   type="button"
