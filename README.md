@@ -53,7 +53,7 @@ Recipeater is an app aimed at simplifying recipes on the net. No fluff or frills
 
 <!-- project technologies icons -->
 
-![NextJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS](https://img.shields.io/badge/next.js-6DA55F?style=for-the-badge&logo=next.js&logoColor=white)
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -91,8 +91,6 @@ npm install npm@latest -g
 
 <!-- project demo images -->
 
-![drmb-demo](https://user-images.githubusercontent.com/82413454/200122848-efb7ec04-694f-4e59-a7f2-70ee37a711eb.png)
-
 <!-- project usage guide -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -104,6 +102,7 @@ npm install npm@latest -g
 - [ ] Bug fixes!
 - [ ] Nested comments
 - [ ] Recipe image carousel
+- [ ] skeleton loading components
 
 <!-- link to github issues -->
 <!-- See the [open issues](https://github.com/[github-username]/[github-project-name]/issues) for a full list of proposed features (and known issues). -->
