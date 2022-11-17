@@ -91,6 +91,10 @@ npm install npm@latest -g
 
 <!-- project demo images -->
 
+![recipeater-browse-demo](https://user-images.githubusercontent.com/82413454/202517435-c343e197-175a-4de1-9c72-40bfe5fb4881.png)
+
+![recipeater-browse-demo](https://user-images.githubusercontent.com/82413454/202517446-e6380192-ba69-45c0-859f-8b9e7f7b0075.png)
+
 <!-- project usage guide -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
