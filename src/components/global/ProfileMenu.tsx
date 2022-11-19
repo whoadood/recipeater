@@ -14,6 +14,7 @@ import { classNames } from "../../utils/classNames";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDarkmode } from "../../hooks/useDark";
+import Image from "next/image";
 
 export default function ProfileMenu() {
   const { data: session } = useSession();
@@ -45,11 +46,14 @@ export default function ProfileMenu() {
           >
             {session && session.user ? (
               <>
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src={session.user.image as string}
-                  alt="user avatar"
-                />
+                <div className="relative h-8 w-8">
+                  <Image
+                    layout="fill"
+                    className="rounded-full"
+                    src={session.user.image as string}
+                    alt="user avatar"
+                  />
+                </div>
                 <span className="ml-3 hidden text-sm font-medium lg:block">
                   <span className="sr-only">Open user menu for </span>
                   {session?.user?.name}

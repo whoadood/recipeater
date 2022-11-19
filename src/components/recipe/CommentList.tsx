@@ -3,6 +3,7 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid";
 import { inferProcedureOutput } from "@trpc/server";
 import { Field, Form, Formik } from "formik";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 
 // Hooks
@@ -83,11 +84,12 @@ export default function CommentList({
               {recipe?.comments.map((comment) => (
                 <li key={comment.id}>
                   <div className="flex space-x-3">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full"
+                    <div className="relative h-10 w-10 flex-shrink-0">
+                      <Image
+                        layout="fill"
+                        className="rounded-full"
                         src={comment.user.image as string}
-                        alt=""
+                        alt="user avatar"
                       />
                     </div>
                     <div>
@@ -124,9 +126,10 @@ export default function CommentList({
             } px-4 py-6 sm:px-6`}
           >
             <div className="flex space-x-3">
-              <div className="flex-shrink-0">
-                <img
-                  className="h-10 w-10 rounded-full"
+              <div className="relative h-10 w-10 flex-shrink-0">
+                <Image
+                  layout="fill"
+                  className="rounded-full"
                   src={session.user?.image as string}
                   alt=""
                 />

@@ -38,7 +38,7 @@ export default function Signin({
             {/* 400 bad request error??? */}
             <Image
               layout="fill"
-              src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=500"
+              src="https://www.tailwindui.com/img/logos/mark.svg?color=cyan&shade=500"
               alt="Recipeater logo"
             />
           </div>

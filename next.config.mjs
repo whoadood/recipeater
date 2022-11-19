@@ -33,7 +33,7 @@ export default defineNextConfig({
       },
       {
         protocol: "https",
-        hostname: "tailwindui.com",
+        hostname: "www.tailwindui.com",
       },
     ],
   },
