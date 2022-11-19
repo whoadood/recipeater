@@ -112,12 +112,14 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
             )}
           </div>
           {recipe.images && (
-            <div
-              style={{
-                backgroundImage: `url('${makeImageUrl(recipe.images[0])}')`,
-              }}
-              className="h-64 w-full bg-cover bg-center bg-no-repeat"
-            />
+            <div className="relative flex h-64 w-full overflow-hidden">
+              <Image
+                layout="fill"
+                src={makeImageUrl(recipe.images[0]) as string}
+                alt="recipe photo"
+                className="mx-auto"
+              />
+            </div>
           )}
           <div className="px-4 pt-4 sm:px-6">
             <h2
