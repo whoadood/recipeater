@@ -31,6 +31,10 @@ export default defineNextConfig({
         protocol: "https",
         hostname: "res.cloudinary.com",
       },
+      {
+        protocol: "https",
+        hostname: "tailwindui.com",
+      },
     ],
   },
 });

@@ -9,6 +9,7 @@ import {
 import { BuiltInProviderType } from "next-auth/providers";
 import { useDarkmode } from "../hooks/useDark";
 import { GetServerSidePropsContext } from "next";
+import Image from "next/image";
 
 export default function Signin({
   providers,
@@ -33,7 +34,7 @@ export default function Signin({
         className={`flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8`}
       >
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
+          <Image
             className="mx-auto h-12 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=500"
             alt="Your Company"
