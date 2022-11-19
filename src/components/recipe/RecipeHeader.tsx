@@ -4,6 +4,7 @@ import { env } from "../../env/client.mjs";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
 import Link from "next/link";
+import Image from "next/image.js";
 
 export default function RecipeHeader({
   recipe,
@@ -41,10 +42,14 @@ export default function RecipeHeader({
               <Link href={`/profile/${recipe?.user_id}`}>
                 <a className="flex items-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-cyan-500 hover:text-cyan-600 sm:justify-center md:py-4 md:px-10 md:text-lg lg:justify-start">
                   <div className="flex items-center gap-2">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={recipe?.user.image as string}
-                    />
+                    <div className="relative h-10 w-10">
+                      <Image
+                        layout="fill"
+                        className="rounded-full"
+                        src={recipe?.user.image as string}
+                        alt="user avatar"
+                      />
+                    </div>
                     <span>{recipe?.user.name}</span>
                   </div>
                 </a>
