@@ -10,6 +10,7 @@ import { BuiltInProviderType } from "next-auth/providers";
 import { useDarkmode } from "../hooks/useDark";
 import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
+import Head from "next/head";
 
 export default function Signin({
   providers,
@@ -22,6 +23,14 @@ export default function Signin({
   const { darkmode, justFont, addClasses } = useDarkmode();
   return (
     <>
+      <Head>
+        <title>Sign in</title>
+        <meta
+          name="description"
+          content={`Sign in to recipeater using twitter Oauth`}
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {/*
         This example requires updating your template:
 
