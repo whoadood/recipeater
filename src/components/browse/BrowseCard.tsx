@@ -118,6 +118,7 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
                 src={makeImageUrl(recipe.images[0]) as string}
                 alt="recipe photo"
                 className="mx-auto object-cover"
+                sizes="(max-width: 1200px) 720px, (max-width: 768px) 480px"
               />
             </div>
           )}
