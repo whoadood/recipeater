@@ -14,6 +14,7 @@ import Link from "next/link";
 import { RecipeData, IRecipeCard, IRecipeData } from "../../types/globals";
 import { useDarkmode } from "../../hooks/useDark";
 import { makeImageUrl } from "../../utils/makeImageUrl";
+import Image from "next/image";
 
 export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
   const { darkmode } = useDarkmode();
@@ -27,8 +28,14 @@ export default function ProfileRecipeCard({ recipe }: { recipe: IRecipeData }) {
       <div className="flex items-center justify-between space-x-4">
         {/* Repo name and link */}
         <div className="flex min-w-0 items-center gap-4">
-          <div className="max-h-14 w-14">
-            {recipe.images && <img src={makeImageUrl(recipe.images[0])} />}
+          <div className="relative h-14 w-14">
+            {recipe.images && (
+              <Image
+                layout="fill"
+                alt={`${recipe.title} image`}
+                src={makeImageUrl(recipe.images[0]) as string}
+              />
+            )}
           </div>
           <div>
             <h2 className="text-sm font-medium">{recipe.title}</h2>

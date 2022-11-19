@@ -27,6 +27,10 @@ export default defineNextConfig({
         protocol: "https",
         hostname: "pbs.twimg.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 });
