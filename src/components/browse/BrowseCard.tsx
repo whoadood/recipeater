@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { trpc } from "../../utils/trpc";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 // Hooks
 import { useDarkmode } from "../../hooks/useDark";
@@ -67,11 +68,14 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
           {/* ********** Author section  ********** */}
           <div className="flex space-x-3 px-4 py-6 pb-4 sm:p-6">
             <div className="flex-shrink-0">
-              <img
-                className="h-10 w-10 rounded-full"
-                src={recipe?.user?.image as string}
-                alt=""
-              />
+              <div className="relative h-10 w-10">
+                <Image
+                  className="rounded-full"
+                  layout="fill"
+                  src={recipe?.user?.image as string}
+                  alt="user avatar"
+                />
+              </div>
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium">

@@ -34,17 +34,20 @@ export default function Signin({
         className={`flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8`}
       >
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <Image
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=500"
-            alt="Your Company"
-          />
+          <div className="relative mx-auto h-12 w-12">
+            {/* 400 bad request error??? */}
+            <Image
+              layout="fill"
+              src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=500"
+              alt="Recipeater logo"
+            />
+          </div>
           <h2
             className={`mt-6 text-center text-3xl font-bold tracking-tight ${
               darkmode ? "text-white" : "text-black"
             }`}
           >
-            Sign in to your account
+            Sign in with your Twitter account
           </h2>
         </div>
 
