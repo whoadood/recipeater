@@ -9,6 +9,7 @@ import { recipeRouter } from "../../../server/trpc/router/recipe";
 import RecipeForm from "../../../components/recipe/createForm/CreateRecipeForm";
 import { getSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
+import Head from "next/head";
 
 export default function EditRecipePage() {
   const router = useRouter();
@@ -23,9 +24,16 @@ export default function EditRecipePage() {
   );
 
   return (
-    <main className="mx-auto max-w-7xl">
-      {data && <RecipeForm editing={true} recipe={data} />}
-    </main>
+    <>
+      <Head>
+        <title>Edit {data?.title ?? "recipe"}</title>
+        <meta name="description" content={`Edit ${data?.title ?? "recipe"}`} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="mx-auto max-w-7xl">
+        {data && <RecipeForm editing={true} recipe={data} />}
+      </main>
+    </>
   );
 }
 

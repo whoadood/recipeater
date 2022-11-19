@@ -1,10 +1,13 @@
 // Packages
 import React from "react";
 import { useRouter } from "next/router";
-import PageHeader from "../../components/global/PageHeader";
-import ProfileHeader from "../../components/profile/ProfileHeader";
-import ProfileList from "../../components/profile/ProfileList";
+import Head from "next/head";
 import { trpc } from "../../utils/trpc";
+
+// Components
+import ProfileHeader from "../../components/profile/ProfileHeader";
+import PageHeader from "../../components/global/PageHeader";
+import ProfileList from "../../components/profile/ProfileList";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -22,11 +25,21 @@ export default function ProfilePage() {
     }
   );
   return (
-    <main>
-      <PageHeader>
-        {profile.data && <ProfileHeader data={profile.data} />}
-      </PageHeader>
-      {profile.data && <ProfileList data={profile.data} />}
-    </main>
+    <>
+      <Head>
+        <title>{profile.data?.profile.name}</title>
+        <meta
+          name="description"
+          content={`Profile for ${profile.data?.profile.name}`}
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <PageHeader>
+          {profile.data && <ProfileHeader data={profile.data} />}
+        </PageHeader>
+        {profile.data && <ProfileList data={profile.data} />}
+      </main>
+    </>
   );
 }
