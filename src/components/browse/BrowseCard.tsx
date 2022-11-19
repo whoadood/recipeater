@@ -117,7 +117,7 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
                 layout="fill"
                 src={makeImageUrl(recipe.images[0]) as string}
                 alt="recipe photo"
-                className="mx-auto"
+                className="mx-auto object-cover"
               />
             </div>
           )}
