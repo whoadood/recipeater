@@ -10,6 +10,7 @@ import { recipeReducer } from "../../../hooks/recipeReducer";
 import PageHeader from "../../../components/global/PageHeader";
 import BrowsePageHeader from "../../../components/browse/BrowsePageHeader";
 import BrowseList from "../../../components/browse/BrowseList";
+import Head from "next/head";
 
 export default function BrowsePage() {
   const { query } = useRouter();
@@ -25,6 +26,14 @@ export default function BrowsePage() {
 
   return (
     <>
+      <Head>
+        <title>Browse Recipes</title>
+        <meta
+          name="description"
+          content={`Browse our awesome collection of recipes`}
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       {data && (
         <main className="mx-auto max-w-7xl">
           <BrowseList recipes={data} />
