@@ -7,6 +7,7 @@ import { AppRouter } from "../../server/trpc/router/_app";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { Formik, Form, Field } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import Image from "next/image";
 
 // Utils
 import { BioSchema } from "../../types/schemas";
@@ -88,11 +89,14 @@ export default function ProfileHeader({
               <div className="sm:flex sm:space-x-5">
                 <div className="flex-shrink-0">
                   {profile && profile.image ? (
-                    <img
-                      className="mx-auto h-20 w-20 rounded-full"
-                      src={profile.image as string}
-                      alt="user avatar"
-                    />
+                    <div className="relative mx-auto h-16 w-16">
+                      <Image
+                        layout="fill"
+                        className="rounded-full"
+                        src={profile.image as string}
+                        alt="user avatar"
+                      />
+                    </div>
                   ) : (
                     user.imageUrl
                   )}
