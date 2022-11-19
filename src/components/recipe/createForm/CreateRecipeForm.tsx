@@ -2,6 +2,7 @@
 import { Formik, Form, FieldArray, Field, FormikErrors } from "formik";
 import { Fragment, useRef } from "react";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import Image from "next/image";
 
 // Components
 import ErrMessage from "./ErrMessage";
@@ -15,7 +16,6 @@ import { AppRouter } from "../../../server/trpc/router/_app";
 import { useDarkmode } from "../../../hooks/useDark";
 import Button from "../../global/Button";
 import { makeImageUrl } from "../../../utils/makeImageUrl";
-import Image from "next/image";
 
 // const tester = {
 //   id: null,
@@ -531,7 +531,7 @@ export default function RecipeForm({
                                 key={photo.name}
                                 className="flex flex-col items-center justify-center"
                               >
-                                <div className="h-12 w-12 overflow-hidden bg-gray-100">
+                                <div className="relative h-12 w-12 overflow-hidden bg-gray-100">
                                   <Image
                                     layout="fill"
                                     alt={photo.name}
