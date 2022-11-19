@@ -15,6 +15,7 @@ import { AppRouter } from "../../../server/trpc/router/_app";
 import { useDarkmode } from "../../../hooks/useDark";
 import Button from "../../global/Button";
 import { makeImageUrl } from "../../../utils/makeImageUrl";
+import Image from "next/image";
 
 // const tester = {
 //   id: null,
@@ -502,10 +503,11 @@ export default function RecipeForm({
                                   className="flex flex-col items-center justify-center"
                                 >
                                   <div className="flex h-12 items-center">
-                                    <div className="max-h-12 w-12">
-                                      <img
-                                        src={makeImageUrl(photo)}
-                                        className={`h-full w-full`}
+                                    <div className="relative h-12 w-12">
+                                      <Image
+                                        layout="fill"
+                                        src={makeImageUrl(photo) as string}
+                                        alt={photo.name}
                                       />
                                     </div>
                                   </div>
@@ -529,10 +531,13 @@ export default function RecipeForm({
                                 key={photo.name}
                                 className="flex flex-col items-center justify-center"
                               >
-                                <img
-                                  src={URL.createObjectURL(photo as Blob)}
-                                  className={`h-12 w-12 overflow-hidden bg-gray-100`}
-                                />
+                                <div className="h-12 w-12 overflow-hidden bg-gray-100">
+                                  <Image
+                                    layout="fill"
+                                    alt={photo.name}
+                                    src={URL.createObjectURL(photo as Blob)}
+                                  />
+                                </div>
                                 <span>{photo.name}</span>
                                 <Button
                                   alt={true}
