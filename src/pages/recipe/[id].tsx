@@ -11,6 +11,7 @@ import DirectionsList from "../../components/recipe/DirectionsList";
 import RecipeHeader from "../../components/recipe/RecipeHeader";
 import RecipeImage from "../../components/recipe/RecipeImage";
 import CommentList from "../../components/recipe/CommentList";
+import Head from "next/head";
 
 export default function RecipeIdPage() {
   const router = useRouter();
@@ -41,18 +42,25 @@ export default function RecipeIdPage() {
 
   if (data && data.images)
     return (
-      <main className="mx-auto max-w-7xl">
-        <RecipeImage recipe={data} />
-        <RecipeHeader recipe={data} />
-        <div className="p-2">
-          <IngredientList ingredients={data.ingredients} />
-        </div>
-        <div className="mt-4 p-2">
-          <DirectionsList directions={data.directions} />
-        </div>
-        <div className="p-2">
-          <CommentList recipe={data} />
-        </div>
-      </main>
+      <>
+        <Head>
+          <title>Recipe {data.title}</title>
+          <meta name="description" content={`recipe ${data.title}`} />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main className="mx-auto max-w-7xl">
+          <RecipeImage recipe={data} />
+          <RecipeHeader recipe={data} />
+          <div className="p-2">
+            <IngredientList ingredients={data.ingredients} />
+          </div>
+          <div className="mt-4 p-2">
+            <DirectionsList directions={data.directions} />
+          </div>
+          <div className="p-2">
+            <CommentList recipe={data} />
+          </div>
+        </main>
+      </>
     );
 }
