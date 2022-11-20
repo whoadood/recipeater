@@ -756,6 +756,7 @@ export default function RecipeForm({
                                 >
                                   <option value="tsp">teaspoon</option>
                                   <option value="tbsp">tablespoon</option>
+                                  <option value="lbs">pound</option>
                                   <option value="fl oz">fluid ounces</option>
                                   <option value="cups">cups</option>
                                   <option value="pints">pints</option>
@@ -785,7 +786,7 @@ export default function RecipeForm({
                               push({
                                 name: "",
                                 amount: 1,
-                                unit: "United States",
+                                unit: "tsp",
                               })
                             }
                           >
