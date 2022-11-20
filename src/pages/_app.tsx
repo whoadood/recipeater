@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
+import { useEffect } from "react";
 
 // Components
 import Header from "../components/layouts/Header";

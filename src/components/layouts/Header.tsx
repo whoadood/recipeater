@@ -43,7 +43,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className={`h-screen ${addClasses()}`}>
+      <div className={`h-screen max-h-screen ${addClasses()}`}>
         <Nav sidebar={{ sidebarOpen, setSidebarOpen }} />
 
         <div className="flex max-h-screen flex-1 flex-col lg:pl-64">
@@ -65,7 +65,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Main body */}
-          <div className="max-h-full flex-1 overflow-scroll bg-inherit py-2">
+          <div className="scrollbar max-h-full flex-1 overflow-y-scroll bg-inherit py-2">
             {/* Page */}
             {children}
           </div>
