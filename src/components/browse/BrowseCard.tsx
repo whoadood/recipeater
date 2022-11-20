@@ -58,7 +58,7 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
   });
 
   return (
-    <li
+    <div
       className={`${
         darkmode ? "bg-black/40" : "bg-gray-100"
       } relative mx-auto w-full max-w-2xl flex-shrink flex-grow overflow-hidden shadow sm:rounded-lg lg:w-auto`}
@@ -227,6 +227,6 @@ export default function BrowseCard({ recipe }: { recipe: ReducerRecipe }) {
           </div>
         </div>
       </article>
-    </li>
+    </div>
   );
 }
