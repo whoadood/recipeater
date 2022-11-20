@@ -36,9 +36,9 @@ const Home: NextPage = () => {
           <ul className="flex flex-col gap-2 xl:flex-row">
             {featured &&
               featured.slice(1).map((rec) => (
-                <div className="flex-1" key={rec.id}>
+                <li className="flex-1" key={rec.id}>
                   <BrowseCard recipe={rec as ReducerRecipe} />
-                </div>
+                </li>
               ))}
           </ul>
         </div>
