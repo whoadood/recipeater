@@ -112,10 +112,9 @@ export default function Nav({
                 </Transition.Child>
                 <div className="flex flex-shrink-0 items-center px-4">
                   <div className="relative h-8 w-8">
-                    <Image
-                      layout="fill"
+                    <img
                       src="https://www.tailwindui.com/img/logos/mark.svg?color=cyan&shade=300"
-                      alt="Easywire logo"
+                      alt="logo"
                     />
                   </div>
                 </div>
@@ -169,10 +168,9 @@ export default function Nav({
         <div className="flex flex-grow flex-col overflow-y-auto bg-cyan-700 pt-5 pb-4">
           <div className="flex flex-shrink-0 items-center px-4">
             <div className="relative h-8 w-8">
-              <Image
-                layout="fill"
+              <img
                 src="https://www.tailwindui.com/img/logos/mark.svg?color=cyan&shade=300"
-                alt="ezpz"
+                alt="logo"
               />
             </div>
           </div>
